@@ -1,23 +1,19 @@
 \documentclass[]{article}
-\usepackage{lmodern}
-\usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
-  \usepackage[T1]{fontenc}
-  \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 %\setcounter{secnumdepth}{0}
- \usepackage[table,xcdraw]{xcolor}
- \usepackage[margin=1.5in]{geometry}
- \usepackage[T1]{fontenc}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage[margin=1.5in]{geometry}
 \usepackage[tableposition=top]{caption}
 \usepackage{tabularx}
-\usepackage{xcolor}
 \usepackage{hyperref}
 \hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    filecolor=magenta,      
-    urlcolor=cyan,
+colorlinks=true,
+linkcolor=blue,
+filecolor=magenta,
+urlcolor=cyan,
 }
 
 
@@ -28,36 +24,116 @@
 
 
 \begin{document}
-\maketitle
+    \maketitle
 
 
-\section{Opis ogólny}
-\subsection{Nazwa programu} % Hubert
-\subsection{Poruszany problem} % Martyna
-\subsection{Użytkownik docelowy}
-Program dedykowany jest służbie zdrowia do planowania najbardziej optymalnych tras karetek.
-Użytkownikami programu będą dyspozytorzy, którzy wydają rozkazy co do tras karetek.
+    \section{Opis ogólny}
+
+    \subsection{Nazwa programu} % Hubert
+    Patients Transit Visualizer
+
+    \subsection{Poruszany problem} % Martyna
+    Program, na podstawie dostarczonych danych, ma za zadanie pomóc zespołowi ratowników z Karetek Pogotowia (KP) przewozić pacjentów (P) do Ośrodków Medycznych (OM). Program dla każdego wprowadzonego pacjenta będzie wskazywał najbliższy w danej chwili pacjentowi Ośrodek Medyczny i symulował przetransportowanie go do wspomnianego obiektu do póki nie znajdzie wolnego miejsca lub nie odwiedzi wszystkich OM.
+
+    \subsection{Użytkownik docelowy}
+    Program dedykowany jest służbie zdrowia do planowania najbardziej optymalnych tras karetek.
+    Użytkownikami programu będą dyspozytorzy, którzy wydają rozkazy co do tras karetek.
 
 
-\section{Opis funkcjonalności}
-\subsection{Jak korzystać z programu} % Martyna
-\subsection{Możliwości programu} % Artur
+    \section{Opis funkcjonalności}
+
+    \subsection{Jak korzystać z programu} % Martyna
+
+    \subsection{Możliwości programu} % Artur
 
 
-\section{Format danych i struktura plików}
-\subsection{Struktura katalogów} % Hubert
-\subsection{Przechowywanie danych w programie} % Hubert
-\subsection{Dane wejściowe} % Artur
-\subsection{Dane wyjściowe} % Martyna
+    \section{Format danych i struktura plików}
+
+    \subsection{Struktura katalogów} % Hubert
+    \textcolor{orange}{Proj\_zesp\_AiSD\_2020Z\_GR1}
+
+    |---\textcolor{orange}{src}
+
+    |\hspace{4mm} |-----\textcolor{orange}{Transit\_visualizer}
+
+    |\hspace{15mm}|-----\textcolor{orange}{Models} - \textit{przechowuje wszystkie obiekty związane z logiką programu}
+
+    |\hspace{15mm}|-----\textcolor{orange}{Views} -\textit{ odpowiada za wizualizację mapy i poszczególnych przewozów}
+
+    |\hspace{15mm}|-----\textcolor{orange}{Controllers} -\textit{ zajmuje się obsługą żądań użytkownika}
+
+    |\hspace{15mm}|-----\textcolor{orange}{Content} -\textit{ zawiera potrzebne do wizualizacji obrazki}
+
+    |
+
+    |
+
+    |---\textcolor{orange}{test}
+
+    \hspace{5mm} |-----\textcolor{orange}{Transit\_visualizer}
+
+    \hspace{16mm}|-----\textcolor{orange}{Models}
+
+    \hspace{16mm}|-----\textcolor{orange}{Controllers}
+
+    \subsection{Przechowywanie danych w programie} % Hubert
+    Dane wejściowe są przechowywane w listach (ArrayList) zawierających poszczególne obiekty. \\
+    Każdy Ośrodek Medyczny (OM) reprezentowany jest przez obiekt typu\textit{ Hospital}, a wszystkie obiekty tego typu gromadzone są w liście. Dodatkowo OM zawiera listę dróg \textit{(Distance}) do innych, niekoniecznie wszystkich, OM.\\
+    Obiekty (tj. pomniki, muzea, \ldots) przechowywane są w liście zawierającej obiekty typu \textit{Facility}.\\
+    Pacjenci, reprezentowani przez obiekt \textit{Patient}, również przechowywani są w liście.\\
+
+    Klasy obiektów i reprezentowane w nich dane:\\
 
 
-\section{Scenariusz działania programu}
-\subsection{Scenariusz ogólny} % Hubert
-\subsection{Scenariusz szczegółowy} % Wszyscy
-\subsection{Ekrany działania programu} % Martyna
+    \textit{Hospital}
+    \begin{itemize}
+        \item  \textcolor{gray}{int} id
+        \item  \textcolor{gray}{String} nazwa
+        \item  \textcolor{gray}{int} współczynnik x
+        \item \textcolor{gray}{int}  współczynnik y
+        \item \textcolor{gray}{int}  liczba wszystkich łóżek
+        \item \textcolor{gray}{int}  liczba dostępnych łóżek
+    \end{itemize}
+
+    \textit{Facility}
+    \begin{itemize}
+        \item  \textcolor{gray}{int} id
+        \item  \textcolor{gray}{String}  nazwa
+        \item  \textcolor{gray}{int}  współczynnik x
+        \item \textcolor{gray}{int}  współczynnik y
+    \end{itemize}
+
+    \textit{Distance}
+    \begin{itemize}
+        \item \textcolor{gray}{int}  id
+        \item  \textcolor{gray}{int} id pierwszego OM |
+        \item  \textcolor{gray}{int} id drugiego OM |
+        \item \textcolor{gray}{double}  odległość (jednostka reprezentująca czas)
+    \end{itemize}
+
+    \textit{Patient}
+    \begin{itemize}
+        \item  \textcolor{gray}{int} id
+        \item \textcolor{gray}{int}  współczynnik x
+        \item \textcolor{gray}{int}  współczynnik y
+    \end{itemize}
+
+    \subsection{Dane wejściowe} % Artur
+
+    \subsection{Dane wyjściowe} % Martyna
+    Program pokazuje wynik działania w graficznym interfejsie użytkownika w postaci przewiezionych pacjentów do wskazanych przez program OM lub komunikatu o brakujących wolnych miejscach w OM.
 
 
-\section{Testowanie}
-Poszczególne klasy programu zostaną przetestowane za pomocą testów jednostkowych. Do tego posłuży nam narzędzie JUnit. Współpraca klas w programie oraz działanie graficznego interfejsu użytkownika zostanie przetestowane przez nas ręcznie w trakcie implementacji.
+    \section{Scenariusz działania programu}
+
+    \subsection{Scenariusz ogólny} % Hubert
+
+    \subsection{Scenariusz szczegółowy} % Wszyscy
+
+    \subsection{Ekrany działania programu} % Martyna
+
+
+    \section{Testowanie}
+    Poszczególne klasy programu zostaną przetestowane za pomocą testów jednostkowych. Do tego posłuży nam narzędzie JUnit. Współpraca klas w programie oraz działanie graficznego interfejsu użytkownika zostanie przetestowane przez nas ręcznie w trakcie implementacji.
 
 \end{document}
