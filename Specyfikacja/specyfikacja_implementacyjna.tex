@@ -26,8 +26,14 @@ urlcolor=cyan,
 \begin{document}
     \maketitle
     
-	
-    \section{Informacje Ogólne} % Artur
+    \section{Informacje Ogólne}
+    Program można uruchomić za pomocą naciśnięcia myszką na ikonę programu.
+    Dlatego też, program nie przyjmuje żadnych parametrów uruchomieniowych.
+    Okno programu po włączeniu będzie mieć rozmiar 800x600 pikseli.
+    Dzięki temu, program zmieści się niemalże na każdym sprzęcie.
+    Dodatkowo rozmiar okna, będzie mógł zostać zmieniony ręcznie przez użytkownika.
+    Program pojawi się na ekranie tak, aby środek okna programu był środkiem monitora użytkownika.
+    Wyłączenie programu będzie możliwe za pomocą przycisku w prawym górnym rogu programu.
     
     
     \section{Opis pakietów}
@@ -46,11 +52,45 @@ urlcolor=cyan,
     \section{Opis GUI} % Artur
     
     
-    \section{Testowanie} % Artur
+    \section{Testowanie}
         \subsection{Użyte narzędzia}
+        Głównym narzędziem, za pomocą którego program zostanie przetestowany, będzie \textbf{JUnit}.
+        Posłuży on nam do napisania testów jednostkowych metod w klasach.
+        Dzięki temu, będziemy mogli przetestować pojedyncze funkcjonalności programu.\\
+        Testy integralności tych funkcjonalności i testy graficznego interfejsu, zostaną przetestowane przez programistów, w trakcie implementacji.
+        
         \subsection{Konwencja}
+        Testy danych klas za pomocą narzędzia \textbf{JUnit} zostaną napisane w odpowiadającej klasie i pakiecie
+        w katalogu \textbf{test}.
+        Metody testujące będą mieć nazwy odpowiadające temu, co metoda testuje.
+        Użyta zostanie konwencja nazwnictwa metod testujących: \textbf{should + [co] + When + [warunek]}
+        (np. shouldThrowIllegalArgumentExceptionWhenFilePathIsNull).\\
+        Dzięki takiej konwencji rozmieszczenia plików testujących, łatwo znajdziemy testy danej klasy,
+        a dzięki konwencji nazewnictwa metod, łatwo zrozumiemy co dana metoda testuje.
+        
         \subsection{Warunki brzegowe}
-      
+        Wszystkie klasy z ważnymi i skomplikowanymi metodami, zostaną skrupulatnie przetestowane. Do tego zostaną użyte poprawne, jak i niepoprawne dane.
+        \\
+        Klasą, która jest najważniejsza jest klasa \textbf{PathFinder}. 
+        Zostanie ona przetestowana dla danych zawierających różną liczbę połączeń pomiędzy szpitalami, a także gdy nie ma żądnych połączeń pomiędzy szpitalami.
+        Testy będą się opierać głównie o to, by sprawdzić czy wyszukane połączenie, na pewno jest najkrótszym możliwym.
+        Również zostanie wykonany test dla mapy, która nie zawiera żadnych szpitali.
+        \\
+        Klasy \textbf{MapFileReader} i \textbf{PatientsFileReader} są klasami najbardziej narażonymi na błędne dane.
+        Zostaną one przetestowane, głównie dla danych niepoprawnych by sprawdzić
+        czy algorytmy w nich zawarte potrafią znajdować błędy w pliku tekstowym.
+        Te klasy zostaną przetestowane dla pustych plików oraz plików, które zawierają niepoprawne dane, takie jak:
+        \begin{itemize}
+            \item Liczby ujemne w miejscach gdzie są niedozwolone
+            \item Powtarzające się id i nazwy (tylko w pliku z mapą)
+            \item Połączenia pomiędzy nieistniejącymi szpitalami
+            \item Dane, które nie są ani szpitalami, ani obiektami, ani drogami.
+        \end{itemize}
+        GUI zostanie przetestowane przez programistów ręcznie.
+        Każda z kontrolek zostanie przetestowana pod względem poprawności działania.
+        Sprawdzimy czy za pomocą suwaku szybkości animacji, można zatrzymać program.
+        Sprawdzimy czy można uruchomić animację, gdy jest już ona uruchomiona.
+        
     
     \section{Diagram klas} % Artur
 
