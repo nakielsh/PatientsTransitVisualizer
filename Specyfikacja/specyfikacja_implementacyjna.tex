@@ -42,7 +42,114 @@ urlcolor=cyan,
         \subsection{ptv.module.path} % Hubert
         \subsection{ptv.module.data} % Hubert
         \subsection{ptv.module.borders} % Martyna
-        \subsection{ptv.module.reader} % Artur
+		
+        \subsection{ptv.module.reader}
+            Pakiet \textbf{ptv.module.reader} odpowiada za wczytywanie danych z plików tekstowych.
+            Znajdziemy w nim dwie klasy: \textbf{MapFileReader}, \textbf{PatientsFileReader}.
+            Pakiet ten korzysta z pakietu \textbf{ptv.module.data}, ponieważ tam zawarte są klasy wczytywanych z pliku obiektów.
+        
+            \subsubsection{MapFileReader}
+                Klasa \textbf{MapFileReader} służy do wczytywania szpitali, obiektów i dróg z pliku tekstowego.
+                
+                \paragraph{Pola}
+                    \begin{itemize}
+                        \item \textbf{private int lineNumber} - numer aktualnie analizowanej linii
+                        \item \textbf{private Hospital[] loadedHospitalsById} - tablica zawierająca wczytane szpitale, dany indeks w tablicy to szpital o tym id
+                        \item \textbf{private Map<String, Hospital> loadedHospitalsByName} - HashMap'a zawierająca wczytane szpitale, dany klucz to nazwa szpitala kryjącego się pod tym kluczem
+                        \item \textbf{private Facility[] loadedFacilitiesById} - tablica zawierająca wczytane obiekty, dany indeks w tablicy to obiekt o tym id
+                        \item \textbf{private Map<String, Facility> loadedFacilitiesByName} - HashMap'a zawierająca wczytane szpitale, dany klucz to nazwa szpitala kryjącego się pod tym kluczem
+                        \item \textbf{private Distance[] loadedDistancesById} - tablica zawierająca wczytane połączenia szpitali, dany indeks w tablicy to połączenie o tym id
+                    \end{itemize}
+                
+                \paragraph{Metody}
+                    \begin{itemize}
+                        \item \textbf{public Map readFile(String filePath)}\\
+                            Metoda służy do wczytania mapy z pliku tekstowego do którego prowadzi ścieżka \textbf{filePath}.\\
+                            Metoda zwraca obiekt klasy Map, który zawiera dane wczytane z pliku.\\
+                            Metoda wczytuje linia po linii i wywołuje odpowiednia metodę w zależności od aktualnie wczytywanego typu obiektów: readHospital(), readFacility(), readDistance().\\
+                            Metoda wyrzuca wyjątek IllegalArgumentException jeśli,
+                                \textbf{filePath} jest null'em,
+                                nie może wczytać z danego pliku,
+                                plik ma niepoprawny format danych.
+                                
+                        \item \textbf{private void readHospital(String[] line, Map map}\\
+                            Metoda służy do dodania szpitala do \textbf{map} z podzielonej linii \textbf{line}.
+                            Metoda sprawdza czy dana linia ma odpowiedni format i wywołuje \textbf{canLoadHospital()}.
+                            Jeśli linia jest poprawna i można wczytać ten szpital, metoda dodaje go do \textbf{map}.\\
+                            Metoda wyrzuca wyjątek IllegalArgumentException jeśli,
+                                \textbf{line} ma niepoprawny format danych,
+                                szpital o takim id lub nazwie już został wcześniej wczytany.
+                        
+                        \item \textbf{private void readFacility(String[] line, Map map}\\
+                            Metoda służy do dodania obiektu do \textbf{map} z podzielonej linii \textbf{line}.
+                            Metoda sprawdza czy dana linia ma odpowiedni format i wywołuje \textbf{canLoadFacility()}.
+                            Jeśli linia jest poprawna i można wczytać ten obiekt, metoda dodaje go do \textbf{map}.\\
+                            Metoda wyrzuca wyjątek IllegalArgumentException jeśli,
+                                \textbf{line} ma niepoprawny format danych,
+                                obiekt o takim id lub nazwie już został wcześniej wczytany.
+                                
+                        \item \textbf{private void readDistance(String[] line, Map map}\\
+                            Metoda służy do dodania drogi do \textbf{map} z podzielonej linii \textbf{line}.
+                            Metoda sprawdza czy dana linia ma odpowiedni format i wywołuje \textbf{canLoadDistance()}.
+                            Jeśli linia jest poprawna i można wczytać tę drogę, metoda dodaje ją do \textbf{map}.\\
+                            Metoda wyrzuca wyjątek IllegalArgumentException jeśli,
+                                \textbf{line} ma niepoprawny format danych,
+                                droga o takim id już została wcześniej wczytana.
+                                
+                        \item \textbf{private boolean canLoadHospital(int id, String name)}\\
+                            Metoda służy do sprawdzenia czy szpital o takim id i nazwie został już wcześniej wczytany.\\
+                            Metoda zwraca \textbf{true} jeśli taki szpital nie został wcześniej wczytany,
+                            a \textbf{false} w przeciwnym wypadku.\\
+                            Sprawdza to za pomocą pól \textbf{loadedHospitalsById, loadedHospitalsByName}.
+                            
+                        \item \textbf{private boolean canLoadFacility(int id, String name)}\\
+                            Metoda służy do sprawdzenia czy obiekt o takim id i nazwie został już wcześniej wczytany.\\
+                            Metoda zwraca \textbf{true} jeśli taki obiekt nie został wcześniej wczytany,
+                            a \textbf{false} w przeciwnym wypadku.\\
+                            Sprawdza to za pomocą pól \textbf{loadedFacilitiesById, loadedFacilitiesByName}.
+                            
+                        \item \textbf{private boolean canLoadDistance(int id)}\\
+                            Metoda służy do sprawdzenia czy droga o takim id została już wcześniej wczytana.\\
+                            Metoda zwraca \textbf{true} jeśli taka droga nie została wcześniej wczytana,
+                            a \textbf{false} w przeciwnym wypadku.\\
+                            Sprawdza do za pomocą pola \textbf{loadedDistancesById}.
+                    \end{itemize}
+                    
+            \subsubsection{PatientsFileReader}
+                Klasa \textbf{PatientsFileReader} służy do wczytania listy pacjentów z pliku tekstowego.
+                
+                \paragraph{Pola}
+                    \begin{itemize}
+                        \item \textbf{private int lineNumber} - numer aktualnie analizowanej linii
+                        \item \textbf{private Map<Integer, Patient> loadedPatients} - HashMap'a zawierająca wczytanych pacjentów, klucz jest to id danego pacjenta
+                    \end{itemize}
+                
+                \paragraph{Metody}
+                    \begin{itemize}
+                        \item \textbf{public List<Patient> readFile(String filePath)}
+                            Metoda służy do wczytania listy pacjentów z pliku tekstowego do któego prowadzi ścieżka \textbf{filePath}.\\
+                            Metoda zwraca obiekt klasy List<>, który zawiera listę pacjentów wczytanych z pliku.\\
+                            Metoda wczytuje linia po linii i wywołuje metodę readLine().\\
+                            Metoda wyrzuca wyjątek IllegalArgumentException jeśli,
+                                \textbf{filePath} jest null'em,
+                                nie może wczytać z danego pliku,
+                                plik ma niepoprawny format danych.
+                        
+                        \item \textbf{private void readLine(String[] line, List<Patient> patients}\\
+                            Metoda służy do dodania pacjenta do \textbf{patients} z podzielonej linii \textbf{line}.
+                            Metoda sprawdza czy dana linia ma odpowiedni format i wywołuje \textbf{canLoadPatient()}.
+                            Jeśli linia jest poprawna i można wczytać tego pacjenta, metoda dodaje ją do \textbf{patients}.\\
+                            Metoda wyrzuca wyjątek IllegalArgumentException jeśli,
+                                \textbf{line} ma niepoprawny format danych,
+                                pacjent o takim id już został wcześniej wczytany.
+                                
+                        \item \textbf{private boolean canLoadPatient(int id)}\\
+                            Metoda służy do sprawdzenia czy pacjent o takim id został już wcześniej wczytany.\\
+                            Metoda zwraca \textbf{true} jeśli taki pacjent nie został wcześniej wczytany,
+                            a \textbf{false} w przeciwnym wypadku.\\
+                            Sprawdza to za pomocą pola \textbf{loadedPatients}.\\
+                    \end{itemize}
+
         \subsection{ptv.module.simulation} % Artur
         \subsection{ptv.controllers} % Martyna
         \subsection{ptv.views} % Martyna
