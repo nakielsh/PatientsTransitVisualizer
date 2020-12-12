@@ -150,7 +150,43 @@ urlcolor=cyan,
                             Sprawdza to za pomocą pola \textbf{loadedPatients}.\\
                     \end{itemize}
 
-        \subsection{ptv.module.simulation} % Artur
+
+		\subsection{ptv.module.simulation} % Artur
+            Zadaniem pakietu \textbf{ptv.module.simulation} jest przeprowadzenie symulacji obsługi pacjentów.
+            Znajdziemy w nim jedną klasę: \textbf{Simulator}.
+            Pakiet do działania będzie korzystać z pakietu \textbf{ptv.module.data} oraz
+            będzie współpracować z pakietami \textbf{ptv.module.borders} i \textbf{ptv.module.path}.
+            
+            \subsubsection{Simulator}
+                Klasa \textbf{Simulator} odpowiada za przeprowadzenie symulacji obsługi pacjentów.
+                
+                \paragraph{Pola}
+                    \begin{itemize}
+                        \item \textbf{private boolean firstStep} - \textbf{true} jeśli pierwszy krok nie został jeszcze wykonany
+                        \item \textbf{private final Map map} - zmienna przechowująca referencję do mapy na której przeprowadzana jest symulacja
+                        \item \textbf{private List<Patient> patients} - lista pacjentów do obsługi
+                    \end{itemize}
+                    
+                \paragraph{Metody}
+                    \begin{itemize}
+                        \item \textbf{public void makeStep()}\\
+                            Metoda służy do wykonywania kolejnych kroków w symulacji.\\
+                            W zależności od zmiennej \textbf{firstStep} wywołuje metodę \textbf{firstStep()} lub \textbf{nextStep()}.
+                            Metoda wyrzuca IllegalArgumentException jeśli pacjent jest poza granicami państwa.
+                        
+                        \item \textbf{public boolean needNextStep()}\\
+                            Metoda służy do sprawdzenia czy następny krok jest potrzebny.\\
+                            Zwraca \textbf{true} jeśli szpital w jakim się znajduje ma wolne łóżka. \textbf{False} w przeciwnym wypadku.
+                            
+                        \item \textbf{private void firstStep()}
+                            Metoda służy do wykonania pierwszego kroku, gdy pacjent nie znajduje się w żadnym szpitalu.\\
+                            Robi to za pomocą klasy \textbf{PathFinder} z pakietu \textbf{ptv.module.path}.
+                        \item \textbf{private void nextStep()}
+                            Metoda służy do wykonania kolejnych kroków, gdy pacjent znajduje się jakimś szpitalu i musi przedostać się do innego spzitala za pomocą dróg.\\
+                            Robi to za pomocą klasy \textbf{PathFinder} z pakietu \textbf{ptv.module.path}.
+                    \end{itemize}
+        
+        \subsection{ptv.controllers} % Martyna
         \subsection{ptv.controllers} % Martyna
         \subsection{ptv.views} % Martyna
         \subsection{ptv.content}
