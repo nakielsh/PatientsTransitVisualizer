@@ -3,7 +3,6 @@
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-%\setcounter{secnumdepth}{0}
 \usepackage[table,xcdraw]{xcolor}
 \usepackage[margin=1.5in]{geometry}
 \usepackage[tableposition=top]{caption}
@@ -19,8 +18,8 @@ urlcolor=cyan,
 
 
 
-\title{Specyfikacja funkcjonalna projektu zespołowego \textbf{AiSD GR2}}
-\author{Martyna Jakubowska, Hubert Nakielski, Artur Prasuła}
+\title{\textbf{Patients Transit Visualizer}\\Specyfikacja funkcjonalna projektu zespołowego}
+\author{\small{AiSD GR2}\\Martyna Jakubowska, Hubert Nakielski, Artur Prasuła}
 \date{Grudzień 2020}
 
 
@@ -30,10 +29,10 @@ urlcolor=cyan,
 
     \section{Opis ogólny}
 
-    \subsection{Nazwa programu} % Hubert
+    \subsection{Nazwa programu}
     Patients Transit Visualizer
 
-    \subsection{Poruszany problem} % Martyna
+    \subsection{Poruszany problem}
     Program, na podstawie dostarczonych danych, ma za zadanie pomóc zespołowi ratowników z Karetek Pogotowia (KP) przewozić pacjentów (P) do Ośrodków Medycznych (OM). Program dla każdego wprowadzonego pacjenta będzie wskazywał najbliższy w danej chwili pacjentowi Ośrodek Medyczny i symulował przetransportowanie go do wspomnianego obiektu do póki nie znajdzie wolnego miejsca lub nie odwiedzi wszystkich OM.
 
     \subsection{Użytkownik docelowy}
@@ -43,7 +42,8 @@ urlcolor=cyan,
 
     \section{Opis funkcjonalności}
 
-    \subsection{Jak korzystać z programu} % Martyna
+    \subsection{Jak korzystać z programu}
+    Do uruchomienia programu użytkownik będzie musiał mieć zainstalowane środowisko \textbf{Java 14} na swoim komputerze.
     Aby uruchomić program należy dwukrotnie nacisnąć ikonę pliku .jar. Następnie pojawi się okno, w którym należy wczytać plik zawierający dane do przeprowadzenia symulacji.
 
     \subsection{Możliwości programu}
@@ -63,7 +63,7 @@ urlcolor=cyan,
 
     \section{Format danych i struktura plików}
 
-    \subsection{Struktura katalogów} % Hubert
+    \subsection{Struktura katalogów}
     \textcolor{orange}{Proj\_zesp\_AiSD\_2020Z\_GR1}
 
     |---\textcolor{orange}{src}
@@ -75,8 +75,6 @@ urlcolor=cyan,
     |\hspace{15mm}|-----\textcolor{orange}{views} -\textit{ odpowiada za wizualizację mapy i poszczególnych przewozów}
 
     |\hspace{15mm}|-----\textcolor{orange}{controllers} -\textit{ zajmuje się obsługą żądań użytkownika}
-
-    |\hspace{15mm}|-----\textcolor{orange}{content} -\textit{ zawiera potrzebne do wizualizacji obrazki}
 
     |
 
@@ -90,7 +88,7 @@ urlcolor=cyan,
 
     \hspace{16mm}|-----\textcolor{orange}{controllers}
 
-    \subsection{Przechowywanie danych w programie} % Hubert
+    \subsection{Przechowywanie danych w programie}
     Dane wejściowe są przechowywane w listach (ArrayList) zawierających poszczególne obiekty. \\
     Każdy Ośrodek Medyczny (OM) reprezentowany jest przez obiekt typu\textit{ Hospital}, a wszystkie obiekty tego typu gromadzone są w liście. Dodatkowo OM zawiera listę dróg \textit{(Distance}) do innych, niekoniecznie wszystkich, OM.\\
     Obiekty (tj. pomniki, muzea, \ldots) przechowywane są w liście zawierającej obiekty typu \textit{Facility}.\\
@@ -195,13 +193,13 @@ urlcolor=cyan,
     2 | 99 | 105 \\
     3 | 23 | 40 \\
     
-    \subsection{Dane wyjściowe} % Martyna
+    \subsection{Dane wyjściowe}
     Program pokazuje wynik działania w graficznym interfejsie użytkownika w postaci przewiezionych pacjentów do wskazanych przez program OM lub komunikatu o brakujących wolnych miejscach w OM.
 
 
     \section{Scenariusz działania programu}
 
-    \subsection{Scenariusz ogólny} % Hubert
+    \subsection{Scenariusz ogólny}
     \begin{enumerate}
         \item Uruchomienie programu
         \item Wczytanie pliku wejściowego zawierającego dane OM, obiektów oraz dróg
@@ -211,7 +209,7 @@ urlcolor=cyan,
         \item Zakończenie programu
     \end{enumerate}
 
-    \subsection{Scenariusz szczegółowy} % Wszyscy
+    \subsection{Scenariusz szczegółowy}
     \begin{enumerate}
         \item[1.] Uruchomienie programu.
         \item[2.] Wczytanie pliku wejściowego zawierającego dane OM, obiektów oraz dróg.
@@ -231,23 +229,23 @@ urlcolor=cyan,
         \item[6.] Zakończenie programu.
     \end{enumerate}
         
-    \subsection{Ekrany działania programu} % Martyna
+    \subsection{Ekrany działania programu}
     \begin{figure}[!h]
     \centering
-    \includegraphics[width=15cm]{gui.jpg}
+    \includegraphics[width=\textwidth]{gui.jpg}
     \caption{Ekran działania programu}
     \label{fig:Shrek}
-\end{figure}
-Ekran działania programu służy do załadowania mapy, następnie wczytywania pacjentów oraz kontrolowania symulacji. GUI jest podzielone na następujące sekcje:
-\begin{itemize}
+    \end{figure}
+    Ekran działania programu służy do załadowania mapy, następnie wczytywania pacjentów oraz kontrolowania symulacji. GUI jest podzielone na następujące sekcje:
+    \begin{itemize}
     \item menu górne, gdzie znajduje się przycisk 'Load map' służy do wczytania pliku tekstowego z danymi szpitali, obiektów i dróg.
     \item menu boczne, podzielone na 2 działy: 
-\begin{itemize}
+    \begin{itemize}
     \item 'Add patients' - służy do dodawania pacjentów (po wczytaniu mapy), za pomcą pliku tekstowego, wpisania współżędnych lub poprzez naciśnięcie odpowiedniego punktu na mapie
     \item 'Simulation' - służy do kontrolowania symulacji, po wczytaniu mapy i dodaniu pacjentów możemy rozpoczynać i zatrzymywać oraz wznawiać proces
-\end{itemize}
-\item pasek boczny - po lewej stronie znajduje się suwak do ustawiania prędkości symulacji, po prawej funkcja 'Cursor', która pokazuje na jakiej współrzędnej na mapie znajduje się obecnie kursor 
-\end{itemize}
+    \end{itemize}
+    \item pasek boczny - po lewej stronie znajduje się suwak do ustawiania prędkości symulacji, po prawej funkcja 'Cursor', która pokazuje na jakiej współrzędnej na mapie znajduje się obecnie kursor 
+    \end{itemize}
 
 
     \section{Testowanie}
