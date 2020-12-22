@@ -1,14 +1,20 @@
 package ptv.models.data;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Map {
+public class Country {
 
     private List<Facility> facilitiesList;
     private List<Hospital> hospitalsList;
     private Hospital currentVisitedHospital;
     private List<Point2D> polygon;
+
+    public Country(){
+        facilitiesList = new ArrayList<>();
+        hospitalsList = new ArrayList<>();
+    }
 
     public List<Facility> getFacilitiesList() {
         return facilitiesList;
@@ -40,5 +46,13 @@ public class Map {
 
     public void setPolygon(List<Point2D> polygon) {
         this.polygon = polygon;
+    }
+
+    public void addHospital(Hospital hospital){
+        hospitalsList.add(hospital);
+    }
+
+    public void addFacility(Facility facility){
+        facilitiesList.add(facility);
     }
 }

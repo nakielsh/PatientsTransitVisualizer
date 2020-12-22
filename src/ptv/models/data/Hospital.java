@@ -1,6 +1,7 @@
 package ptv.models.data;
 
 import java.awt.geom.Point2D;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ public class Hospital {
         this.coordinates = coordinates;
         this.allBeds = allBeds;
         this.avaliableBeds = avaliableBeds;
+        adjacentHospitals = new HashMap<>();
     }
 
     public void useBed(){}
@@ -54,5 +56,9 @@ public class Hospital {
 
     public Map<Hospital, Distance> getAdjacentHospitals() {
         return adjacentHospitals;
+    }
+
+    public void addDistance(Distance distance){
+        adjacentHospitals.put(distance.getSecondOM(), distance);
     }
 }
