@@ -1,7 +1,6 @@
 package ptv.models.data;
 
 public class Distance {
-
     private final int id;
     private final Hospital firstOM;
     private final Hospital secondOM;

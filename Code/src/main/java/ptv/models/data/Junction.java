@@ -3,7 +3,6 @@ package ptv.models.data;
 import javafx.geometry.Point2D;
 
 public class Junction {
-
     private final int id;
     private final Point2D intersectionPoint;
     private final double firstDistance;

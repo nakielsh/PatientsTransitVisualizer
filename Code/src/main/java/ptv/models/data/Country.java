@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Country {
-
     private List<Facility> facilitiesList;
     private List<Hospital> hospitalsList;
     private Hospital currentVisitedHospital;

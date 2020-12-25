@@ -1,10 +1,8 @@
 package ptv.models.data;
 
-
 import javafx.geometry.Point2D;
 
 public class Facility {
-
     private final int id;
     private final String name;
     private final Point2D coordinates;
@@ -27,4 +25,3 @@ public class Facility {
         return coordinates;
     }
 }
-
