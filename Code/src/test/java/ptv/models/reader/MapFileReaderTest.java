@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class MapFileReaderTest {
 
     private MapFileReader mapFileReader;
-    private String path = new File("").getAbsolutePath() + "/src/test/ptv/models/reader/dataSets/";
+    private String path = new File("").getAbsolutePath() + "/src/test/java/ptv/models/reader/dataSets/";
 
     @BeforeEach
     public void setUp(){
