@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public class MapFileReader {
+public class CountryFileReader {
 
     private final int MAXID = 1000;
 
@@ -24,7 +24,7 @@ public class MapFileReader {
     private boolean[] loadedDistancesById;
 
 
-    public MapFileReader(){
+    public CountryFileReader(){
         initialize();
     }
 

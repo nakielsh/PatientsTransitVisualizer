@@ -13,31 +13,31 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class MapFileReaderTest {
+public class CountryFileReaderTest {
 
-    private MapFileReader mapFileReader;
+    private CountryFileReader countryFileReader;
     private String path = new File("").getAbsolutePath() + "/src/test/java/ptv/models/reader/dataSets/";
 
     @BeforeEach
     public void setUp(){
-        mapFileReader = new MapFileReader();
+        countryFileReader = new CountryFileReader();
     }
 
     @Test
     public void shouldThrowIllegalArgumentExceptionWhenFilePathIsNull(){
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> mapFileReader.readFile(null));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryFileReader.readFile(null));
         assertEquals("FilePath cannot be null or empty String", exception.getMessage());
     }
 
     @Test
     public void shouldThrowIllegalArgumentExceptionWhenFilePathIsEmptyString(){
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> mapFileReader.readFile(""));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryFileReader.readFile(""));
         assertEquals("FilePath cannot be null or empty String", exception.getMessage());
     }
 
     @Test
     public void shouldReadFileProperlyWhenFileIsCorrect() throws FileNotFoundException {
-        Country country = mapFileReader.readFile(path + "correctData.txt");
+        Country country = countryFileReader.readFile(path + "correctData.txt");
 
         List<Hospital> hospitals = country.getHospitalsList();
         List<Facility> facilities = country.getFacilitiesList();
@@ -61,14 +61,14 @@ public class MapFileReaderTest {
         String filePath = path + "headersOnly.txt";
         String msg = "File does not contain any hospital";
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> mapFileReader.readFile(filePath));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryFileReader.readFile(filePath));
         assertEquals(msg, exception.getMessage());
     }
 
     @Test
     public void shouldReadFileProperlyWhenFileDoesNotContainFacilities() throws FileNotFoundException {
         String filePath = path + "noFacilities.txt";
-        Country country = mapFileReader.readFile(filePath);
+        Country country = countryFileReader.readFile(filePath);
 
         List<Hospital> hospitals = country.getHospitalsList();
         List<Facility> facilities = country.getFacilitiesList();
@@ -87,7 +87,7 @@ public class MapFileReaderTest {
 
     @Test
     public void shouldReadFileProperlyWhenFileDoesNotContainDistances() throws FileNotFoundException {
-        Country country = mapFileReader.readFile(path + "noDistances.txt");
+        Country country = countryFileReader.readFile(path + "noDistances.txt");
 
         List<Hospital> hospitals = country.getHospitalsList();
         List<Facility> facilities = country.getFacilitiesList();
@@ -111,7 +111,7 @@ public class MapFileReaderTest {
         String filePath = path + "notEnoughSharps.txt";
         String msg = "Line: 9. Wrong number of sections. Expected 6 sections";
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> mapFileReader.readFile(filePath));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryFileReader.readFile(filePath));
         assertEquals(msg, exception.getMessage());
     }
 
@@ -120,7 +120,7 @@ public class MapFileReaderTest {
         String filePath = path + "wrongNumberOfSections.txt";
         String msg = "Line: 2. Wrong number of sections. Expected 6 sections";
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> mapFileReader.readFile(filePath));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryFileReader.readFile(filePath));
         assertEquals(msg, exception.getMessage());
     }
 
@@ -129,7 +129,7 @@ public class MapFileReaderTest {
         String filePath = path + "tooMuchSharps.txt";
         String msg = "Too much lines starting with '#' in file " + filePath + ". Expected 3 lines";
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> mapFileReader.readFile(filePath));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryFileReader.readFile(filePath));
         assertEquals(msg, exception.getMessage());
     }
 
@@ -138,7 +138,7 @@ public class MapFileReaderTest {
         String filePath = path + "sameId.txt";
         String msg = "Line: 3. Hospital's id and name should be unique";
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> mapFileReader.readFile(filePath));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryFileReader.readFile(filePath));
         assertEquals(msg, exception.getMessage());
     }
 
@@ -147,7 +147,7 @@ public class MapFileReaderTest {
         String filePath = path + "sameNames.txt";
         String msg = "Line: 10. Facility's id and name should be unique";
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> mapFileReader.readFile(filePath));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryFileReader.readFile(filePath));
         assertEquals(msg, exception.getMessage());
     }
 
@@ -156,7 +156,7 @@ public class MapFileReaderTest {
         String filePath = path + "wrongHospitalIdInDistance.txt";
         String msg = "Line: 15. Distance's id should be unique. Hospital's id should be real";
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> mapFileReader.readFile(filePath));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryFileReader.readFile(filePath));
         assertEquals(msg, exception.getMessage());
     }
 
@@ -167,7 +167,7 @@ public class MapFileReaderTest {
             "id, number of beds, number of free beds - not negative integer,\n" +
             "x and y - float number";
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> mapFileReader.readFile(filePath));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryFileReader.readFile(filePath));
         assertEquals(msg, exception.getMessage());
     }
 
@@ -178,7 +178,7 @@ public class MapFileReaderTest {
                 "id, number of beds, number of free beds - not negative integer,\n" +
                 "x and y - float number";
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> mapFileReader.readFile(filePath));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryFileReader.readFile(filePath));
         assertEquals(msg, exception.getMessage());
     }
 
@@ -189,7 +189,7 @@ public class MapFileReaderTest {
             "id, number of beds, number of free beds - not negative integer,\n" +
             "x and y - float number";
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> mapFileReader.readFile(filePath));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryFileReader.readFile(filePath));
         assertEquals(msg, exception.getMessage());
     }
 
@@ -198,7 +198,7 @@ public class MapFileReaderTest {
         String filePath = path + "idEquals1000.txt";
         String msg = "Line: 3. Hospital's id should be smaller than 1000";
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> mapFileReader.readFile(filePath));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryFileReader.readFile(filePath));
         assertEquals(msg, exception.getMessage());
     }
 
@@ -207,7 +207,7 @@ public class MapFileReaderTest {
         String filePath = path + "roadToSameHospital.txt";
         String msg = "Line: 14. Road cannot lead to the same hospital.";
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> mapFileReader.readFile(filePath));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryFileReader.readFile(filePath));
         assertEquals(msg, exception.getMessage());
     }
 
@@ -216,7 +216,7 @@ public class MapFileReaderTest {
         String filePath = path + "freeBedsBiggerThanAll.txt";
         String msg = "Line: 3. Number of available beds cannot be bigger than total number of all beds";
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> mapFileReader.readFile(filePath));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryFileReader.readFile(filePath));
         assertEquals(msg, exception.getMessage());
     }
 }
