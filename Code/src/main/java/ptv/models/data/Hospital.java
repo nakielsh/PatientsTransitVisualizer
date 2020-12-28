@@ -12,24 +12,30 @@ public class Hospital {
     private final String name;
     private final Point2D coordinates;
     private final int allBeds;
-    private final int avaliableBeds;
+    private int availableBeds;
     private LinkedList<Hospital> shortestPath;
-    private Map<Hospital, Distance> adjacentHospitals;
+    private final Map<Hospital, Distance> adjacentHospitals;
 
-    public Hospital(int id, String name, Point2D coordinates, int allBeds, int avaliableBeds) {
+    public Hospital(int id, String name, Point2D coordinates, int allBeds, int availableBeds) {
         this.id = id;
         this.name = name;
         this.coordinates = coordinates;
         this.allBeds = allBeds;
-        this.avaliableBeds = avaliableBeds;
+        this.availableBeds = availableBeds;
         adjacentHospitals = new HashMap<>();
     }
 
-    public void useBed(){}
+    public void useBed(){
+        availableBeds--;
+    }
 
-    public void addDestination(Hospital destination, Distance distance){}
+    public void addDestination(Hospital destination, Distance distance){
+        adjacentHospitals.put(destination, distance);
+    }
 
-    public void addToShortestPath(Hospital hospital){}
+    public void addToShortestPath(Hospital hospital){
+        shortestPath.add(hospital);
+    }
 
     public int getId() {
         return id;
@@ -47,8 +53,8 @@ public class Hospital {
         return allBeds;
     }
 
-    public int getAvaliableBeds() {
-        return avaliableBeds;
+    public int getAvailableBeds() {
+        return availableBeds;
     }
 
     public LinkedList<Hospital> getShortestPath() {
