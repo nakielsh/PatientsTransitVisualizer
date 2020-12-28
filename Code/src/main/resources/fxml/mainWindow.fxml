@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane fx:id="mainPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ptv.controllers.Controller">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" onAction="#loadMap" text="File">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Open file" />
+               </items></Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <right>
+      <VBox alignment="TOP_CENTER" spacing="15.0" style="-fx-background-color: #e9e9e9;" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Add patients">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Label>
+            <VBox alignment="CENTER">
+               <children>
+                  <Label text="From file:" />
+                  <Button mnemonicParsing="false" text="Load file" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER">
+               <children>
+                  <Label text="From the coordinates:" />
+                  <HBox alignment="CENTER">
+                     <children>
+                        <TextField prefHeight="26.0" prefWidth="50.0" promptText="x:" />
+                        <TextField prefHeight="26.0" prefWidth="50.0" promptText="y:" />
+                        <Button mnemonicParsing="false" text="Add" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER">
+               <children>
+                  <Label text="From the map:" />
+                  <Button mnemonicParsing="false" text="Add" />
+               </children>
+            </VBox>
+            <Label text="Simulation">
+               <font>
+                  <Font size="19.0" />
+               </font>
+               <padding>
+                  <Insets top="40.0" />
+               </padding>
+            </Label>
+            <HBox spacing="5.0">
+               <children>
+                  <Label prefHeight="18.0" prefWidth="44.0" text="Speed:" />
+                  <Slider />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" spacing="5.0">
+               <children>
+                  <Button mnemonicParsing="false" text="Start" textFill="#1a8c1c">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Button>
+                  <Button mnemonicParsing="false" text="Stop" textFill="#aa1111">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Button>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </HBox>
+         </children>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
+      </VBox>
+   </right>
+   <center>
+      <Canvas fx:id="canvas" height="575.0" width="589.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

@@ -4,4 +4,6 @@ module Code {
     requires javafx.graphics;
 
     exports ptv to javafx.graphics;
+    exports ptv.controllers to javafx.fxml;
+    opens ptv.controllers to javafx.fxml;
 }
