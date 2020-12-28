@@ -4,7 +4,9 @@ import javafx.geometry.Point2D;
 
 import javafx.util.Pair;
 import java.util.List;
-
+//TODO sprint 2
+// HUBERT
+// całość
 public class ChansAlgorithm {
 
     private int orientation(Point2D p, Point2D q, Point2D r){ return 0;}
@@ -25,3 +27,4 @@ public class ChansAlgorithm {
 
 
 }
+

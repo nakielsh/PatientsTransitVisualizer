@@ -13,7 +13,8 @@ import ptv.views.View;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-
+//TODO sprint 2
+// MARTYNA
 public class Controller {
     private View view;
     private TextField xCoord;

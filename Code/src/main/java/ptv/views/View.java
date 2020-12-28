@@ -14,6 +14,10 @@ import ptv.models.simulation.Simulator;
 import java.io.FileNotFoundException;
 import java.util.Iterator;
 
+//TODO sprint 2
+// MARTYNA
+// Drawing Junctions and borders
+
 public class View {
     private Canvas canvas;
     private Affine affine;
