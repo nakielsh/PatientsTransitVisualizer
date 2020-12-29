@@ -38,8 +38,11 @@ public class Controller {
 
     @FXML
     private void handleCursor(MouseEvent mouseEvent){
-        double mouseX = mouseEvent.getX();
-        double mouseY = mouseEvent.getY();
+        if(this.view == null) {
+            return;
+        }
+        double mouseX = mouseEvent.getX()/this.view.countAffine();
+        double mouseY = mouseEvent.getY()/this.view.countAffine();
         String cursorFormat = "Cursor(%.2f; %.2f)";
         this.cursorLabel.setText(String.format(cursorFormat, mouseX, mouseY));
     }
