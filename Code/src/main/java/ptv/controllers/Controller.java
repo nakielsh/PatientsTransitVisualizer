@@ -8,13 +8,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ptv.views.View;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+//TODO sprint 2
+// MARTYNA
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 
