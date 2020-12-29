@@ -3,8 +3,10 @@ package ptv.views;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
+import javafx.scene.transform.NonInvertibleTransformException;
 import ptv.models.borders.InBorders;
 import ptv.models.data.Country;
 import ptv.models.data.Hospital;
@@ -37,17 +39,21 @@ public class View {
     public void paintMap(){
         GraphicsContext g = this.canvas.getGraphicsContext2D();
         g.setTransform(this.affine);
-
-        g.setFill(Color.BLACK);
-        g.fillRect(0, 0, 1, 1);
+        this.paintHospitals(g);
 
     }
 
-    public void paintHospitals(){
+    public void paintHospitals(GraphicsContext g){
         Iterator<Hospital> iterator = country.getHospitalsList().iterator();
+        Hospital currentHospital;
+        double xCoord, yCoord;
+        g.setFill(Color.RED);
         while (iterator.hasNext()) {
-            System.out.println(iterator.next());
-
+            currentHospital = iterator.next();
+            xCoord = currentHospital.getCoordinates().getX();
+            yCoord = currentHospital.getCoordinates().getY();
+            System.out.println(xCoord + ", " + yCoord);
+            g.fillOval(xCoord, yCoord, 0.5, 0.5);
         }
 
     }
@@ -57,8 +63,15 @@ public class View {
     public void paintPatient(){}
 
     private int countAffine(){
-        return 10;
+        return 20;
     }
 
     private Point2D findCenter(){return null;}
+
+    public Affine getAffine() {
+        return this.affine;
+    }
+
+
 }
+

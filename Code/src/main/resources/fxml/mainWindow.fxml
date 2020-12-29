@@ -85,6 +85,13 @@
       </VBox>
    </right>
    <center>
-      <Canvas fx:id="canvas" height="575.0" width="589.0" BorderPane.alignment="CENTER" />
+      <Canvas fx:id="canvas" height="575.0" onMouseMoved="#handleCursor" width="589.0" BorderPane.alignment="CENTER" />
    </center>
+   <bottom>
+      <Label fx:id="cursorLabel" BorderPane.alignment="CENTER_RIGHT">
+         <padding>
+            <Insets right="10.0" />
+         </padding>
+      </Label>
+   </bottom>
 </BorderPane>
