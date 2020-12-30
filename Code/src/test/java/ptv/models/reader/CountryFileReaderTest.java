@@ -3,6 +3,7 @@ package ptv.models.reader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ptv.models.data.Country;
+import ptv.models.data.Distance;
 import ptv.models.data.Facility;
 import ptv.models.data.Hospital;
 
@@ -16,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class CountryFileReaderTest {
 
     private CountryFileReader countryFileReader;
-    private String path = new File("").getAbsolutePath() + "/src/test/java/ptv/models/reader/dataSets/";
+    private String path = new File("").getAbsolutePath() + "/src/test/java/ptv/models/reader/countryDataSets/";
 
     @BeforeEach
     public void setUp(){
@@ -41,10 +42,12 @@ public class CountryFileReaderTest {
 
         List<Hospital> hospitals = country.getHospitalsList();
         List<Facility> facilities = country.getFacilitiesList();
+        List<Distance> distances = country.getDistancesList();
 
         Hospital hospital1 = hospitals.get(0);
         Hospital hospital2 = hospitals.get(1);
         Facility facility = facilities.get(0);
+        Distance distance = distances.get(0);
 
         assertEquals(1 , hospital1.getId());
         assertEquals(2 , hospital2.getId());
@@ -54,6 +57,9 @@ public class CountryFileReaderTest {
         assertEquals("Szpital Wojewódzki nr 997", hospital1.getName());
         assertEquals("Krakowski Szpital Kliniczny", hospital2.getName());
         assertEquals("Pomnik Wikipedii", facility.getName());
+        assertEquals(1, distance.getId());
+        assertEquals(700, distance.getDist());
+        assertEquals(1, distances.size());
     }
 
     @Test
@@ -72,9 +78,11 @@ public class CountryFileReaderTest {
 
         List<Hospital> hospitals = country.getHospitalsList();
         List<Facility> facilities = country.getFacilitiesList();
+        List<Distance> distances = country.getDistancesList();
 
         Hospital hospital1 = hospitals.get(0);
         Hospital hospital2 = hospitals.get(1);
+        Distance distance = distances.get(0);
 
         assertEquals(1 , hospital1.getId());
         assertEquals(2 , hospital2.getId());
@@ -83,6 +91,9 @@ public class CountryFileReaderTest {
         assertEquals(0 , facilities.size());
         assertEquals("Szpital Wojewódzki nr 997", hospital1.getName());
         assertEquals("Krakowski Szpital Kliniczny", hospital2.getName());
+        assertEquals(1, distance.getId());
+        assertEquals(700, distance.getDist());
+        assertEquals(1, distances.size());
     }
 
     @Test
@@ -91,6 +102,7 @@ public class CountryFileReaderTest {
 
         List<Hospital> hospitals = country.getHospitalsList();
         List<Facility> facilities = country.getFacilitiesList();
+        List<Distance> distances = country.getDistancesList();
 
         Hospital hospital1 = hospitals.get(0);
         Hospital hospital2 = hospitals.get(1);
@@ -104,6 +116,7 @@ public class CountryFileReaderTest {
         assertEquals("Szpital Wojewódzki nr 997", hospital1.getName());
         assertEquals("Krakowski Szpital Kliniczny", hospital2.getName());
         assertEquals("Pomnik Wikipedii", facility.getName());
+        assertEquals(0, distances.size());
     }
 
     @Test

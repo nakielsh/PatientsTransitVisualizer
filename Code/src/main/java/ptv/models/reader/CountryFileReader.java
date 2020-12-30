@@ -70,7 +70,7 @@ public class CountryFileReader {
                 readFacility(splittedLine, country);
             }
             else if(readingType == 3){
-                readDistance(splittedLine);
+                readDistance(splittedLine, country);
             }
             else {
                 throw new IllegalArgumentException("Too much lines starting with '#' in file " + filePath + ". Expected 3 lines");
@@ -167,7 +167,7 @@ public class CountryFileReader {
         }
     }
 
-    private void readDistance(String[] line){
+    private void readDistance(String[] line, Country country){
         if(line.length != 4){
             throw new IllegalArgumentException("Line: " + lineNumber + ". Wrong number of sections. Expected 4 sections");
         }
@@ -199,8 +199,11 @@ public class CountryFileReader {
         }
 
         if(canLoadDistance(id, hospitalId1, hospitalId2)){
-            loadedHospitalsById[hospitalId1].addDistance(new Distance(id, loadedHospitalsById[hospitalId1], loadedHospitalsById[hospitalId2], duration));
-            loadedHospitalsById[hospitalId2].addDistance(new Distance(id, loadedHospitalsById[hospitalId2], loadedHospitalsById[hospitalId1], duration));
+            Distance d1 = new Distance(id, loadedHospitalsById[hospitalId1], loadedHospitalsById[hospitalId2], duration);
+            Distance d2 = new Distance(id, loadedHospitalsById[hospitalId2], loadedHospitalsById[hospitalId1], duration);
+            loadedHospitalsById[hospitalId1].addDistance(d1);
+            loadedHospitalsById[hospitalId2].addDistance(d2);
+            country.addDistance(d1);
             loadedDistancesById[id] = true;
         }
         else{

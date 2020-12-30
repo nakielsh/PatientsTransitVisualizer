@@ -8,12 +8,14 @@ import java.util.List;
 public class Country {
     private List<Facility> facilitiesList;
     private List<Hospital> hospitalsList;
+    private List<Distance> distancesList;
     private Hospital currentVisitedHospital;
     private List<Point2D> polygon;
 
     public Country(){
         facilitiesList = new ArrayList<>();
         hospitalsList = new ArrayList<>();
+        distancesList = new ArrayList<>();
     }
 
     public List<Facility> getFacilitiesList() {
@@ -30,6 +32,14 @@ public class Country {
 
     public void setHospitalsList(List<Hospital> hospitalsList) {
         this.hospitalsList = hospitalsList;
+    }
+
+    public List<Distance> getDistancesList(){
+        return distancesList;
+    }
+
+    public void setDistancesList(List<Distance> distancesList){
+        this.distancesList = distancesList;
     }
 
     public Hospital getCurrentVisitedHospital() {
@@ -56,4 +66,7 @@ public class Country {
         facilitiesList.add(facility);
     }
 
+    public void addDistance(Distance distance){
+        distancesList.add(distance);
+    }
 }
