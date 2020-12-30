@@ -9,6 +9,7 @@ import javafx.scene.transform.Affine;
 import javafx.scene.transform.NonInvertibleTransformException;
 import ptv.models.borders.InBorders;
 import ptv.models.data.Country;
+import ptv.models.data.Distance;
 import ptv.models.data.Facility;
 import ptv.models.data.Hospital;
 import ptv.models.reader.CountryFileReader;
@@ -46,9 +47,17 @@ public class View {
     public void paintMap(){
         GraphicsContext g = this.canvas.getGraphicsContext2D();
         g.setTransform(this.affine);
+        g.setStroke(Color.LIGHTGRAY);
+        g.setLineWidth(0.1);
+        for (int i=0; i<this.canvas.getHeight(); i++) {
+            g.strokeLine(i, 0, i, this.canvas.getWidth());
+        }
+        for (int i=0; i<this.canvas.getWidth(); i++) {
+            g.strokeLine(0,i, this.canvas.getHeight(), i);
+        }
+        this.paintDistances(g);
         this.paintHospitals(g);
         this.paintFacilities(g);
-
     }
 
     public void paintHospitals(GraphicsContext g){
@@ -62,7 +71,9 @@ public class View {
             currentHospital = iterator.next();
             xCoord = currentHospital.getCoordinates().getX();
             yCoord = currentHospital.getCoordinates().getY();
-            g.strokeOval(xCoord-0.5, yCoord-0.5, 0.4, 0.4);
+            g.strokeOval(xCoord-0.4, yCoord-0.4, 0.8, 0.8);
+            g.setFill(Color.WHITE);
+            g.fillOval(xCoord-0.4, yCoord-0.4, 0.8, 0.8);
         }
 
     }
@@ -78,7 +89,26 @@ public class View {
             currentFacility = iterator.next();
             xCoord = currentFacility.getCoordinates().getX();
             yCoord = currentFacility.getCoordinates().getY();
-            g.strokeOval(xCoord, yCoord, 0.4, 0.4);
+            g.strokeOval(xCoord-0.2, yCoord-0.2, 0.4, 0.4);
+            g.setFill(Color.WHITE);
+            g.fillOval(xCoord-0.2, yCoord-0.2, 0.4, 0.4);
+        }
+    }
+
+    public void paintDistances(GraphicsContext g){
+        Iterator<Distance> iterator = country.getDistancesList().iterator();
+        Distance currentDistance;
+        double firstXCoord, firstYCoord, secondXCoord, secondYCoord;
+        g.setFill(Color.BLACK);
+        g.setStroke(Color.BLACK);
+        g.setLineWidth(0.1);
+        while (iterator.hasNext()) {
+            currentDistance = iterator.next();
+            firstXCoord = currentDistance.getFirstNode().getCoordinates().getX();
+            firstYCoord = currentDistance.getFirstNode().getCoordinates().getY();
+            secondXCoord = currentDistance.getSecondNode().getCoordinates().getX();
+            secondYCoord = currentDistance.getSecondNode().getCoordinates().getY();
+            g.strokeLine(firstXCoord, firstYCoord, secondXCoord, secondYCoord);
         }
     }
 
