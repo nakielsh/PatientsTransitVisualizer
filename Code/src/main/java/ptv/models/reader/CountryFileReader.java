@@ -199,11 +199,12 @@ public class CountryFileReader {
         }
 
         if(canLoadDistance(id, hospitalId1, hospitalId2)){
-            Distance d1 = new Distance(id, loadedHospitalsById[hospitalId1], loadedHospitalsById[hospitalId2], duration);
-            Distance d2 = new Distance(id, loadedHospitalsById[hospitalId2], loadedHospitalsById[hospitalId1], duration);
-            loadedHospitalsById[hospitalId1].addDistance(d1);
-            loadedHospitalsById[hospitalId2].addDistance(d2);
-            country.addDistance(d1);
+            Hospital h1 = loadedHospitalsById[hospitalId1];
+            Hospital h2 = loadedHospitalsById[hospitalId2];
+            Distance d = new Distance(id, h1, h2, duration);
+            h1.addNode(h2, d);
+            h2.addNode(h1, d);
+            country.addDistance(d);
             loadedDistancesById[id] = true;
         }
         else{

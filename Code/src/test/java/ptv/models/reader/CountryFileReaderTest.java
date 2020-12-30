@@ -51,8 +51,8 @@ public class CountryFileReaderTest {
 
         assertEquals(1 , hospital1.getId());
         assertEquals(2 , hospital2.getId());
-        assertEquals(1 , hospital1.getAdjacentHospitals().size());
-        assertEquals(1 , hospital2.getAdjacentHospitals().size());
+        assertEquals(1 , hospital1.getAdjacentNodes().size());
+        assertEquals(1 , hospital2.getAdjacentNodes().size());
         assertEquals(1 , facility.getId());
         assertEquals("Szpital Wojewódzki nr 997", hospital1.getName());
         assertEquals("Krakowski Szpital Kliniczny", hospital2.getName());
@@ -86,8 +86,8 @@ public class CountryFileReaderTest {
 
         assertEquals(1 , hospital1.getId());
         assertEquals(2 , hospital2.getId());
-        assertEquals(1 , hospital1.getAdjacentHospitals().size());
-        assertEquals(1 , hospital2.getAdjacentHospitals().size());
+        assertEquals(1 , hospital1.getAdjacentNodes().size());
+        assertEquals(1 , hospital2.getAdjacentNodes().size());
         assertEquals(0 , facilities.size());
         assertEquals("Szpital Wojewódzki nr 997", hospital1.getName());
         assertEquals("Krakowski Szpital Kliniczny", hospital2.getName());
@@ -110,8 +110,8 @@ public class CountryFileReaderTest {
 
         assertEquals(1 , hospital1.getId());
         assertEquals(2 , hospital2.getId());
-        assertEquals(0 , hospital1.getAdjacentHospitals().size());
-        assertEquals(0 , hospital2.getAdjacentHospitals().size());
+        assertEquals(0 , hospital1.getAdjacentNodes().size());
+        assertEquals(0 , hospital2.getAdjacentNodes().size());
         assertEquals(1 , facility.getId());
         assertEquals("Szpital Wojewódzki nr 997", hospital1.getName());
         assertEquals("Krakowski Szpital Kliniczny", hospital2.getName());

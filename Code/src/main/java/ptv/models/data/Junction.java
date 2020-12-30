@@ -2,32 +2,23 @@ package ptv.models.data;
 
 import javafx.geometry.Point2D;
 
-public class Junction {
-    private final int id;
-    private final Point2D intersectionPoint;
-    private final double firstDistance;
-    private final double secondDistance;
+public class Junction extends Node{
 
-    public Junction(int id, Point2D intersectionPoint, double firstDistance, double secondDistance) {
-        this.id = id;
-        this.intersectionPoint = intersectionPoint;
-        this.firstDistance = firstDistance;
-        this.secondDistance = secondDistance;
+    //private final double firstDistance;
+    //private final double secondDistance;
+
+    public Junction(int id, Point2D intersectionPoint){ //, double firstDistance, double secondDistance) {
+        super(id, intersectionPoint);
+        //this.firstDistance = firstDistance;
+        //this.secondDistance = secondDistance;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public Point2D getIntersectionPoint() {
-        return intersectionPoint;
-    }
-
-    public double getFirstDistance() {
+    /*public double getFirstDistance() {
         return firstDistance;
     }
 
     public double getSecondDistance() {
         return secondDistance;
-    }
+    }*/
+
 }
