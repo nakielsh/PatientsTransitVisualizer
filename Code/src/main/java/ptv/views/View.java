@@ -39,6 +39,7 @@ public class View {
         CountryFileReader countryFileReader = new CountryFileReader();
         try {
             Country country = countryFileReader.readFile(filePath);
+            country.setJunctionsList(new JunctionFinder().findJunctions(country.getDistancesList()));
             this.simulator.setCountry(country);
         }catch (IllegalArgumentException exception) {
             System.out.println("Invalid data");

@@ -4,9 +4,6 @@ import javafx.geometry.Point2D;
 
 import java.util.ArrayList;
 import java.util.List;
-//TODO sprint 2
-// ARTUR
-// wywołanie (event handler w przycisku do wczytywania)
 
 public class JunctionFinder  {
 
@@ -18,7 +15,6 @@ public class JunctionFinder  {
         List<Junction> junctions = new ArrayList<>();
         int junctionsId = -1;
 
-        //jeszcze jedna petla, metoda wywola sie kilka razy az do skutku(nie bedzie juz nowych skrzyzowan)
         for(int i = 0; i < distanceList.size(); i++){
             Distance firstDistance = distanceList.get(i);
 

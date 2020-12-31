@@ -9,6 +9,7 @@ public class Country {
     private List<Facility> facilitiesList;
     private List<Hospital> hospitalsList;
     private List<Distance> distancesList;
+    private List<Junction> junctionsList;
     private Hospital currentVisitedHospital;
     private List<Point2D> polygon;
 
@@ -40,6 +41,14 @@ public class Country {
 
     public void setDistancesList(List<Distance> distancesList){
         this.distancesList = distancesList;
+    }
+
+    public List<Junction> getJunctionsList(){
+        return junctionsList;
+    }
+
+    public void setJunctionsList(List<Junction> junctionsList){
+        this.junctionsList = junctionsList;
     }
 
     public Hospital getCurrentVisitedHospital() {
