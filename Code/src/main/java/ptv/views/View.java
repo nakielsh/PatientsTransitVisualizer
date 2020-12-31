@@ -8,15 +8,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.NonInvertibleTransformException;
 import ptv.models.borders.InBorders;
-import ptv.models.data.Country;
-import ptv.models.data.Distance;
-import ptv.models.data.Facility;
-import ptv.models.data.Hospital;
+import ptv.models.data.*;
 import ptv.models.reader.CountryFileReader;
+import ptv.models.reader.PatientsFileReader;
 import ptv.models.simulation.Simulator;
 
 import java.io.FileNotFoundException;
 import java.util.Iterator;
+import java.util.List;
 
 //TODO sprint 2
 // MARTYNA
@@ -27,21 +26,35 @@ import java.util.Iterator;
 public class View {
     private Canvas canvas;
     private Affine affine;
-    private Country country;
+    private Simulator simulator;
     private InBorders polygon;
 
-    public View(String filePath, Canvas canvas) throws FileNotFoundException {
+    public View(Canvas canvas) {
+        this.canvas = canvas;
+        this.affine = new Affine();
+        this.simulator = new Simulator();
+    }
+
+    public void loadMap(String filePath) throws FileNotFoundException {
         CountryFileReader countryFileReader = new CountryFileReader();
-        // need to add gui window with printed exceptions
         try {
-            this.country = countryFileReader.readFile(filePath);
+            Country country = countryFileReader.readFile(filePath);
+            this.simulator.setCountry(country);
         }catch (IllegalArgumentException exception) {
             System.out.println("Invalid data");
         }
-        this.canvas = canvas;
-        this.affine = new Affine();
         this.affine.appendScale(countAffine(), countAffine());
         paintMap();
+    }
+
+    public void addPatientsList(String filePath) throws FileNotFoundException {
+        PatientsFileReader patientsFileReader = new PatientsFileReader();
+        List<Patient> patients = patientsFileReader.readFile(filePath);
+        Iterator<Patient> iterator = patients.iterator();
+        while(iterator.hasNext()) {
+            this.simulator.addPatient(iterator.next());
+        }
+        System.out.println(this.simulator.getPatients());
     }
 
     public void paintMap(){
@@ -61,7 +74,7 @@ public class View {
     }
 
     public void paintHospitals(GraphicsContext g){
-        Iterator<Hospital> iterator = country.getHospitalsList().iterator();
+        Iterator<Hospital> iterator = this.simulator.getCountry().getHospitalsList().iterator();
         Hospital currentHospital;
         double xCoord, yCoord;
         g.setFill(Color.RED);
@@ -79,7 +92,7 @@ public class View {
     }
 
     public void paintFacilities(GraphicsContext g){
-        Iterator<Facility> iterator = country.getFacilitiesList().iterator();
+        Iterator<Facility> iterator = this.simulator.getCountry().getFacilitiesList().iterator();
         Facility currentFacility;
         double xCoord, yCoord;
         g.setFill(Color.GREEN);
@@ -96,7 +109,7 @@ public class View {
     }
 
     public void paintDistances(GraphicsContext g){
-        Iterator<Distance> iterator = country.getDistancesList().iterator();
+        Iterator<Distance> iterator = this.simulator.getCountry().getDistancesList().iterator();
         Distance currentDistance;
         double firstXCoord, firstYCoord, secondXCoord, secondYCoord;
         g.setFill(Color.BLACK);

@@ -28,7 +28,7 @@
             <VBox alignment="CENTER">
                <children>
                   <Label text="From file:" />
-                  <Button mnemonicParsing="false" text="Load file" />
+                  <Button mnemonicParsing="false" onAction="#loadPatientFromFile" text="Load file" />
                </children>
             </VBox>
             <VBox alignment="CENTER">

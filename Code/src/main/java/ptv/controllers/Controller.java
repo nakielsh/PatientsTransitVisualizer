@@ -30,7 +30,39 @@ public class Controller {
     @FXML
     private Canvas canvas;
 
-    private void loadPatientFromFile(String FilePath){}
+    public Controller() {
+    }
+
+    @FXML
+    public void initialize() {
+        this.view = new View(canvas);
+    }
+
+    @FXML
+    public void loadMap() throws FileNotFoundException {
+        FileChooser fileChooser = new FileChooser();
+        String currentPath = Paths.get(".").toAbsolutePath().normalize().toString() + "/src/main/resources/dataSets";
+        fileChooser.setInitialDirectory(new File(currentPath));
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("txt files", "*.txt"));
+        File mapFile = fileChooser.showOpenDialog(mainPane.getScene().getWindow());
+        if (mapFile != null) {
+            this.view.loadMap(mapFile.getAbsolutePath());
+        }
+    }
+
+    @FXML
+    private void loadPatientFromFile() throws FileNotFoundException {
+        FileChooser fileChooser = new FileChooser();
+        String currentPath = Paths.get(".").toAbsolutePath().normalize().toString() + "/src/main/resources/dataSets";
+        fileChooser.setInitialDirectory(new File(currentPath));
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("txt files", "*.txt"));
+        File patientsFile = fileChooser.showOpenDialog(mainPane.getScene().getWindow());
+        if (patientsFile != null) {
+            this.view.addPatientsList(patientsFile.getAbsolutePath());
+        }
+
+
+    }
 
     private void loadPatientFromCoordinates(){}
 
@@ -55,15 +87,5 @@ public class Controller {
     private void getSimulationSpeed(){}
 
 
-    public void loadMap(ActionEvent actionEvent) throws FileNotFoundException {
-        FileChooser fileChooser = new FileChooser();
-        String currentPath = Paths.get(".").toAbsolutePath().normalize().toString() + "/src/main/resources/dataSets";
-        fileChooser.setInitialDirectory(new File(currentPath));
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("txt files", "*.txt"));
-        File mapFile = fileChooser.showOpenDialog(mainPane.getScene().getWindow());
-        if (mapFile != null) {
-            this.view = new View(mapFile.getAbsolutePath(), canvas);
-        }
 
-    }
 }
