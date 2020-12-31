@@ -10,11 +10,12 @@ import java.util.List;
 
 public class JunctionFinder  {
 
-    public void findJunctions(List<Distance> distanceList){
+    public List<Junction> findJunctions(List<Distance> distanceList){
         if(distanceList == null){
             throw new IllegalArgumentException("Distance list cannot be null");
         }
 
+        List<Junction> junctions = new ArrayList<>();
         int junctionsId = -1;
 
         //jeszcze jedna petla, metoda wywola sie kilka razy az do skutku(nie bedzie juz nowych skrzyzowan)
@@ -27,6 +28,8 @@ public class JunctionFinder  {
 
                 if(intersectionPoint != null){
                     Junction junction = new Junction(junctionsId, intersectionPoint);
+                    junctions.add(junction);
+
                     junctionsId--;
                     Distance[] newDistances = setDistances(junction, firstDistance, secondDistance);
 
@@ -41,6 +44,7 @@ public class JunctionFinder  {
                 }
             }
         }
+        return junctions;
     }
 
     private Point2D findIntersectionPoint(Distance dist1, Distance dist2){
