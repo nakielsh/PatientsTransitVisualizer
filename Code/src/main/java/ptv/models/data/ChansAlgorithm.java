@@ -13,7 +13,7 @@ import java.util.List;
 // całość
 public class ChansAlgorithm {
 
-    Point2D p0;
+    Point2D p0 = new Point2D(0,0);
 
     Comparator<Point2D> comparator = new Comparator() {
         @Override

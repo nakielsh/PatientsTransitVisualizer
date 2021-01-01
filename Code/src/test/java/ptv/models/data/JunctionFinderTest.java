@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class JunctionFinderTest {
 
-    @Test
+     @Test
     public void shouldThrowIllegalArgumentExceptionWhenDistanceListIsNull(){
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> new JunctionFinder().findJunctions(null));
         assertEquals("Distance list cannot be null", e.getMessage());
