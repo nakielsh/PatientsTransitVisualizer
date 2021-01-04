@@ -63,6 +63,9 @@ public class GrahamScan {
     }
 
     public List<Point2D> returnHull(List<Point2D> points) {
+        if(points.size() < 3) {
+            throw new IllegalArgumentException("There must be at least 3 points to count hull");
+        }
         List<Point2D> hull = new ArrayList<>();
         Point2D p0 = points.remove(findP0(points));
         points.sort(getComparator(p0));
