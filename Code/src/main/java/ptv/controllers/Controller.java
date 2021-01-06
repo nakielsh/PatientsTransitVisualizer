@@ -8,8 +8,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import ptv.views.ResizableCanvas;
 import ptv.views.View;
 
 import java.io.File;
@@ -28,20 +31,21 @@ public class Controller {
     @FXML
     private BorderPane mainPane;
     @FXML
-    private Canvas canvas;
+    private Canvas canvas = new ResizableCanvas();
 
     public Controller() {
     }
 
     @FXML
     public void initialize() {
+
         this.view = new View(canvas);
     }
 
     @FXML
     public void loadMap() throws FileNotFoundException {
         FileChooser fileChooser = new FileChooser();
-        String currentPath = Paths.get(".").toAbsolutePath().normalize().toString() ;//+ "/src/main/resources/dataSets";
+        String currentPath = Paths.get(".").toAbsolutePath().normalize().toString() ;//+ "Code/src/main/resources/dataSets";
         fileChooser.setInitialDirectory(new File(currentPath));
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("txt files", "*.txt"));
         File mapFile = fileChooser.showOpenDialog(mainPane.getScene().getWindow());
@@ -53,7 +57,7 @@ public class Controller {
     @FXML
     private void loadPatientFromFile() throws FileNotFoundException {
         FileChooser fileChooser = new FileChooser();
-        String currentPath = Paths.get(".").toAbsolutePath().normalize().toString() + "/src/main/resources/dataSets";
+        String currentPath = Paths.get(".").toAbsolutePath().normalize().toString(); //+ "/src/main/resources/dataSets";
         fileChooser.setInitialDirectory(new File(currentPath));
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("txt files", "*.txt"));
         File patientsFile = fileChooser.showOpenDialog(mainPane.getScene().getWindow());
