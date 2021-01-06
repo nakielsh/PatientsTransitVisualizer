@@ -60,6 +60,7 @@ public class View {
 
     public void paintMap(){
         GraphicsContext g = this.canvas.getGraphicsContext2D();
+        g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         g.setTransform(this.affine);
         g.setStroke(Color.LIGHTGRAY);
         g.setLineWidth(0.1);
@@ -70,6 +71,7 @@ public class View {
             g.strokeLine(0,i, this.canvas.getHeight(), i);
         }
         this.paintDistances(g);
+        this.paintJunctions(g);
         this.paintHospitals(g);
         this.paintFacilities(g);
     }
@@ -123,6 +125,23 @@ public class View {
             secondXCoord = currentDistance.getSecondNode().getCoordinates().getX();
             secondYCoord = currentDistance.getSecondNode().getCoordinates().getY();
             g.strokeLine(firstXCoord, firstYCoord, secondXCoord, secondYCoord);
+        }
+    }
+
+    public void paintJunctions(GraphicsContext g){
+        Iterator<Junction> iterator = this.simulator.getCountry().getJunctionsList().iterator();
+        Junction currentJunction;
+        double junctionXCoord, junctionYCoord;
+        g.setFill(Color.LIGHTBLUE);
+        g.setStroke(Color.BLUE);
+        g.setLineWidth(0.1);
+        while (iterator.hasNext()){
+            currentJunction = iterator.next();
+            junctionXCoord = currentJunction.getCoordinates().getX();
+            junctionYCoord = currentJunction.getCoordinates().getY();
+            g.strokeOval(junctionXCoord-0.2, junctionYCoord-0.2, 0.4, 0.4);
+            g.fillOval(junctionXCoord-0.2, junctionYCoord-0.2, 0.4, 0.4);
+
         }
     }
 

@@ -31,13 +31,14 @@ public class Controller {
 
     @FXML
     public void initialize() {
+
         this.view = new View(canvas);
     }
 
     @FXML
     public void loadMap() throws FileNotFoundException {
         FileChooser fileChooser = new FileChooser();
-        String currentPath = Paths.get(".").toAbsolutePath().normalize().toString() ;//+ "/src/main/resources/dataSets";
+        String currentPath = Paths.get(".").toAbsolutePath().normalize().toString() ;//+ "Code/src/main/resources/dataSets";
         fileChooser.setInitialDirectory(new File(currentPath));
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("txt files", "*.txt"));
         File mapFile = fileChooser.showOpenDialog(mainPane.getScene().getWindow());
@@ -49,7 +50,7 @@ public class Controller {
     @FXML
     private void loadPatientFromFile() throws FileNotFoundException {
         FileChooser fileChooser = new FileChooser();
-        String currentPath = Paths.get(".").toAbsolutePath().normalize().toString() + "/src/main/resources/dataSets";
+        String currentPath = Paths.get(".").toAbsolutePath().normalize().toString(); //+ "/src/main/resources/dataSets";
         fileChooser.setInitialDirectory(new File(currentPath));
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("txt files", "*.txt"));
         File patientsFile = fileChooser.showOpenDialog(mainPane.getScene().getWindow());

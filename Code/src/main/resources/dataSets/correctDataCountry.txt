@@ -2,6 +2,7 @@
 1 | Szpital Wojewódzki nr 997 | 10 | 10 | 1000 | 100
 2 | Krakowski Szpital Kliniczny | 20 | 10 | 999 | 99
 3 | Szpital nr 998 | 2 | 2 | 1000 | 100
+4 | Szpital im Krzysztofa Kononowicza | 11 | 2 | 10 | 2
 
 # Obiekty (id | nazwa | wsp. x | wsp. y)
 1 | Pomnik Wikipedii | 15 | 20
@@ -9,3 +10,4 @@
 # Drogi (id | id_szpitala | id_szpitala | odległość)
 1 | 1 | 2 | 700
 2 | 3 | 2 | 400
+3 | 1 | 4 | 500
