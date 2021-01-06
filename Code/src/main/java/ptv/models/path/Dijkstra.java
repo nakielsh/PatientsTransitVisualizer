@@ -12,6 +12,10 @@ import java.util.Set;
 public class Dijkstra {
 
     public Hospital findNearestHospitalWithAvailableBeds(Hospital source){
+        if(source == null){
+            throw new IllegalArgumentException("Source hospital cannot be null");
+        }
+
         Map<Node, Double> nodesToSolve = new HashMap<>();
         Map<Node, Double> solvedNodes = new HashMap<>();
 
