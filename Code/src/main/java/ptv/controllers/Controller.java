@@ -1,15 +1,12 @@
 package ptv.controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Point2D;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
+import ptv.views.ResponsiveCanvas;
 import ptv.views.View;
 
 import java.io.File;
@@ -17,7 +14,6 @@ import java.io.FileNotFoundException;
 //TODO sprint 2
 // MARTYNA
 import java.nio.file.Paths;
-import java.text.DecimalFormat;
 
 public class Controller {
     private View view;
@@ -28,7 +24,7 @@ public class Controller {
     @FXML
     private BorderPane mainPane;
     @FXML
-    private Canvas canvas;
+    private ResponsiveCanvas canvas;
 
     public Controller() {
     }

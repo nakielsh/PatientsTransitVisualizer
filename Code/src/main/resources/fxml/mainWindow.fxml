@@ -5,6 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import ptv.views.ResponsiveCanvas?>
 
 <BorderPane fx:id="mainPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ptv.controllers.Controller">
    <top>
@@ -85,7 +86,7 @@
       </VBox>
    </right>
    <center>
-      <Canvas fx:id="canvas" height="575.0" onMouseMoved="#handleCursor" width="589.0" BorderPane.alignment="CENTER" />
+      <ResponsiveCanvas fx:id="canvas" height="575.0" onMouseMoved="#handleCursor" width="589.0" BorderPane.alignment="CENTER" />
    </center>
    <bottom>
       <Label fx:id="cursorLabel" BorderPane.alignment="CENTER_RIGHT">
