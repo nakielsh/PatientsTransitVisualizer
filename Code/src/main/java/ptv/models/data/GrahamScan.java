@@ -8,7 +8,7 @@ import java.util.List;
 
 public class GrahamScan {
 
-    public int findP0(List<Point2D> points) {
+    private static int findP0(List<Point2D> points) {
         if (points.size() < 2) {
             throw new IllegalArgumentException("List is to short");
         }
@@ -31,7 +31,7 @@ public class GrahamScan {
         return index;
     }
 
-    public double tan(Point2D p0, Point2D p1) {
+    private static double tan(Point2D p0, Point2D p1) {
         if (p0.getY() == p1.getY()) {
             throw new IllegalArgumentException("These points are collinear");
         }
@@ -40,7 +40,7 @@ public class GrahamScan {
 
     //comparator to sort by angle
     //compares to the lowest y the most left point p0
-    public Comparator<Point2D> getComparator(Point2D p0) {
+    private Comparator<Point2D> getComparator(Point2D p0) {
         return (vp1, vp2) -> {
             if (vp1.getY() == p0.getY() || vp2.getY() == p0.getY()) {
                 if (vp1.getY() == p0.getY() && vp2.getY() == p0.getY()) {
@@ -55,14 +55,12 @@ public class GrahamScan {
         };
     }
 
-    //+1 if p1->p2->p3 is a counterclockwise angle
-    // -1 if p1->p2->p3 is a clockwise angle
-    public int ccw(Point2D p1, Point2D p2, Point2D p3) {
+    private static int ccw(Point2D p1, Point2D p2, Point2D p3) {
         double val = (p2.getX() - p1.getX()) * (p3.getY() - p1.getY()) - (p3.getX() - p1.getX()) * (p2.getY() - p1.getY());
         return val > 0 ? -1 : (val < 0) ? 1 : 0;
     }
 
-    public List<Point2D> returnHull(List<Point2D> points) {
+    public List<Point2D> returnGrahamHull(List<Point2D> points) {
         if(points.size() < 3) {
             throw new IllegalArgumentException("There must be at least 3 points to count hull");
         }
@@ -77,6 +75,40 @@ public class GrahamScan {
             hull.add(0, point);
         }
         hull.add(0, p0);
+        return hull;
+    }
+
+    public int findLeftmostPoint(List<Point2D> points) {
+        double minX = points.get(0).getX();
+        int index = 0;
+        for(int i=1; i<points.size(); i++) {
+            if(points.get(i).getX() < minX) {
+                minX = points.get(i).getX();
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    public List<Point2D> returnJarvisMarchHull(List<Point2D> points) {
+        if(points.size() < 3) {
+            throw new IllegalArgumentException("There must be at least 3 points to count hull");
+        }
+        List<Point2D> hull = new ArrayList<>();
+        Point2D pointOfHull = points.get(findLeftmostPoint(points));
+        Point2D endPoint;
+        int i = 0;
+        do {
+            hull.add(pointOfHull);
+            endPoint = points.get(0);
+            for (Point2D point : points) {
+                if (endPoint == pointOfHull || ccw(hull.get(i), endPoint, point) == -1) {
+                    endPoint = point;
+                }
+            }
+            i += 1;
+            pointOfHull = endPoint;
+        }while(endPoint == hull.get(0));
         return hull;
     }
 
