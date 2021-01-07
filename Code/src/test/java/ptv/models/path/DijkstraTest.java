@@ -2,9 +2,7 @@ package ptv.models.path;
 
 import javafx.geometry.Point2D;
 import org.junit.jupiter.api.Test;
-import ptv.models.data.Distance;
-import ptv.models.data.Hospital;
-import ptv.models.data.Junction;
+import ptv.models.data.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,7 +10,7 @@ public class DijkstraTest {
 
     @Test
     public void shouldThrowIllegalArgumentExceptionWhenSourceHospitalIsNull(){
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> new Dijkstra().findNearestHospitalWithAvailableBeds(null));
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> new Dijkstra().findNearestHospitalFromHospital(null));
         assertEquals("Source hospital cannot be null", e.getMessage());
     }
 
@@ -37,7 +35,7 @@ public class DijkstraTest {
         hospital3.addNode(hospital2, d3);
 
         Hospital expectedNearestHospital = hospital3;
-        Hospital actualNearestHospital = new Dijkstra().findNearestHospitalWithAvailableBeds(hospital1);
+        Hospital actualNearestHospital = new Dijkstra().findNearestHospitalFromHospital(hospital1);
 
         assertEquals(expectedNearestHospital.getId(), actualNearestHospital.getId());
         assertEquals(expectedNearestHospital.getName(), actualNearestHospital.getName());
@@ -66,13 +64,13 @@ public class DijkstraTest {
         junction3.addNode(hospital, d4);
         junction3.addNode(junction2, d3);
 
-        Hospital actualNearestHospital = new Dijkstra().findNearestHospitalWithAvailableBeds(hospital);
+        Hospital actualNearestHospital = new Dijkstra().findNearestHospitalFromHospital(hospital);
 
         assertNull(actualNearestHospital);
     }
 
     @Test
-    public void shouldReturnNullWhenEveryHospitalInGraphHasNotAvailableHBeds(){
+    public void shouldReturnNullWhenEveryHospitalInGraphDoesNotHaveAvailableBeds(){
         Hospital h1 = new Hospital(1, "H1", new Point2D(10, 10), 5, 0);
         Hospital h2 = new Hospital(2, "H2", new Point2D(10, 10), 5, 0);
         Hospital h3 = new Hospital(3, "H3", new Point2D(10, 10), 5, 0);
@@ -99,7 +97,7 @@ public class DijkstraTest {
         j1.addNode(h3, d5);
         j1.addNode(h2, d6);
 
-        Hospital actualNearestHospital = new Dijkstra().findNearestHospitalWithAvailableBeds(h1);
+        Hospital actualNearestHospital = new Dijkstra().findNearestHospitalFromHospital(h1);
 
         assertNull(actualNearestHospital);
     }
@@ -108,7 +106,7 @@ public class DijkstraTest {
     public void shouldReturnNullWhenGraphHasOnlySourceHospital(){
         Hospital h1 = new Hospital(1, "H1", new Point2D(10, 10), 5, 0);
 
-        Hospital actualNearestHospital = new Dijkstra().findNearestHospitalWithAvailableBeds(h1);
+        Hospital actualNearestHospital = new Dijkstra().findNearestHospitalFromHospital(h1);
 
         assertNull(actualNearestHospital);
     }
@@ -144,9 +142,96 @@ public class DijkstraTest {
         j1.addNode(h4, d6);
 
         Hospital expectedNearestHospital = h4;
-        Hospital actualNearestHospital = new Dijkstra().findNearestHospitalWithAvailableBeds(h1);
+        Hospital actualNearestHospital = new Dijkstra().findNearestHospitalFromHospital(h1);
 
         assertEquals(expectedNearestHospital.getId(), actualNearestHospital.getId());
         assertEquals(expectedNearestHospital.getName(), actualNearestHospital.getName());
+    }
+
+
+
+    //Method findNearestHospitalFromPatient() tests
+
+    @Test
+    public void shouldThrowIllegalArgumentExceptionWhenPatientIsNull(){
+        Country country = new Country();
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> new Dijkstra().findNearestHospitalFromPatient(null, country));
+        assertEquals("Patient and country arguments cannot be null", e.getMessage());
+    }
+
+    @Test
+    public void shouldThrowIllegalArgumentExceptionWhenCountryIsNull() {
+        Patient patient = new Patient(0, new Point2D(50, 50));
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> new Dijkstra().findNearestHospitalFromPatient(patient, null));
+        assertEquals("Patient and country arguments cannot be null", e.getMessage());
+    }
+
+    @Test
+    public void shouldThrowIllegalArgumentExceptionWhenPatientAndCountryAreNulls() {
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> new Dijkstra().findNearestHospitalFromPatient(null, null));
+        assertEquals("Patient and country arguments cannot be null", e.getMessage());
+    }
+
+    @Test
+    public void shouldCorrectlyCalculateNearestHospitalWhenCountryHasFewHospitals(){
+        Country country = new Country();
+        Patient patient = new Patient(0, new Point2D(100, 100));
+        Hospital expectedNearestHospital = new Hospital(0, "Expected", new Point2D(115, 104.97), 100, 100);
+
+        country.addHospital(new Hospital(1, "H1", new Point2D(119.45, 103.99), 100, 100));
+        country.addHospital(new Hospital(2, "H2", new Point2D(200, 200), 100, 100));
+        country.addHospital(expectedNearestHospital);
+        country.addHospital(new Hospital(3, "H3", new Point2D(100, 119.54), 100, 100));
+
+        Hospital actualNearestHospital = new Dijkstra().findNearestHospitalFromPatient(patient, country);
+
+        assertEquals(expectedNearestHospital.getId(), actualNearestHospital.getId());
+        assertEquals(expectedNearestHospital.getName(), actualNearestHospital.getName());
+    }
+
+    @Test
+    public void shouldCorrectlyCalculateNearestHospitalWhenHospitalAndPatientHaveSameCoordinates(){
+        Country country = new Country();
+        Patient patient = new Patient(0, new Point2D(100, 100));
+        Hospital expectedNearestHospital = new Hospital(0, "Expected", new Point2D(100, 100), 100, 100);
+
+        country.addHospital(new Hospital(1, "H1", new Point2D(119.45, 103.99), 100, 100));
+        country.addHospital(new Hospital(2, "H2", new Point2D(200, 200), 100, 100));
+        country.addHospital(expectedNearestHospital);
+        country.addHospital(new Hospital(3, "H3", new Point2D(100, 119.54), 100, 100));
+
+        Hospital actualNearestHospital = new Dijkstra().findNearestHospitalFromPatient(patient, country);
+
+        assertEquals(expectedNearestHospital.getId(), actualNearestHospital.getId());
+        assertEquals(expectedNearestHospital.getName(), actualNearestHospital.getName());
+    }
+
+    @Test
+    public void shouldCorrectlyCalculateNearestHospitalWhenHospitalsAreInSameDistance(){
+        Country country = new Country();
+        Patient patient = new Patient(0, new Point2D(100, 100));
+        Hospital expectedNearestHospital = new Hospital(0, "Expected", new Point2D(115, 104.97), 100, 100);
+
+        country.addHospital(new Hospital(1, "H1", new Point2D(119.45, 103.99), 100, 100));
+        country.addHospital(new Hospital(0, "Expected", new Point2D(104.97, 115), 100, 100));
+        country.addHospital(expectedNearestHospital);
+        country.addHospital(new Hospital(0, "Expected", new Point2D(85, 95.03), 100, 100));
+
+        Hospital actualNearestHospital = new Dijkstra().findNearestHospitalFromPatient(patient, country);
+
+        assertEquals(expectedNearestHospital.getId(), actualNearestHospital.getId());
+        assertEquals(expectedNearestHospital.getName(), actualNearestHospital.getName());
+    }
+
+    @Test
+    public void shouldReturnNullWhenCountryDoesNotHaveAnyHospital(){
+        Country country = new Country();
+        Patient patient = new Patient(0, new Point2D(100, 100));
+
+        Hospital actualNearestHospital = new Dijkstra().findNearestHospitalFromPatient(patient, country);
+
+        assertNull(actualNearestHospital);
     }
 }

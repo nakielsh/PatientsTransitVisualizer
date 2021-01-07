@@ -1,17 +1,16 @@
 package ptv.models.path;
 
-import ptv.models.data.Distance;
-import ptv.models.data.Hospital;
-import ptv.models.data.Node;
-import ptv.models.data.Patient;
+import javafx.geometry.Point2D;
+import ptv.models.data.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class Dijkstra {
 
-    public Hospital findNearestHospitalWithAvailableBeds(Hospital source){
+    public Hospital findNearestHospitalFromHospital(Hospital source){
         if(source == null){
             throw new IllegalArgumentException("Source hospital cannot be null");
         }
@@ -69,6 +68,25 @@ public class Dijkstra {
         return false;
     }
 
+    public Hospital findNearestHospitalFromPatient(Patient patient, Country country){
+        if(patient == null || country == null){
+            throw new IllegalArgumentException("Patient and country arguments cannot be null");
+        }
+
+        Point2D patientCoordinates = patient.getCoordinates();
+        List<Hospital> hospitals = country.getHospitalsList();
+        Hospital nearestHospital = null;
+        double nearestHospitalDistance = Double.MAX_VALUE;
+
+        for(Hospital hospital: hospitals){
+            double distance = patientCoordinates.distance(hospital.getCoordinates());
+            if(distance < nearestHospitalDistance){
+                nearestHospital = hospital;
+                nearestHospitalDistance = distance;
+            }
+        }
+        return nearestHospital;
+    }
 
     public Graph calculateShortestPathFromHospital(Graph graph, Hospital hospital){
         return null;

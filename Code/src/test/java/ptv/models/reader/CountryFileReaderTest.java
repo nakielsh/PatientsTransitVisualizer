@@ -38,7 +38,7 @@ public class CountryFileReaderTest {
 
     @Test
     public void shouldReadFileProperlyWhenFileIsCorrect() throws FileNotFoundException {
-        Country country = countryFileReader.readFile(path + "correctDataCountry.txt");
+        Country country = countryFileReader.readFile(path + "correctData.txt");
 
         List<Hospital> hospitals = country.getHospitalsList();
         List<Facility> facilities = country.getFacilitiesList();
