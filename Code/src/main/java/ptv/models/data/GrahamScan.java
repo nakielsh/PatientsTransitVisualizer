@@ -78,38 +78,14 @@ public class GrahamScan {
         return hull;
     }
 
-    public int findLeftmostPoint(List<Point2D> points) {
-        double minX = points.get(0).getX();
-        int index = 0;
-        for(int i=1; i<points.size(); i++) {
-            if(points.get(i).getX() < minX) {
-                minX = points.get(i).getX();
-                index = i;
-            }
-        }
-        return index;
-    }
 
-    public List<Point2D> returnJarvisMarchHull(List<Point2D> points) {
-        if(points.size() < 3) {
-            throw new IllegalArgumentException("There must be at least 3 points to count hull");
-        }
-        List<Point2D> hull = new ArrayList<>();
-        Point2D pointOfHull = points.get(findLeftmostPoint(points));
-        Point2D endPoint;
-        int i = 0;
-        do {
-            hull.add(pointOfHull);
-            endPoint = points.get(0);
-            for (Point2D point : points) {
-                if (endPoint == pointOfHull || ccw(hull.get(i), endPoint, point) == -1) {
-                    endPoint = point;
-                }
-            }
-            i += 1;
-            pointOfHull = endPoint;
-        }while(endPoint == hull.get(0));
-        return hull;
-    }
+
+//    public List<Point2D> returnJarvisMarchHull(List<Point2D> points) {
+//        if(points.size() < 3) {
+//            throw new IllegalArgumentException("There must be at least 3 points to count hull");
+//        }
+//        List<Point2D> hull = new ArrayList<>();
+//
+//    }
 
 }
