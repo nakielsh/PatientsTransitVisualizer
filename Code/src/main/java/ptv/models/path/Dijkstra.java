@@ -3,18 +3,22 @@ package ptv.models.path;
 import javafx.geometry.Point2D;
 import ptv.models.data.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Dijkstra {
+
+    private Set<Hospital> visitedHospitals;
+
+    public Dijkstra(){
+        visitedHospitals = new HashSet<>();
+    }
 
     public Hospital findNearestHospitalFromHospital(Hospital source){
         if(source == null){
             throw new IllegalArgumentException("Source hospital cannot be null");
         }
 
+        visitedHospitals.add(source);
         Map<Node, Double> nodesToSolve = new HashMap<>();
         Map<Node, Double> solvedNodes = new HashMap<>();
 
@@ -26,8 +30,12 @@ public class Dijkstra {
             solvedNodes.put(node, distance);
             Map<Node, Distance> adjacentNodes = node.getAdjacentNodes();
 
-            if(isHospitalWithAvailableBeds(node)){
-                return (Hospital)node;
+            if(node instanceof Hospital){
+                Hospital hospital = (Hospital)node;
+                if(!visitedHospitals.contains(hospital)){
+                    visitedHospitals.add(hospital);
+                    return (Hospital)node;
+                }
             }
 
             for(Map.Entry<Node, Distance> connection: adjacentNodes.entrySet()){

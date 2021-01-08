@@ -7,9 +7,9 @@ import java.util.Map;
 
 public class Node {
 
-    private final int id;
-    private final Point2D coordinates;
-    private Map<Node, Distance> adjacentNodes;
+    protected final int id;
+    protected final Point2D coordinates;
+    protected Map<Node, Distance> adjacentNodes;
 
     public Node(int id, Point2D coordinates){
         this.id = id;

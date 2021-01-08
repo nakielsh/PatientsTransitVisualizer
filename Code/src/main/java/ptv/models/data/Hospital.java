@@ -57,4 +57,18 @@ public class Hospital extends Node{
     public void addDistance(Distance distance){
         adjacentHospitals.put(distance.getSecondOM(), distance);
     }*/
+
+    @Override
+    public int hashCode(){
+        return super.hashCode() + 89*name.hashCode() + 97*allBeds;
+    }
+
+    @Override
+    public boolean equals(Object object){
+        if(object instanceof Hospital){
+            Hospital hospital = (Hospital)object;
+            return name.equals(hospital.name) && id == hospital.id && allBeds == hospital.allBeds;
+        }
+        return false;
+    }
 }
