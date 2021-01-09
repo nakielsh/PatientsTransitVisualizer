@@ -11,8 +11,6 @@ import ptv.views.View;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-//TODO sprint 2
-// MARTYNA
 import java.nio.file.Paths;
 
 public class Controller {
@@ -38,7 +36,7 @@ public class Controller {
     @FXML
     public void loadMap() throws FileNotFoundException {
         FileChooser fileChooser = new FileChooser();
-        String currentPath = Paths.get(".").toAbsolutePath().normalize().toString() ;//+ "Code/src/main/resources/dataSets";
+        String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();//+ "Code/src/main/resources/dataSets";
         fileChooser.setInitialDirectory(new File(currentPath));
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("txt files", "*.txt"));
         File mapFile = fileChooser.showOpenDialog(mainPane.getScene().getWindow());
@@ -56,33 +54,39 @@ public class Controller {
         File patientsFile = fileChooser.showOpenDialog(mainPane.getScene().getWindow());
         if (patientsFile != null) {
             this.view.addPatientsList(patientsFile.getAbsolutePath());
+            this.view.paintMap();
         }
 
 
     }
 
-    private void loadPatientFromCoordinates(){}
+    private void loadPatientFromCoordinates() {
 
-    private void loadPatientFromMap(MouseEvent mouseEvent){}
+    }
+
+    private void loadPatientFromMap(MouseEvent mouseEvent) {
+    }
 
     @FXML
-    private void handleCursor(MouseEvent mouseEvent){
-        if(this.view == null) {
+    private void handleCursor(MouseEvent mouseEvent) {
+        if (this.view == null) {
             return;
         }
-        double mouseX = mouseEvent.getX()/this.view.countAffine();
-        double mouseY = mouseEvent.getY()/this.view.countAffine();
+        double mouseX = mouseEvent.getX() / this.view.countAffine();
+        double mouseY = mouseEvent.getY() / this.view.countAffine();
         String cursorFormat = "Cursor(%.2f; %.2f)";
         this.cursorLabel.setText(String.format(cursorFormat, mouseX, mouseY));
     }
 
 
-    private void startSimulation(){}
+    private void startSimulation() {
+    }
 
-    private void stopSimulation(){}
+    private void stopSimulation() {
+    }
 
-    private void getSimulationSpeed(){}
-
+    private void getSimulationSpeed() {
+    }
 
 
 }
