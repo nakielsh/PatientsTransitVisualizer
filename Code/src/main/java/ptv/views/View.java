@@ -2,7 +2,6 @@ package ptv.views;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 import ptv.models.borders.InBorders;
@@ -44,7 +43,7 @@ public class View {
     }
 
     public void addPatientsList(String filePath) throws Exception {
-        if(this.simulator.getCountry() == null) {
+        if (this.simulator.getCountry() == null) {
 
             throw new Exception("Country file not loaded");
         }
@@ -213,6 +212,8 @@ public class View {
         return this.affine;
     }
 
-
+    public Simulator getSimulator() {
+        return simulator;
+    }
 }
 

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
-<?import javafx.scene.canvas.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<?import ptv.views.ResponsiveCanvas?>
+<?import ptv.views.*?>
 
 <BorderPane fx:id="mainPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ptv.controllers.Controller">
    <top>
@@ -37,9 +36,9 @@
                   <Label text="From the coordinates:" />
                   <HBox alignment="CENTER">
                      <children>
-                        <TextField prefHeight="26.0" prefWidth="50.0" promptText="x:" />
-                        <TextField prefHeight="26.0" prefWidth="50.0" promptText="y:" />
-                        <Button mnemonicParsing="false" text="Add" />
+                        <TextField prefHeight="26.0" prefWidth="50.0" promptText="x:" fx:id="xCoord" />
+                        <TextField fx:id="yCoord" prefHeight="26.0" prefWidth="50.0" promptText="y:" />
+                        <Button mnemonicParsing="false" onAction="#loadPatientFromCoordinates" text="Add" />
                      </children>
                   </HBox>
                </children>
@@ -47,7 +46,7 @@
             <VBox alignment="CENTER">
                <children>
                   <Label text="From the map:" />
-                  <Button mnemonicParsing="false" text="Add" />
+                  <Button mnemonicParsing="false" onAction="#loadPatientFromMap" text="Add" />
                </children>
             </VBox>
             <Label text="Simulation">
@@ -86,7 +85,7 @@
       </VBox>
    </right>
    <center>
-      <ResponsiveCanvas fx:id="canvas" height="575.0" onMouseMoved="#handleCursor" width="589.0" BorderPane.alignment="CENTER" />
+      <ResponsiveCanvas fx:id="canvas" height="575.0" onMouseMoved="#handleCursor" onMousePressed="#onMousePressed" width="589.0" BorderPane.alignment="CENTER" />
    </center>
    <bottom>
       <Label fx:id="cursorLabel" BorderPane.alignment="CENTER_RIGHT">

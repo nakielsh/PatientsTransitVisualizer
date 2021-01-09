@@ -1,22 +1,28 @@
 package ptv.controllers;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
+import ptv.models.data.Patient;
 import ptv.views.ResponsiveCanvas;
 import ptv.views.View;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
     private View view;
+    @FXML
     private TextField xCoord;
+    @FXML
     private TextField yCoord;
     @FXML
     private Label cursorLabel;
@@ -24,6 +30,7 @@ public class Controller {
     private BorderPane mainPane;
     @FXML
     private ResponsiveCanvas canvas;
+    private boolean isClickable = false;
 
     public Controller() {
     }
@@ -68,12 +75,44 @@ public class Controller {
     }
 
 
+    @FXML
     private void loadPatientFromCoordinates() {
+        double mouseX = Double.parseDouble(xCoord.getText());
+        double mouseY = Double.parseDouble(yCoord.getText());
+        Patient addedPatient = new Patient(findPosibleID(), new Point2D(mouseX, mouseY));
+        view.getSimulator().addPatient(addedPatient);
+        view.paintMap();
+    }
+
+    @FXML
+    private void loadPatientFromMap() {
+        isClickable = true;
 
     }
 
-    private void loadPatientFromMap(MouseEvent mouseEvent) {
+    @FXML
+    private void onMousePressed(MouseEvent mouseEvent) {
+        if (isClickable) {
+            double mouseX = mouseEvent.getX() / this.view.countAffine();
+            double mouseY = mouseEvent.getY() / this.view.countAffine();
+            Patient addedPatient = new Patient(findPosibleID(), new Point2D(mouseX, mouseY));
+            view.getSimulator().addPatient(addedPatient);
+            view.paintMap();
+        }
     }
+
+    private int findPosibleID() {
+        List<Integer> ids = new ArrayList<>();
+        int possibleId = -1;
+        for (Patient patient : view.getSimulator().getPatients()) {
+            ids.add(patient.getId());
+        }
+        while (ids.contains(possibleId)) {
+            possibleId--;
+        }
+        return possibleId;
+    }
+
 
     @FXML
     private void handleCursor(MouseEvent mouseEvent) {
