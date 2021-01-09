@@ -2,6 +2,7 @@ package ptv.views;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 import ptv.models.borders.InBorders;
@@ -42,14 +43,19 @@ public class View {
         paintMap();
     }
 
-    public void addPatientsList(String filePath) throws FileNotFoundException {
+    public void addPatientsList(String filePath) throws Exception {
+        if(this.simulator.getCountry() == null) {
+
+            throw new Exception("Country file not loaded");
+        }
+
         PatientsFileReader patientsFileReader = new PatientsFileReader();
         List<Patient> patients = patientsFileReader.readFile(filePath);
         Iterator<Patient> iterator = patients.iterator();
         while (iterator.hasNext()) {
             this.simulator.addPatient(iterator.next());
         }
-        System.out.println(this.simulator.getPatients());
+
     }
 
     public void paintMap() {
@@ -168,9 +174,11 @@ public class View {
         yCoords[0] = hull.get(0).getY();
 
         g.setFill(Color.LIGHTGRAY);
+        g.setGlobalAlpha(0.3);
         g.setStroke(Color.LIGHTGRAY);
         g.strokePolygon(xCoords, yCoords, nPoints);
         g.fillPolygon(xCoords, yCoords, nPoints);
+        g.setGlobalAlpha(1);
 
     }
 

@@ -1,5 +1,0 @@
-# Szpitale (id | nazwa | wsp. x | wsp. y | Liczba łóżek | Liczba wolnych łóżek)
-
-# Obiekty (id | nazwa | wsp. x | wsp. y)
-
-# Drogi (id | id_szpitala | id_szpitala | odległość)

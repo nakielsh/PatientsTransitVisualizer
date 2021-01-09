@@ -1,9 +1,0 @@
-# Szpitale (id | nazwa | wsp. x | wsp. y | Liczba łóżek | Liczba wolnych łóżek)
-1 | Szpital Wojewódzki nr 997 | 10 | 10 | 1000 | 100
-2 | Krakowski Szpital Kliniczny | 100 | 120 | 999 | 99
-
-# Obiekty (id | nazwa | wsp. x | wsp. y)
-1 | Pomnik Wikipedii | -1 | 50
-
-# Drogi (id | id_szpitala | id_szpitala | odległość)
-1 | 1 | 2 | 700

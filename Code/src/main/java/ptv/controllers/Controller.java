@@ -1,6 +1,7 @@
 package ptv.controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -46,19 +47,26 @@ public class Controller {
     }
 
     @FXML
-    private void loadPatientFromFile() throws FileNotFoundException {
+    private void loadPatientFromFile() throws Exception {
         FileChooser fileChooser = new FileChooser();
         String currentPath = Paths.get(".").toAbsolutePath().normalize().toString(); //+ "/src/main/resources/dataSets";
         fileChooser.setInitialDirectory(new File(currentPath));
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("txt files", "*.txt"));
         File patientsFile = fileChooser.showOpenDialog(mainPane.getScene().getWindow());
         if (patientsFile != null) {
-            this.view.addPatientsList(patientsFile.getAbsolutePath());
-            this.view.paintMap();
+            try {
+                this.view.addPatientsList(patientsFile.getAbsolutePath());
+                this.view.paintMap();
+            } catch (Exception exception) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText("Country file not loaded");
+                alert.setContentText("First, add the country file");
+                alert.showAndWait();
+            }
         }
-
-
     }
+
 
     private void loadPatientFromCoordinates() {
 
