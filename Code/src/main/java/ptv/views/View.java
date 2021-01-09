@@ -24,12 +24,12 @@ import java.util.List;
 //need to append scale
 
 public class View {
-    private Canvas canvas;
+    private ResponsiveCanvas canvas;
     private Affine affine;
     private Simulator simulator;
     private InBorders polygon;
 
-    public View(Canvas canvas) {
+    public View(ResponsiveCanvas canvas) {
         this.canvas = canvas;
         this.affine = new Affine();
         this.simulator = new Simulator();
@@ -112,6 +112,7 @@ public class View {
     }
 
     public void paintDistances(GraphicsContext g){
+        canvas.setView(this);
         Iterator<Distance> iterator = this.simulator.getCountry().getDistancesList().iterator();
         Distance currentDistance;
         double firstXCoord, firstYCoord, secondXCoord, secondYCoord;
