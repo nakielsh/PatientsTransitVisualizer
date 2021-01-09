@@ -15,10 +15,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-//TODO sprint 2
-// MARTYNA
-// Drawing Junctions and borders
-
 //need to append scale
 
 public class View {

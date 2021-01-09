@@ -8,9 +8,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-//TODO sprint 2
-// HUBERT
-// całość
 public class ChansAlgorithm {
 
     Point2D p0 = new Point2D(0,0);
