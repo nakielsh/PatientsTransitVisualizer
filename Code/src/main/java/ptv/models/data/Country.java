@@ -3,6 +3,7 @@ package ptv.models.data;
 import javafx.geometry.Point2D;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Country {
@@ -10,6 +11,7 @@ public class Country {
     private List<Hospital> hospitalsList;
     private List<Distance> distancesList;
     private List<Junction> junctionsList;
+    private List<Patient> patientList;
     private Hospital currentVisitedHospital;
     private List<Point2D> polygon;
 
@@ -17,6 +19,7 @@ public class Country {
         facilitiesList = new ArrayList<>();
         hospitalsList = new ArrayList<>();
         distancesList = new ArrayList<>();
+        patientList = new LinkedList<>();
     }
 
     public List<Facility> getFacilitiesList() {
@@ -45,6 +48,10 @@ public class Country {
 
     public List<Junction> getJunctionsList(){
         return junctionsList;
+    }
+
+    public List<Patient> getPatientList(){
+        return patientList;
     }
 
     public void setJunctionsList(List<Junction> junctionsList){
@@ -77,5 +84,13 @@ public class Country {
 
     public void addDistance(Distance distance){
         distancesList.add(distance);
+    }
+
+    public void addPatient(Patient patient){
+        patientList.add(patient);
+    }
+
+    public void addPatients(List<Patient> patients){
+        patientList.addAll(patients);
     }
 }
