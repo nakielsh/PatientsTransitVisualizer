@@ -18,9 +18,10 @@ import java.util.List;
 //need to append scale
 
 public class View {
-    private final ResponsiveCanvas canvas;
-    private final Simulator simulator;
+    private ResponsiveCanvas canvas;
     private Affine affine;
+    private InBorders polygon;
+    private Country country;
     private boolean isLoadedMap;
     private double scaleAffine;
 
@@ -28,7 +29,6 @@ public class View {
 
     public View(ResponsiveCanvas canvas) {
         this.canvas = canvas;
-        this.simulator = new Simulator();
         this.affine = new Affine();
         this.isLoadedMap = false;
         this.scaleAffine = 1;
@@ -44,8 +44,8 @@ public class View {
             GrahamScan grahamScan = new GrahamScan();
             grahamScan.setAllPoints(GrahamScan.createPointsList(country.getHospitalsList(), country.getFacilitiesList()));
             grahamScan.countGrahamHull();
-            this.simulator.setCountry(country);
-            this.simulator.getCountry().setPolygon(grahamScan.getPolygon());
+            this.setCountry(country);
+            this.country.setPolygon(grahamScan.getPolygon());
         } catch (IllegalArgumentException exception) {
             System.out.println("Invalid data");
         }
@@ -54,7 +54,7 @@ public class View {
     }
 
     public void addPatientsList(String filePath) throws Exception {
-        if (this.simulator.getCountry() == null) {
+        if (this.country == null) {
 
             throw new Exception("Country file not loaded");
         }
@@ -62,7 +62,7 @@ public class View {
         PatientsFileReader patientsFileReader = new PatientsFileReader();
         List<Patient> patients = patientsFileReader.readFile(filePath);
         for (Patient patient : patients) {
-            this.simulator.addPatient(patient);
+            this.country.addPatient(patient);
         }
 
     }
@@ -89,7 +89,7 @@ public class View {
     }
 
     public void paintHospitals(GraphicsContext g) {
-        Iterator<Hospital> iterator = this.simulator.getCountry().getHospitalsList().iterator();
+        Iterator<Hospital> iterator = country.getHospitalsList().iterator();
         Hospital currentHospital;
         double xCoord, yCoord;
         g.setFill(Color.RED);
@@ -107,7 +107,7 @@ public class View {
     }
 
     public void paintFacilities(GraphicsContext g) {
-        Iterator<Facility> iterator = this.simulator.getCountry().getFacilitiesList().iterator();
+        Iterator<Facility> iterator = country.getFacilitiesList().iterator();
         Facility currentFacility;
         double xCoord, yCoord;
         g.setFill(Color.GREEN);
@@ -124,7 +124,7 @@ public class View {
     }
 
     public void paintDistances(GraphicsContext g) {
-        Iterator<Distance> iterator = this.simulator.getCountry().getDistancesList().iterator();
+        Iterator<Distance> iterator = country.getDistancesList().iterator();
         Distance currentDistance;
         double firstXCoord, firstYCoord, secondXCoord, secondYCoord;
         g.setFill(Color.BLACK);
@@ -141,7 +141,7 @@ public class View {
     }
 
     public void paintJunctions(GraphicsContext g) {
-        Iterator<Junction> iterator = this.simulator.getCountry().getJunctionsList().iterator();
+        Iterator<Junction> iterator = country.getJunctionsList().iterator();
         Junction currentJunction;
         double junctionXCoord, junctionYCoord;
         g.setFill(Color.LIGHTBLUE);
@@ -159,8 +159,8 @@ public class View {
 
     public void paintPolygon(GraphicsContext g) {
         List<Point2D> allPoints = new ArrayList<>();
-        allPoints = GrahamScan.createPointsList(this.simulator.getCountry().getHospitalsList(),
-                this.simulator.getCountry().getFacilitiesList());
+        allPoints = GrahamScan.createPointsList(this.country.getHospitalsList(),
+                this.country.getFacilitiesList());
 
         GrahamScan grahamScan = new GrahamScan();
         grahamScan.setAllPoints(allPoints);
@@ -190,7 +190,7 @@ public class View {
 
     public void paintPatient() {
         GraphicsContext g = this.canvas.getGraphicsContext2D();
-        Iterator<Patient> iterator = this.simulator.getPatients().iterator();
+        Iterator<Patient> iterator = country.getPatientList().iterator();
         Patient currentPatient;
         double xCoord, yCoord;
         g.setFill(Color.RED);
@@ -213,11 +213,10 @@ public class View {
         return (Math.min(height, width)/far);
     }
 
-
     private Point2D findCenter() {
         double sumX = 0;
         double sumY = 0;
-        List<Point2D> convexHull = this.simulator.getCountry().getPolygon();
+        List<Point2D> convexHull = this.country.getPolygon();
         if(convexHull.isEmpty()) {
             throw new IllegalArgumentException("convexHull can't be empty");
         }
@@ -232,7 +231,7 @@ public class View {
 
     private double findDistance() {
         double minX, maxX, minY, maxY;
-        List<Point2D> convexHull = this.simulator.getCountry().getPolygon();
+        List<Point2D> convexHull = this.country.getPolygon();
         if(convexHull.isEmpty()) {
             throw new IllegalArgumentException("convexHull can't be empty");
         }
@@ -257,9 +256,12 @@ public class View {
     }
 
 
-    public Simulator getSimulator() {
-        return simulator;
+    public void setCountry(Country country){
+        this.country = country;
+        paintMap();
     }
+
+    public Country getCountry(){return this.country;}
 
     public void setIsLoadedMap(boolean loadedMap) {isLoadedMap = loadedMap;}
 

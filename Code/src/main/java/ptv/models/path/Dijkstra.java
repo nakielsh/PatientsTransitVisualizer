@@ -69,13 +69,6 @@ public class Dijkstra {
         return node;
     }
 
-    private boolean isHospitalWithAvailableBeds(Node node){
-        if(node instanceof Hospital && ((Hospital)node).getAvailableBeds() > 0){
-            return true;
-        }
-        return false;
-    }
-
     public Hospital findNearestHospitalFromPatient(Patient patient, Country country){
         if(patient == null || country == null){
             throw new IllegalArgumentException("Patient and country arguments cannot be null");
