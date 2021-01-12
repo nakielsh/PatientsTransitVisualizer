@@ -6,11 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 import ptv.models.borders.InBorders;
 import ptv.models.data.*;
-import ptv.models.reader.CountryFileReader;
-import ptv.models.reader.PatientsFileReader;
-import ptv.models.simulation.Simulator;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -26,7 +22,6 @@ public class View {
     private double scaleAffine;
 
 
-
     public View(ResponsiveCanvas canvas) {
         this.canvas = canvas;
         this.affine = new Affine();
@@ -34,37 +29,8 @@ public class View {
         this.scaleAffine = 1;
     }
 
-    public boolean getIsLoadedMap() {return this.isLoadedMap;}
-
-    public void loadMap(String filePath) throws FileNotFoundException {
-        CountryFileReader countryFileReader = new CountryFileReader();
-        try {
-            Country country = countryFileReader.readFile(filePath);
-            country.setJunctionsList(new JunctionFinder().findJunctions(country.getDistancesList()));
-            GrahamScan grahamScan = new GrahamScan();
-            grahamScan.setAllPoints(GrahamScan.createPointsList(country.getHospitalsList(), country.getFacilitiesList()));
-            grahamScan.countGrahamHull();
-            this.setCountry(country);
-            this.country.setPolygon(grahamScan.getPolygon());
-        } catch (IllegalArgumentException exception) {
-            System.out.println("Invalid data");
-        }
-        this.setIsLoadedMap(true);
-        paintMap();
-    }
-
-    public void addPatientsList(String filePath) throws Exception {
-        if (this.country == null) {
-
-            throw new Exception("Country file not loaded");
-        }
-
-        PatientsFileReader patientsFileReader = new PatientsFileReader();
-        List<Patient> patients = patientsFileReader.readFile(filePath);
-        for (Patient patient : patients) {
-            this.country.addPatient(patient);
-        }
-
+    public boolean getIsLoadedMap() {
+        return this.isLoadedMap;
     }
 
     public void paintMap() {
@@ -258,7 +224,6 @@ public class View {
 
     public void setCountry(Country country){
         this.country = country;
-        paintMap();
     }
 
     public Country getCountry(){return this.country;}
