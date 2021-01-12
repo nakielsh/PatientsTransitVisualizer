@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class GrahamScanTest {
 
 
@@ -30,7 +28,9 @@ class GrahamScanTest {
         got.add(new Point2D(2, 3));
 
         GrahamScan grahamScan = new GrahamScan();
-        assertEquals(got, grahamScan.returnGrahamHull(given));
+        grahamScan.setAllPoints(given);
+        grahamScan.countGrahamHull();
+        Assertions.assertEquals(got, grahamScan.getPolygon());
     }
 
     @Test
@@ -54,14 +54,17 @@ class GrahamScanTest {
         got.add(new Point2D(2, 3));
 
         GrahamScan grahamScan = new GrahamScan();
-        assertEquals(got, grahamScan.returnGrahamHull(given));
+        grahamScan.setAllPoints(given);
+        grahamScan.countGrahamHull();
+        Assertions.assertEquals(got, grahamScan.getPolygon());
     }
 
     @Test
     public void shouldReturnExceptionForEmptyList() {
         List<Point2D> given = new ArrayList<>();
         GrahamScan grahamScan = new GrahamScan();
-        Assertions.assertThrows(IllegalArgumentException.class, () -> grahamScan.returnGrahamHull(given));
+        grahamScan.setAllPoints(given);
+        Assertions.assertThrows(IllegalArgumentException.class, grahamScan::countGrahamHull);
     }
 
     @Test
@@ -70,7 +73,8 @@ class GrahamScanTest {
         given.add(new Point2D(4,2));
         given.add(new Point2D(2,3));
         GrahamScan grahamScan = new GrahamScan();
-        Assertions.assertThrows(IllegalArgumentException.class, () -> grahamScan.returnGrahamHull(given));
+        grahamScan.setAllPoints(given);
+        Assertions.assertThrows(IllegalArgumentException.class, grahamScan::countGrahamHull);
     }
 
 

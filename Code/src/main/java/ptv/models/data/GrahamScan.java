@@ -7,6 +7,13 @@ import java.util.Comparator;
 import java.util.List;
 
 public class GrahamScan {
+    private List<Point2D> allPoints;
+    private List<Point2D> polygon;
+
+    public GrahamScan() {
+        this.allPoints = new ArrayList<>();
+        this.polygon = new ArrayList<>();
+    }
 
     private static int findP0(List<Point2D> points) {
         if (points.size() < 2) {
@@ -40,7 +47,7 @@ public class GrahamScan {
 
     //comparator to sort by angle
     //compares to the lowest y the most left point p0
-    private Comparator<Point2D> getComparator(Point2D p0) {
+    private Comparator<Point2D> getGrahamComparator(Point2D p0) {
         return (vp1, vp2) -> {
             if (vp1.getY() == p0.getY() || vp2.getY() == p0.getY()) {
                 if (vp1.getY() == p0.getY() && vp2.getY() == p0.getY()) {
@@ -60,31 +67,56 @@ public class GrahamScan {
         return val > 0 ? -1 : (val < 0) ? 1 : 0;
     }
 
-    public List<Point2D> returnGrahamHull(List<Point2D> points) {
-        if(points.size() < 3) {
+    public void countGrahamHull() {
+        if(this.allPoints.size() < 3) {
             throw new IllegalArgumentException("There must be at least 3 points to count hull");
         }
-        List<Point2D> hull = new ArrayList<>();
-        Point2D p0 = points.remove(findP0(points));
-        points.sort(getComparator(p0));
+        Point2D p0 = this.allPoints.remove(findP0(this.allPoints));
+        this.allPoints.sort(getGrahamComparator(p0));
 
-        for (Point2D point : points) {
-            while (hull.size() > 1 && (ccw(hull.get(1), hull.get(0), point) <= 0)) {
-                hull.remove(0);
+        for (Point2D point : this.allPoints) {
+            while (this.polygon.size() > 1 && (ccw(this.polygon.get(1), this.polygon.get(0), point) <= 0)) {
+                this.polygon.remove(0);
             }
-            hull.add(0, point);
+            this.polygon.add(0, point);
         }
-        hull.add(0, p0);
-        return hull;
+        this.polygon.add(0, p0);
     }
 
+    public static List<Point2D> createPointsList( List<Hospital> hospitals, List<Facility> facilities) {
+        List<Point2D> objectsPoints = new ArrayList<>();
+        if(hospitals.isEmpty() || facilities.isEmpty()) {
+            throw new IllegalArgumentException("List can't be empty");
+        }
+        for(Hospital hospital : hospitals) {
+            objectsPoints.add(hospital.getCoordinates());
+        }
+        for (Facility facility : facilities) {
+            objectsPoints.add(facility.getCoordinates());
+        }
+        return objectsPoints;
+    }
 
+    public void setAllPoints(List<Point2D> points) {this.allPoints = points;}
+
+    public List<Point2D> getPolygon() {return this.polygon;}
 
 //    public List<Point2D> returnJarvisMarchHull(List<Point2D> points) {
-//        if(points.size() < 3) {
+//        if (points.size() < 3) {
 //            throw new IllegalArgumentException("There must be at least 3 points to count hull");
 //        }
 //        List<Point2D> hull = new ArrayList<>();
+//        int minusINF = -1000;
+//        Point2D p1 = points.get(findP0(points));
+//        Point2D p0 = new Point2D(minusINF, p1.getY());
+//        Point2D n;
+//        int i = 1;
+//        do {
+//            Point2D currentPoint = p0;
+//            points.sort(getGrahamComparator(currentPoint));
+//            n = points.get(points.size() - 1);
+//        } while (n == p1);
+//
 //
 //    }
 

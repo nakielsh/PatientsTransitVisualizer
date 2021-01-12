@@ -18,27 +18,38 @@ import java.util.List;
 //need to append scale
 
 public class View {
-    private ResponsiveCanvas canvas;
+    private final ResponsiveCanvas canvas;
+    private final Simulator simulator;
     private Affine affine;
-    private Simulator simulator;
-    private InBorders polygon;
+    private boolean isLoadedMap;
+    private double scaleAffine;
+
+
 
     public View(ResponsiveCanvas canvas) {
         this.canvas = canvas;
-        this.affine = new Affine();
         this.simulator = new Simulator();
+        this.affine = new Affine();
+        this.isLoadedMap = false;
+        this.scaleAffine = 1;
     }
+
+    public boolean getIsLoadedMap() {return this.isLoadedMap;}
 
     public void loadMap(String filePath) throws FileNotFoundException {
         CountryFileReader countryFileReader = new CountryFileReader();
         try {
             Country country = countryFileReader.readFile(filePath);
             country.setJunctionsList(new JunctionFinder().findJunctions(country.getDistancesList()));
+            GrahamScan grahamScan = new GrahamScan();
+            grahamScan.setAllPoints(GrahamScan.createPointsList(country.getHospitalsList(), country.getFacilitiesList()));
+            grahamScan.countGrahamHull();
             this.simulator.setCountry(country);
+            this.simulator.getCountry().setPolygon(grahamScan.getPolygon());
         } catch (IllegalArgumentException exception) {
             System.out.println("Invalid data");
         }
-        this.affine.appendScale(countAffine(), countAffine());
+        this.setIsLoadedMap(true);
         paintMap();
     }
 
@@ -50,9 +61,8 @@ public class View {
 
         PatientsFileReader patientsFileReader = new PatientsFileReader();
         List<Patient> patients = patientsFileReader.readFile(filePath);
-        Iterator<Patient> iterator = patients.iterator();
-        while (iterator.hasNext()) {
-            this.simulator.addPatient(iterator.next());
+        for (Patient patient : patients) {
+            this.simulator.addPatient(patient);
         }
 
     }
@@ -60,8 +70,8 @@ public class View {
     public void paintMap() {
         canvas.setView(this);
         GraphicsContext g = this.canvas.getGraphicsContext2D();
-        g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         g.setTransform(this.affine);
+        g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         g.setStroke(Color.LIGHTGRAY);
         g.setLineWidth(0.1);
         for (int i = 0; i < this.canvas.getHeight(); i++) {
@@ -149,16 +159,13 @@ public class View {
 
     public void paintPolygon(GraphicsContext g) {
         List<Point2D> allPoints = new ArrayList<>();
+        allPoints = GrahamScan.createPointsList(this.simulator.getCountry().getHospitalsList(),
+                this.simulator.getCountry().getFacilitiesList());
 
-        for (Hospital hospital : this.simulator.getCountry().getHospitalsList()) {
-            allPoints.add(hospital.getCoordinates());
-        }
-
-        for (Facility facility : this.simulator.getCountry().getFacilitiesList()) {
-            allPoints.add(facility.getCoordinates());
-        }
         GrahamScan grahamScan = new GrahamScan();
-        List<Point2D> hull = grahamScan.returnGrahamHull(allPoints);
+        grahamScan.setAllPoints(allPoints);
+        grahamScan.countGrahamHull();
+        List<Point2D> hull = grahamScan.getPolygon();
 
 
         int nPoints = hull.size();
@@ -199,21 +206,66 @@ public class View {
         }
     }
 
-    public int countAffine() {
-        //need to add function
-        return 20;
+    public double countAffine() {
+        double far = findDistance() + 4;
+        double height = this.canvas.getHeight();
+        double width = this.canvas.getWidth();
+        return (Math.min(height, width)/far);
     }
+
 
     private Point2D findCenter() {
-        return null;
+        double sumX = 0;
+        double sumY = 0;
+        List<Point2D> convexHull = this.simulator.getCountry().getPolygon();
+        if(convexHull.isEmpty()) {
+            throw new IllegalArgumentException("convexHull can't be empty");
+        }
+        for (Point2D point : convexHull) {
+            sumX = point.getX();
+            sumY = point.getY();
+        }
+        double centerX = sumX / convexHull.size();
+        double centerY = sumY / convexHull.size();
+        return new Point2D(centerX, centerY);
     }
 
-    public Affine getAffine() {
-        return this.affine;
+    private double findDistance() {
+        double minX, maxX, minY, maxY;
+        List<Point2D> convexHull = this.simulator.getCountry().getPolygon();
+        if(convexHull.isEmpty()) {
+            throw new IllegalArgumentException("convexHull can't be empty");
+        }
+        minX = maxX = convexHull.get(0).getX();
+        minY = maxY = convexHull.get(0).getY();
+        for (int i=1; i<convexHull.size(); i++) {
+            Point2D currentPoint = convexHull.get(i);
+            if(currentPoint.getX() < minX) {
+                minX = currentPoint.getX();
+            }
+            if(currentPoint.getX() > maxX) {
+                maxX = currentPoint.getX();
+            }
+            if(currentPoint.getY() < minY) {
+                minY = currentPoint.getX();
+            }
+            if(currentPoint.getY() > maxY) {
+                maxY = currentPoint.getY();
+            }
+        }
+        return Math.max(maxX - minX, maxY - minY);
     }
+
 
     public Simulator getSimulator() {
         return simulator;
     }
+
+    public void setIsLoadedMap(boolean loadedMap) {isLoadedMap = loadedMap;}
+
+    public Affine getAffine(){return this.affine;}
+
+    public void setAffine(Affine affine){this.affine = affine;}
+
 }
 

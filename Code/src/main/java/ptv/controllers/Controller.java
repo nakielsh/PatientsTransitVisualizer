@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.stage.FileChooser;
 import ptv.models.data.Patient;
 import ptv.views.ResponsiveCanvas;
@@ -93,11 +94,22 @@ public class Controller {
     @FXML
     private void onMousePressed(MouseEvent mouseEvent) {
         if (isClickable) {
-            double mouseX = mouseEvent.getX() / this.view.countAffine();
-            double mouseY = mouseEvent.getY() / this.view.countAffine();
+            double mouseX = mouseEvent.getX();
+            double mouseY = mouseEvent.getY();
             Patient addedPatient = new Patient(findPosibleID(), new Point2D(mouseX, mouseY));
             view.getSimulator().addPatient(addedPatient);
             view.paintMap();
+        }
+    }
+
+    private Point2D getMapCoordinates(MouseEvent event) {
+        double mouseX = event.getX();
+        double mouseY = event.getY();
+
+        try {
+            return this.view.getAffine().inverseTransform(mouseX, mouseY);
+        } catch (NonInvertibleTransformException e){
+            throw new RuntimeException("Non invertible transform");
         }
     }
 
@@ -116,13 +128,12 @@ public class Controller {
 
     @FXML
     private void handleCursor(MouseEvent mouseEvent) {
-        if (this.view == null) {
+        if (this.view == null || !this.view.getIsLoadedMap()) {
             return;
         }
-        double mouseX = mouseEvent.getX() / this.view.countAffine();
-        double mouseY = mouseEvent.getY() / this.view.countAffine();
         String cursorFormat = "Cursor(%.2f; %.2f)";
-        this.cursorLabel.setText(String.format(cursorFormat, mouseX, mouseY));
+        Point2D mapCoord = this.getMapCoordinates(mouseEvent);
+        this.cursorLabel.setText(String.format(cursorFormat, mapCoord.getX(), mapCoord.getY()));
     }
 
 

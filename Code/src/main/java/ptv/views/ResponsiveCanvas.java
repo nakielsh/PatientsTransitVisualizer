@@ -5,10 +5,17 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.transform.Affine;
 
 public class ResponsiveCanvas extends Canvas {
 
     View view;
+
+    public ResponsiveCanvas() {
+        // Redraw canvas when size changes.
+        widthProperty().addListener(evt -> redraw());
+        heightProperty().addListener(evt -> redraw());
+    }
 
     public void setView(View view) {
         this.view = view;
@@ -17,7 +24,11 @@ public class ResponsiveCanvas extends Canvas {
     private void redraw() {
         double width = getWidth();
         double height = getHeight();
-        if (view != null) {
+        if (view != null && this.view.getIsLoadedMap()) {
+            double scale = this.view.countAffine();
+            Affine affine = new Affine();
+            affine.appendScale(scale, scale);
+            this.view.setAffine(affine);
             view.paintMap();
         } else {
             GraphicsContext gc = getGraphicsContext2D();
