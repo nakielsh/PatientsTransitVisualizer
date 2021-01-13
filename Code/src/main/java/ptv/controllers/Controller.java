@@ -68,6 +68,7 @@ public class Controller {
         }
     }
 
+
     public void loadMapFromFile(String filePath) throws FileNotFoundException {
         CountryFileReader countryFileReader = new CountryFileReader();
         try {
@@ -80,15 +81,17 @@ public class Controller {
             this.view.setCountry(country);
             this.view.getCountry().setPolygon(grahamScan.getPolygon());
         } catch (IllegalArgumentException exception) {
-            System.out.println("Invalid data");
+            printAlert(exception);
+            view.setIsLoadedMap(false);
+            view.paintMap();
         }
         view.setIsLoadedMap(true);
-
         view.paintMap();
     }
 
+
     @FXML
-    private void loadPatientFromFile() throws Exception {
+    private void loadPatientFromFile() {
         FileChooser fileChooser = new FileChooser();
         String currentPath = Paths.get(".").toAbsolutePath().normalize().toString(); //+ "/src/main/resources/dataSets";
         fileChooser.setInitialDirectory(new File(currentPath));
@@ -99,20 +102,24 @@ public class Controller {
                 addPatientsList(patientsFile.getAbsolutePath());
                 this.view.paintMap();
             } catch (Exception exception) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Information Dialog");
-                alert.setHeaderText("Country file not loaded");
-                alert.setContentText("First, add the country file");
-                alert.showAndWait();
+                printAlert(exception);
             }
         }
     }
+
+
+    public void printAlert(Exception exception) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Information Dialog");
+        alert.setContentText(exception.getMessage());
+        alert.showAndWait();
+    }
+
 
     public void addPatientsList(String filePath) throws Exception {
         if (country == null) {
             throw new Exception("Country file not loaded");
         }
-
         PatientsFileReader patientsFileReader = new PatientsFileReader();
         List<Patient> patients = patientsFileReader.readFile(filePath);
         country.addPatients(patients);
@@ -123,9 +130,17 @@ public class Controller {
     private void loadPatientFromCoordinates() {
         double mouseX = Double.parseDouble(xCoord.getText());
         double mouseY = Double.parseDouble(yCoord.getText());
-        Patient addedPatient = new Patient(findPosibleID(), new Point2D(mouseX, mouseY));
-        country.addPatient(addedPatient);
-        view.paintMap();
+        try {
+            if (country == null) {
+                throw new Exception("Country file not loaded");
+            }
+            Patient addedPatient = new Patient(findPosibleID(), new Point2D(mouseX, mouseY));
+            country.addPatient(addedPatient);
+            view.paintMap();
+        } catch (Exception exception) {
+            printAlert(exception);
+        }
+
     }
 
 
@@ -133,9 +148,16 @@ public class Controller {
     private void onMousePressed(MouseEvent mouseEvent) {
         if (toggle_add.isSelected()) {
             Point2D mapCoord = this.getMapCoordinates(mouseEvent);
-            Patient addedPatient = new Patient(findPosibleID(), new Point2D(mapCoord.getX(), mapCoord.getY()));
-            country.addPatient(addedPatient);
-            view.paintMap();
+            try {
+                if (country == null) {
+                    throw new Exception("Country file not loaded");
+                }
+                Patient addedPatient = new Patient(findPosibleID(), new Point2D(mapCoord.getX(), mapCoord.getY()));
+                country.addPatient(addedPatient);
+                view.paintMap();
+            } catch (Exception exception) {
+                printAlert(exception);
+            }
         }
     }
 
@@ -145,7 +167,7 @@ public class Controller {
 
         try {
             return this.view.getAffine().inverseTransform(mouseX, mouseY);
-        } catch (NonInvertibleTransformException e){
+        } catch (NonInvertibleTransformException e) {
             throw new RuntimeException("Non invertible transform");
         }
     }

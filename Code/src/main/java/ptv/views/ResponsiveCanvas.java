@@ -21,7 +21,7 @@ public class ResponsiveCanvas extends Canvas {
         this.view = view;
     }
 
-    private void redraw() {
+    public void redraw() {
         double width = getWidth();
         double height = getHeight();
         if (view != null && this.view.getIsLoadedMap()) {
