@@ -40,6 +40,8 @@ public class JunctionFinder  {
                 }
             }
         }
+        findBranchedJunctions(distanceList, junctions);
+
         return junctions;
     }
 
@@ -142,4 +144,82 @@ public class JunctionFinder  {
         return Math.sqrt(numerator/denominator);
     }
 
+    private void findBranchedJunctions(List<Distance> distances, List<Junction> junctions){
+        int n = distances.size();
+
+        for(int i = 0; i < n; i++){
+            Distance distance = distances.get(i);
+            for(Junction junction: junctions){
+                if(isJunctionInDistance(distance, junction)){
+                    Distance[] newDistances = setDistancesInBranchedJunction(distance, junction);
+
+                    distances.remove(i);
+                    distances.add(newDistances[0]);
+                    distances.add(newDistances[1]);
+
+                    i--;
+                    n--;
+                }
+            }
+        }
+    }
+
+    //TODO
+    // prostopadla do osi x
+    private boolean isJunctionInDistance(Distance distance, Junction junction){
+        Point2D junctionPoint = junction.getCoordinates();
+        Point2D point1 = distance.getFirstNode().getCoordinates();
+        Point2D point2 = distance.getSecondNode().getCoordinates();
+
+        double[] sectionX = {Math.min(point1.getX(), point2.getX()), Math.max(point1.getX(), point2.getX())};
+
+        if(junctionPoint.getX() > sectionX[0] && junctionPoint.getX() < sectionX[1]){
+            double a = (point1.getY() - point2.getY())/(point1.getX() - point2.getX());
+            double b = point1.getY() - a * point1.getX();
+            return junctionPoint.getY() == (a * junctionPoint.getX() + b);
+        }
+
+        return false;
+    }
+
+    private Distance[] setDistancesInBranchedJunction(Distance distance, Junction junction){
+        Node node1 = distance.getFirstNode();
+        Node node2 = distance.getSecondNode();
+
+        double x1 = calculateDistanceFactor(node1.getCoordinates(), node2.getCoordinates(), junction.getCoordinates());
+        double x2 = 1 - x1;
+
+        Distance d1 = new Distance(distance.getId(), node1, junction, x1*distance.getDist());
+        Distance d2 = new Distance(distance.getId(), node2, junction, x2*distance.getDist());
+
+        node1.removeDistance(node2);
+        node2.removeDistance(node1);
+
+        node1.addNode(junction, d1);
+        node2.addNode(junction, d1);
+
+        junction.addNode(node1, d1);
+        junction.addNode(node2, d2);
+
+        return new Distance[]{d1, d2};
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
