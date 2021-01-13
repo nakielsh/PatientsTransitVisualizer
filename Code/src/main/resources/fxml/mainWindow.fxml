@@ -46,7 +46,7 @@
             <VBox alignment="CENTER">
                <children>
                   <Label text="From the map:" />
-                  <Button mnemonicParsing="false" onAction="#loadPatientFromMap" text="Add" />
+                  <ToggleButton fx:id="toggle_add" mnemonicParsing="false" text="Add" />
                </children>
             </VBox>
             <Label text="Simulation">
@@ -60,19 +60,16 @@
             <HBox spacing="5.0">
                <children>
                   <Label prefHeight="18.0" prefWidth="44.0" text="Speed:" />
-                  <Slider />
+                  <Slider fx:id="simulation_speed" />
                </children>
             </HBox>
             <HBox alignment="CENTER" spacing="5.0">
                <children>
-                  <Button mnemonicParsing="false" text="Start" textFill="#1a8c1c">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font></Button>
-                  <Button mnemonicParsing="false" text="Stop" textFill="#aa1111">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font></Button>
+                  <ToggleButton fx:id="start_simulation" mnemonicParsing="false" onAction="#startSimulation" text="Start" textFill="#5eae53">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="simulation" />
+                     </toggleGroup></ToggleButton>
+                  <ToggleButton fx:id="stop_simulation" layoutX="36.0" layoutY="10.0" mnemonicParsing="false" onAction="#stopSimulation" selected="true" text="Stop" textFill="#cd1f1f" toggleGroup="$simulation" />
                </children>
                <opaqueInsets>
                   <Insets />

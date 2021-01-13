@@ -53,7 +53,7 @@ public class ResponsiveCanvas extends Canvas {
 
     @Override
     public double maxHeight(double width) {
-        return 1000;
+        return 6000;
     }
 
     @Override

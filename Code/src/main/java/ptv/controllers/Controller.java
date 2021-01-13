@@ -2,9 +2,7 @@ package ptv.controllers;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.transform.NonInvertibleTransformException;
@@ -37,14 +35,20 @@ public class Controller {
     private BorderPane mainPane;
     @FXML
     private ResponsiveCanvas canvas;
+    @FXML
+    private ToggleButton toggle_add;
+    @FXML
+    private ToggleButton start_simulation;
+    @FXML
+    private ToggleButton stop_simulation;
+    @FXML
+    private Slider simulation_speed;
 
-    private boolean isClickable;
     private Simulator simulator;
     private Country country;
 
     public Controller() {
         simulator = new Simulator();
-        isClickable = false;
     }
 
     @FXML
@@ -124,18 +128,12 @@ public class Controller {
         view.paintMap();
     }
 
-    @FXML
-    private void loadPatientFromMap() {
-        isClickable = true;
-
-    }
 
     @FXML
     private void onMousePressed(MouseEvent mouseEvent) {
-        if (isClickable) {
-            double mouseX = mouseEvent.getX();
-            double mouseY = mouseEvent.getY();
-            Patient addedPatient = new Patient(findPosibleID(), new Point2D(mouseX, mouseY));
+        if (toggle_add.isSelected()) {
+            Point2D mapCoord = this.getMapCoordinates(mouseEvent);
+            Patient addedPatient = new Patient(findPosibleID(), new Point2D(mapCoord.getX(), mapCoord.getY()));
             country.addPatient(addedPatient);
             view.paintMap();
         }
@@ -175,11 +173,14 @@ public class Controller {
         this.cursorLabel.setText(String.format(cursorFormat, mapCoord.getX(), mapCoord.getY()));
     }
 
-
+    @FXML
     private void startSimulation() {
+        System.out.println("simulation has started");
     }
 
+    @FXML
     private void stopSimulation() {
+        System.out.println("simulation has ended");
     }
 
     private void getSimulationSpeed() {
