@@ -7,9 +7,7 @@ import javafx.scene.transform.Affine;
 import ptv.models.borders.InBorders;
 import ptv.models.data.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 //need to append scale
 
@@ -20,6 +18,8 @@ public class View {
     private Country country;
     private boolean isLoadedMap;
     private double scaleAffine;
+    private Map<String, Double> extremeCoord;
+    private Point2D p0;
 
 
     public View(ResponsiveCanvas canvas) {
@@ -27,6 +27,8 @@ public class View {
         this.affine = new Affine();
         this.isLoadedMap = false;
         this.scaleAffine = 1;
+        this.extremeCoord = new HashMap<>();
+        this.p0 = new Point2D(0, 0);
     }
 
     public boolean getIsLoadedMap() {
@@ -37,14 +39,14 @@ public class View {
         canvas.setView(this);
         GraphicsContext g = this.canvas.getGraphicsContext2D();
         g.setTransform(this.affine);
-        g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        g.clearRect(this.p0.getX(), this.p0.getY(), canvas.getWidth(), canvas.getHeight());
         g.setStroke(Color.LIGHTGRAY);
         g.setLineWidth(0.1);
-        for (int i = 0; i < this.canvas.getHeight(); i++) {
-            g.strokeLine(i, 0, i, this.canvas.getWidth());
+        for (int i = (int)this.p0.getX(); i < this.canvas.getHeight()+(int)this.p0.getY(); i++) {
+            g.strokeLine(i, (int)this.p0.getY(), i, this.canvas.getWidth()+(int)this.p0.getX());
         }
-        for (int i = 0; i < this.canvas.getWidth(); i++) {
-            g.strokeLine(0, i, this.canvas.getHeight(), i);
+        for (int i = (int)this.p0.getY(); i < this.canvas.getWidth()+(int)this.p0.getX(); i++) {
+            g.strokeLine((int)this.p0.getX(), i, this.canvas.getHeight()+(int)this.p0.getY(), i);
         }
         this.paintPolygon(g);
         this.paintDistances(g);
@@ -203,35 +205,35 @@ public class View {
         g.strokeOval(patientX - 0.2, patientY - 0.2, 0.4, 0.4);
     }
 
-    public double countAffine() {
-        double far = findDistance() + 4;
+    public void countAffine() {
+        double far = findDistance() + 2;
         double height = this.canvas.getHeight();
         double width = this.canvas.getWidth();
-        return (Math.min(height, width)/far);
+        this.setScaleAffine(Math.min(height, width)/far);
     }
 
-    private Point2D findCenter() {
-        double sumX = 0;
-        double sumY = 0;
+    public void countTransformPoint() {
+        double height = this.canvas.getHeight()/this.scaleAffine;
+        double width = this.canvas.getWidth()/this.scaleAffine;
+        Point2D canvasCenter = new Point2D(width/2, height/2);
+        double mapXCenter = (this.extremeCoord.get("maxX") - this.extremeCoord.get("minX"))/2 + this.extremeCoord.get("minX");
+        double mapYCenter = (this.extremeCoord.get("maxY") - this.extremeCoord.get("minY"))/2 + this.extremeCoord.get("minY");
+        double distX = mapXCenter - canvasCenter.getX();
+        double distY = mapYCenter - canvasCenter.getY();
+        double transformX = this.extremeCoord.get("minX") - distX -2;
+        double transformY = this.extremeCoord.get("minY") - distY - 2;
+        System.out.println(p0);
+        this.setP0(new Point2D(transformX, transformY));
+    }
+
+
+
+    private void countExtremePoints() {
         List<Point2D> convexHull = this.country.getPolygon();
         if(convexHull.isEmpty()) {
             throw new IllegalArgumentException("convexHull can't be empty");
         }
-        for (Point2D point : convexHull) {
-            sumX = point.getX();
-            sumY = point.getY();
-        }
-        double centerX = sumX / convexHull.size();
-        double centerY = sumY / convexHull.size();
-        return new Point2D(centerX, centerY);
-    }
-
-    private double findDistance() {
         double minX, maxX, minY, maxY;
-        List<Point2D> convexHull = this.country.getPolygon();
-        if(convexHull.isEmpty()) {
-            throw new IllegalArgumentException("convexHull can't be empty");
-        }
         minX = maxX = convexHull.get(0).getX();
         minY = maxY = convexHull.get(0).getY();
         for (int i=1; i<convexHull.size(); i++) {
@@ -249,13 +251,29 @@ public class View {
                 maxY = currentPoint.getY();
             }
         }
-        return Math.max(maxX - minX, maxY - minY);
+        this.extremeCoord.put("minX", minX);
+        this.extremeCoord.put("maxX", maxX);
+        this.extremeCoord.put("minY", minY);
+        this.extremeCoord.put("maxY", maxY);
     }
 
+    private double findDistance() {
+        return Math.max(this.extremeCoord.get("maxX") - this.extremeCoord.get("minX"),
+                this.extremeCoord.get("maxY") - this.extremeCoord.get("minY"));
+    }
 
     public void setCountry(Country country){
         this.country = country;
+        GrahamScan grahamScan = new GrahamScan();
+        grahamScan.setAllPoints(GrahamScan.createPointsList(country.getHospitalsList(), country.getFacilitiesList()));
+        grahamScan.countGrahamHull();
+        country.setPolygon(grahamScan.getPolygon());
+        this.countExtremePoints();
     }
+
+    public void setP0(Point2D p0) {this.p0 = p0;}
+
+    public Point2D getP0(){return this.p0;}
 
     public Country getCountry(){return this.country;}
 
@@ -265,5 +283,8 @@ public class View {
 
     public void setAffine(Affine affine){this.affine = affine;}
 
+    public void setScaleAffine(double scaleAffine) {this.scaleAffine = scaleAffine;}
+
+    public double getScaleAffine() {return this.scaleAffine;}
 }
 

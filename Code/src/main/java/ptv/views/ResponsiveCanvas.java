@@ -6,6 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Affine;
+import javafx.scene.transform.Translate;
 
 public class ResponsiveCanvas extends Canvas {
 
@@ -25,9 +26,11 @@ public class ResponsiveCanvas extends Canvas {
         double width = getWidth();
         double height = getHeight();
         if (view != null && this.view.getIsLoadedMap()) {
-            double scale = this.view.countAffine();
+            this.view.countAffine();
+            this.view.countTransformPoint();
             Affine affine = new Affine();
-            affine.appendScale(scale, scale);
+            affine.appendScale(this.view.getScaleAffine(), this.view.getScaleAffine());
+            affine.appendTranslation(-this.view.getP0().getX(), -this.view.getP0().getY());
             this.view.setAffine(affine);
             view.paintMap();
         } else {

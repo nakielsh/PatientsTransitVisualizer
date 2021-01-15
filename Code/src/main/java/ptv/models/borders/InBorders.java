@@ -56,9 +56,15 @@ public class InBorders {
     public boolean isInside(Point2D p)
     {
         int n = borderPoints.size();
-        if (n < 3)
+        if (n < 1)
         {
             return false;
+        }
+        if(n==1) {
+            return p == borderPoints.get(0);
+        }
+        if (n == 2) {
+            return onSegment(borderPoints.get(0), p, borderPoints.get(1));
         }
 
         Point2D extreme = new Point2D(INF, p.getY());

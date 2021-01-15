@@ -68,8 +68,11 @@ public class GrahamScan {
     }
 
     public void countGrahamHull() {
-        if(this.allPoints.size() < 3) {
-            throw new IllegalArgumentException("There must be at least 3 points to count hull");
+        if(this.allPoints.size() < 1) {
+            throw new IllegalArgumentException("There must be at least 1 point");
+        }
+        if(this.allPoints.size() <= 3) {
+            this.polygon = this.allPoints;
         }
         Point2D p0 = this.allPoints.remove(findP0(this.allPoints));
         this.allPoints.sort(getGrahamComparator(p0));

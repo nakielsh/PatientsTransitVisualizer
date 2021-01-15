@@ -78,11 +78,7 @@ public class Controller {
             Country country = countryFileReader.readFile(filePath);
             country.setJunctionsList(new JunctionFinder().findJunctions(country.getDistancesList()));
             this.country = country;
-            GrahamScan grahamScan = new GrahamScan();
-            grahamScan.setAllPoints(GrahamScan.createPointsList(country.getHospitalsList(), country.getFacilitiesList()));
-            grahamScan.countGrahamHull();
             this.view.setCountry(country);
-            country.setPolygon(grahamScan.getPolygon());
             simulator.setCountry(country);
         } catch (IllegalArgumentException exception) {
             printAlert(exception);
@@ -91,6 +87,7 @@ public class Controller {
         }
         view.setIsLoadedMap(true);
         view.paintMap();
+        //this.canvas.redraw();
     }
 
 
