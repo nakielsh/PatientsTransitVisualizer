@@ -8,7 +8,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.stage.FileChooser;
 import ptv.models.data.Country;
-import ptv.models.data.GrahamScan;
 import ptv.models.data.JunctionFinder;
 import ptv.models.data.Patient;
 import ptv.models.reader.CountryFileReader;
@@ -43,10 +42,13 @@ public class Controller {
     private ToggleButton stop_simulation;
     @FXML
     private Slider simulation_speed;
+    @FXML
+    private TextArea text;
 
     private Simulator simulator;
     private Country country;
     private boolean isSimulationRunning;
+    private int id = -1;
 
     public Controller() {
         simulator = new Simulator();
@@ -133,10 +135,10 @@ public class Controller {
             if (country == null) {
                 throw new Exception("Country file not loaded");
             }
-            if(!simulator.getInBorders().isInside(new Point2D(mouseX, mouseY))) {
+            if (!simulator.getInBorders().isInside(new Point2D(mouseX, mouseY))) {
                 throw new Exception("Patient out of borders");
             }
-            Patient addedPatient = new Patient(findPosibleID(), new Point2D(mouseX, mouseY));
+            Patient addedPatient = new Patient(id--, new Point2D(mouseX, mouseY));
             country.addPatient(addedPatient);
             view.paintMap();
         } catch (Exception exception) {
@@ -154,10 +156,10 @@ public class Controller {
                 if (country == null) {
                     throw new Exception("Country file not loaded");
                 }
-                if(!simulator.getInBorders().isInside(mapCoord)) {
+                if (!simulator.getInBorders().isInside(mapCoord)) {
                     throw new Exception("Patient out of borders");
                 }
-                Patient addedPatient = new Patient(findPosibleID(), new Point2D(mapCoord.getX(), mapCoord.getY()));
+                Patient addedPatient = new Patient(id--, new Point2D(mapCoord.getX(), mapCoord.getY()));
                 country.addPatient(addedPatient);
                 view.paintMap();
             } catch (Exception exception) {
@@ -206,7 +208,7 @@ public class Controller {
         Thread simulationThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                if(country == null){
+                if (country == null) {
                     //TODO
                     // wyrzucenie alert'a
                     return;
@@ -222,6 +224,9 @@ public class Controller {
             List<Patient> patients = country.getPatientList();
             if (simulator.hasNextStep()) {
                 simulator.nextStep();
+                if (country.getCurrentHandledPatient() != null) {
+                    text.insertText(0, String.valueOf(country.getCurrentHandledPatient().getId()));
+                }
             } else if (patients.size() != 0) {
                 simulator.setHandledPatient(patients.remove(0));
             }
