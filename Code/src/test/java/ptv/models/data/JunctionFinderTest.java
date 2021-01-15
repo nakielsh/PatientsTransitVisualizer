@@ -193,4 +193,31 @@ public class JunctionFinderTest {
         assertTrue(n31.getAdjacentNodes().containsKey(junction));
         assertTrue(n32.getAdjacentNodes().containsKey(junction));
     }
+
+    @Test
+    public void shouldCalculateJunctionCorrectlyWhenThreeDistancesAreCrossedInSamePlaceAndOneOfThemIsVertical(){
+        Node n11 = new Node(0, new Point2D(0, 0));
+        Node n12 = new Node(1, new Point2D(100, 100));
+        Node n21 = new Node(2, new Point2D(0, 50));
+        Node n22 = new Node(3, new Point2D(100, 50));
+        Node n31 = new Node(4, new Point2D(50, 0));
+        Node n32 = new Node(5, new Point2D(50, 100));
+
+        List<Distance> distances = new ArrayList<>();
+        distances.add(new Distance(0, n11, n12, 100));
+        distances.add(new Distance(1, n21, n22, 100));
+        distances.add(new Distance(2, n31, n32, 100));
+
+        List<Junction> junctions = new JunctionFinder().findJunctions(distances);
+        Junction junction = junctions.get(0);
+
+        assertEquals(1, junctions.size());
+        assertEquals(6, junction.getAdjacentNodes().size());
+        assertTrue(n11.getAdjacentNodes().containsKey(junction));
+        assertTrue(n12.getAdjacentNodes().containsKey(junction));
+        assertTrue(n21.getAdjacentNodes().containsKey(junction));
+        assertTrue(n22.getAdjacentNodes().containsKey(junction));
+        assertTrue(n31.getAdjacentNodes().containsKey(junction));
+        assertTrue(n32.getAdjacentNodes().containsKey(junction));
+    }
 }

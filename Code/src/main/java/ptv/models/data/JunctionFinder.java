@@ -164,19 +164,22 @@ public class JunctionFinder  {
         }
     }
 
-    //TODO
-    // prostopadla do osi x
     private boolean isJunctionInDistance(Distance distance, Junction junction){
         Point2D junctionPoint = junction.getCoordinates();
         Point2D point1 = distance.getFirstNode().getCoordinates();
         Point2D point2 = distance.getSecondNode().getCoordinates();
+        double junctionX = junctionPoint.getX();
+        double junctionY = junctionPoint.getY();
 
         double[] sectionX = {Math.min(point1.getX(), point2.getX()), Math.max(point1.getX(), point2.getX())};
 
-        if(junctionPoint.getX() > sectionX[0] && junctionPoint.getX() < sectionX[1]){
+        if(junctionX > sectionX[0] && junctionX < sectionX[1]){
             double a = (point1.getY() - point2.getY())/(point1.getX() - point2.getX());
             double b = point1.getY() - a * point1.getX();
-            return junctionPoint.getY() == (a * junctionPoint.getX() + b);
+            return junctionY == (a * junctionY + b);
+        } else if (junctionX == sectionX[0] && junctionX == sectionX[1]) {
+            return (junctionY < Math.max(point1.getY(), point2.getY()))
+                    && (junctionY > Math.min(point1.getY(), point2.getY()));
         }
 
         return false;
