@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.ToDoubleBiFunction;
 
 public class Controller {
     private View view;
@@ -46,9 +47,11 @@ public class Controller {
 
     private Simulator simulator;
     private Country country;
+    private boolean isSimulationRunning;
 
     public Controller() {
         simulator = new Simulator();
+        isSimulationRunning = false;
     }
 
     @FXML
@@ -79,7 +82,8 @@ public class Controller {
             grahamScan.setAllPoints(GrahamScan.createPointsList(country.getHospitalsList(), country.getFacilitiesList()));
             grahamScan.countGrahamHull();
             this.view.setCountry(country);
-            this.view.getCountry().setPolygon(grahamScan.getPolygon());
+            country.setPolygon(grahamScan.getPolygon());
+            simulator.setCountry(country);
         } catch (IllegalArgumentException exception) {
             printAlert(exception);
             view.setIsLoadedMap(false);
@@ -197,16 +201,50 @@ public class Controller {
 
     @FXML
     private void startSimulation() {
-        System.out.println("simulation has started");
+        isSimulationRunning = true;
+        Thread simulationThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(country == null){
+                    //TODO
+                    // wyrzucenie alert'a
+                    return;
+                }
+                simulate();
+            }
+        });
+        simulationThread.start();
+    }
+
+    private void simulate(){
+        while(isSimulationRunning){
+            List<Patient> patients = country.getPatientList();
+            if(simulator.hasNextStep()){
+                simulator.nextStep();
+            }
+            else if(patients.size() != 0){
+                simulator.setHandledPatient(patients.remove(0));
+            }
+
+            canvas.redraw();
+
+            try{
+                Thread.sleep(getSimulationSpeed());
+            } catch (InterruptedException e){
+                stopSimulation();
+                canvas.redraw();
+                return;
+            }
+        }
     }
 
     @FXML
     private void stopSimulation() {
-        System.out.println("simulation has ended");
+        isSimulationRunning = false;
     }
 
-    private void getSimulationSpeed() {
+    private int getSimulationSpeed() {
+        double speed = simulation_speed.valueProperty().getValue();
+        return (int)speed;
     }
-
-
 }

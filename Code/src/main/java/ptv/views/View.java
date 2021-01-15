@@ -52,6 +52,7 @@ public class View {
         this.paintHospitals(g);
         this.paintFacilities(g);
         this.paintPatient();
+        paintSimulation(g);
     }
 
     public void paintHospitals(GraphicsContext g) {
@@ -170,6 +171,36 @@ public class View {
             g.setFill(Color.BLACK);
             g.fillOval(xCoord - 0.2, yCoord - 0.2, 0.4, 0.4);
         }
+    }
+
+    private void paintSimulation(GraphicsContext g){
+        Hospital currentVisitedHospital = country.getCurrentVisitedHospital();
+        Patient currentHandledPatient = country.getCurrentHandledPatient();
+
+        if(currentVisitedHospital == null && currentHandledPatient != null) {
+            paintCurrentHandledPatient(g, currentHandledPatient.getCoordinates());
+        }
+        else if(currentVisitedHospital != null){
+            paintCurrentVisitedHospital(g, currentVisitedHospital.getCoordinates());
+        }
+    }
+
+    private void paintCurrentVisitedHospital(GraphicsContext g, Point2D hospitalCoordinates){
+        g.setStroke(Color.GREEN);
+        g.setLineWidth(0.1);
+        g.strokeOval(hospitalCoordinates.getX() - 0.5, hospitalCoordinates.getY() - 0.5, 1, 1);
+    }
+
+    private void paintCurrentHandledPatient(GraphicsContext g, Point2D patientCoordinates){
+        double patientX = patientCoordinates.getX();
+        double patientY = patientCoordinates.getY();
+
+        g.setStroke(Color.GREEN);
+        g.setFill(Color.BLACK);
+        g.setLineWidth(0.1);
+
+        g.fillOval(patientX - 0.2, patientY - 0.2, 0.4, 0.4);
+        g.strokeOval(patientX - 0.2, patientY - 0.2, 0.4, 0.4);
     }
 
     public double countAffine() {

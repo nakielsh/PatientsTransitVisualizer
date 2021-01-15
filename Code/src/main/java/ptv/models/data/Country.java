@@ -13,6 +13,7 @@ public class Country {
     private List<Junction> junctionsList;
     private List<Patient> patientList;
     private Hospital currentVisitedHospital;
+    private Patient currentHandledPatient;
     private List<Point2D> polygon;
 
     public Country(){
@@ -64,6 +65,14 @@ public class Country {
 
     public void setCurrentVisitedHospital(Hospital currentVisitedHospital) {
         this.currentVisitedHospital = currentVisitedHospital;
+    }
+
+    public Patient getCurrentHandledPatient(){
+        return currentHandledPatient;
+    }
+
+    public void setCurrentHandledPatient(Patient patient){
+        currentHandledPatient = patient;
     }
 
     public List<Point2D> getPolygon() {

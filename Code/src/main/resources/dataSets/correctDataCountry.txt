@@ -1,7 +1,7 @@
 # Szpitale (id | nazwa | wsp. x | wsp. y | Liczba łóżek | Liczba wolnych łóżek)
-1 | Szpital Wojewódzki nr 997 | 10 | 10 | 1000 | 100
-2 | Krakowski Szpital Kliniczny | 20 | 10 | 999 | 99
-3 | Szpital nr 998 | 2 | 2 | 1000 | 100
+1 | Szpital Wojewódzki nr 997 | 10 | 10 | 1000 | 2
+2 | Krakowski Szpital Kliniczny | 20 | 10 | 999 | 2
+3 | Szpital nr 998 | 2 | 2 | 1000 | 2
 4 | Szpital im Krzysztofa Kononowicza | 11 | 2 | 10 | 2
 
 # Obiekty (id | nazwa | wsp. x | wsp. y)

@@ -32,7 +32,7 @@ public class SimulatorTest {
         Country country = new Country();
         simulator.setCountry(country);
 
-        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> simulator.firstStep());
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> simulator.nextStep());
         assertEquals("Patient is not set", exception.getMessage());
     }
 
@@ -44,12 +44,12 @@ public class SimulatorTest {
         simulator.setCountry(country);
         simulator.setHandledPatient(patient);
 
-        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> simulator.firstStep());
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> simulator.nextStep());
         assertEquals("Country does not contain any hospital", exception.getMessage());
     }
 
     @Test
-    public void shouldMakeFirstStepAutomaticallyWhenNextStepIsMadeWithoutFirstStep(){
+    public void shouldMakeFirstStepAutomaticallyWhenNextStepIsCalled(){
         Country country = new Country();
         Patient patient = new Patient(1, new Point2D(10, 10));
         Hospital h1 = new Hospital(1, "H1", new Point2D(0, 0), 10, 0);
@@ -89,7 +89,7 @@ public class SimulatorTest {
         simulator.setHandledPatient(patient);
 
         boolean actualHasNextStep1 = simulator.hasNextStep();
-        simulator.firstStep();
+        simulator.nextStep();
         Hospital actualVisitedHospital1 = country.getCurrentVisitedHospital();
 
         boolean actualHasNextStep2 = simulator.hasNextStep();
@@ -136,7 +136,7 @@ public class SimulatorTest {
 
         simulator.setHandledPatient(patient1);
         assertTrue(simulator.hasNextStep());
-        simulator.firstStep();
+        simulator.nextStep();
         assertEquals(h1, country.getCurrentVisitedHospital());
         assertTrue(simulator.hasNextStep());
         simulator.nextStep();
@@ -145,7 +145,7 @@ public class SimulatorTest {
 
         simulator.setHandledPatient(patient2);
         assertTrue(simulator.hasNextStep());
-        simulator.firstStep();
+        simulator.nextStep();
         assertEquals(h1, country.getCurrentVisitedHospital());
         assertTrue(simulator.hasNextStep());
         simulator.nextStep();

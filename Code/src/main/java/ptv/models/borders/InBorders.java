@@ -14,10 +14,7 @@ public class InBorders {
         this.borderPoints = borderPoints;
     }
 
-
-
-
-    static boolean onSegment(Point2D p, Point2D q, Point2D r){
+    private static boolean onSegment(Point2D p, Point2D q, Point2D r){
         return q.getX() <= Math.max(p.getX(), r.getX()) &&
                 q.getX() >= Math.min(p.getX(), r.getX()) &&
                 q.getY() <= Math.max(p.getY(), r.getY()) &&
@@ -56,7 +53,7 @@ public class InBorders {
         return false;
     }
 
-    boolean isInside(Point2D p)
+    public boolean isInside(Point2D p)
     {
         int n = borderPoints.size();
         if (n < 3)
