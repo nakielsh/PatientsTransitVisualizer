@@ -122,6 +122,7 @@ public class Controller {
         }
         PatientsFileReader patientsFileReader = new PatientsFileReader();
         List<Patient> patients = patientsFileReader.readFile(filePath);
+
         country.addPatients(patients);
     }
 
@@ -134,6 +135,9 @@ public class Controller {
             if (country == null) {
                 throw new Exception("Country file not loaded");
             }
+            if(!simulator.getInBorders().isInside(new Point2D(mouseX, mouseY))) {
+                throw new Exception("Patient out of borders");
+            }
             Patient addedPatient = new Patient(findPosibleID(), new Point2D(mouseX, mouseY));
             country.addPatient(addedPatient);
             view.paintMap();
@@ -145,12 +149,15 @@ public class Controller {
 
 
     @FXML
-    private void onMousePressed(MouseEvent mouseEvent) {
+    private void onMousePressed(MouseEvent mouseEvent) throws Exception {
         if (toggle_add.isSelected()) {
             Point2D mapCoord = this.getMapCoordinates(mouseEvent);
             try {
                 if (country == null) {
                     throw new Exception("Country file not loaded");
+                }
+                if(!simulator.getInBorders().isInside(mapCoord)) {
+                    throw new Exception("Patient out of borders");
                 }
                 Patient addedPatient = new Patient(findPosibleID(), new Point2D(mapCoord.getX(), mapCoord.getY()));
                 country.addPatient(addedPatient);

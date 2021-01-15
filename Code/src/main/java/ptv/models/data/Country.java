@@ -1,6 +1,7 @@
 package ptv.models.data;
 
 import javafx.geometry.Point2D;
+import ptv.models.borders.InBorders;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -95,11 +96,19 @@ public class Country {
         distancesList.add(distance);
     }
 
-    public void addPatient(Patient patient){
-        patientList.add(patient);
+    public void addPatient(Patient patient) throws Exception {
+        InBorders inBorders = new InBorders(polygon);
+        if(!inBorders.isInside(patient.getCoordinates())){
+            throw new Exception("Patient out of bound");
+        }else {
+            patientList.add(patient);
+        }
     }
 
-    public void addPatients(List<Patient> patients){
+    //returns true if any patient was out of bounds
+    public void addPatients(List<Patient> patients) throws Exception {
+
         patientList.addAll(patients);
+
     }
 }

@@ -87,4 +87,8 @@ public class Simulator {
         dijkstra = new Dijkstra();
         country.setCurrentVisitedHospital(null);
     }
+
+    public InBorders getInBorders() {
+        return inBorders;
+    }
 }
