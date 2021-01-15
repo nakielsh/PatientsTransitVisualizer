@@ -85,8 +85,6 @@ public class Controller {
             printAlert(exception);
             initialize();
         }
-        view.setIsLoadedMap(true);
-        view.paintMap();
     }
 
 
@@ -231,7 +229,7 @@ public class Controller {
             canvas.redraw();
 
             try {
-                Thread.sleep(getSimulationSpeed());
+                Thread.sleep(getSimulationSpeed() + 1);
             } catch (InterruptedException e) {
                 stopSimulation();
                 canvas.redraw();
