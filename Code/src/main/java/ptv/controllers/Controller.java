@@ -22,7 +22,6 @@ import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.ToDoubleBiFunction;
 
 public class Controller {
     private View view;
@@ -84,13 +83,12 @@ public class Controller {
             this.view.setCountry(country);
             country.setPolygon(grahamScan.getPolygon());
             simulator.setCountry(country);
+            view.setIsLoadedMap(true);
+            view.paintMap();
         } catch (IllegalArgumentException exception) {
             printAlert(exception);
-            view.setIsLoadedMap(false);
-            view.paintMap();
+            initialize();
         }
-        view.setIsLoadedMap(true);
-        view.paintMap();
     }
 
 
@@ -205,7 +203,7 @@ public class Controller {
         Thread simulationThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                if(country == null){
+                if (country == null) {
                     //TODO
                     // wyrzucenie alert'a
                     return;
@@ -216,21 +214,20 @@ public class Controller {
         simulationThread.start();
     }
 
-    private void simulate(){
-        while(isSimulationRunning){
+    private void simulate() {
+        while (isSimulationRunning) {
             List<Patient> patients = country.getPatientList();
-            if(simulator.hasNextStep()){
+            if (simulator.hasNextStep()) {
                 simulator.nextStep();
-            }
-            else if(patients.size() != 0){
+            } else if (patients.size() != 0) {
                 simulator.setHandledPatient(patients.remove(0));
             }
 
             canvas.redraw();
 
-            try{
+            try {
                 Thread.sleep(getSimulationSpeed());
-            } catch (InterruptedException e){
+            } catch (InterruptedException e) {
                 stopSimulation();
                 canvas.redraw();
                 return;
@@ -245,6 +242,6 @@ public class Controller {
 
     private int getSimulationSpeed() {
         double speed = simulation_speed.valueProperty().getValue();
-        return (int)speed;
+        return (int) speed;
     }
 }
