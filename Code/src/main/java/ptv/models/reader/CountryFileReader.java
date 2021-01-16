@@ -15,6 +15,7 @@ import java.util.Scanner;
 public class CountryFileReader {
 
     private final int MAXID = 1000;
+    private final int MAXCOORD = (int)1e9;
 
     private int lineNumber;
     private Hospital[] loadedHospitalsById;
@@ -114,6 +115,9 @@ public class CountryFileReader {
         if(id >= MAXID){
             throw new IllegalArgumentException("Line: " + lineNumber + ". Hospital's id should be smaller than " + MAXID);
         }
+        if(x >= MAXCOORD && y >= MAXCOORD){
+            throw new IllegalArgumentException("Line: " + lineNumber + ". Hospital's coordinates should be smaller than " + MAXCOORD);
+        }
 
         if(freeBeds > beds){
             throw new IllegalArgumentException("Line: " + lineNumber + ". Number of available beds cannot be bigger than total number of all beds");
@@ -155,6 +159,9 @@ public class CountryFileReader {
         if(id >= MAXID){
             throw new IllegalArgumentException("Line: " + lineNumber + ". Facility's id should be smaller than " + MAXID);
         }
+        if(x >= MAXCOORD && y >= MAXCOORD){
+            throw new IllegalArgumentException("Line: " + lineNumber + ". Facility's coordinates should be smaller than " + MAXCOORD);
+        }
 
         if(canLoadFacility(id, name)){
             Facility facility = new Facility(id, name, new Point2D(x, y));
@@ -192,6 +199,10 @@ public class CountryFileReader {
 
         if(id >= MAXID){
             throw new IllegalArgumentException("Line: " + lineNumber + ". Distance's id should be smaller than " + MAXID);
+        }
+
+        if(hospitalId1 >= MAXID && hospitalId2 >= MAXID){
+            throw new IllegalArgumentException("Line: " + lineNumber + ". Hospital's id should be smaller than " + MAXID);
         }
 
         if(hospitalId1 == hospitalId2){

@@ -2,11 +2,10 @@ package ptv.models.data;
 
 
 import javafx.geometry.Point2D;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
 
-public class Hospital extends Node{
+import java.util.LinkedList;
+
+public class Hospital extends Node {
 
     private final String name;
     private final int allBeds;
@@ -22,7 +21,7 @@ public class Hospital extends Node{
         //adjacentHospitals = new HashMap<>();
     }
 
-    public void useBed(){
+    public void useBed() {
         availableBeds--;
     }
 
@@ -30,7 +29,7 @@ public class Hospital extends Node{
         adjacentHospitals.put(destination, distance);
     }*/
 
-    public void addToShortestPath(Hospital hospital){
+    public void addToShortestPath(Hospital hospital) {
         shortestPath.add(hospital);
     }
 
@@ -59,14 +58,14 @@ public class Hospital extends Node{
     }*/
 
     @Override
-    public int hashCode(){
-        return super.hashCode() + 89*name.hashCode() + 97*allBeds;
+    public int hashCode() {
+        return super.hashCode() + 89 * name.hashCode() + 97 * allBeds;
     }
 
     @Override
-    public boolean equals(Object object){
-        if(object instanceof Hospital){
-            Hospital hospital = (Hospital)object;
+    public boolean equals(Object object) {
+        if (object instanceof Hospital) {
+            Hospital hospital = (Hospital) object;
             return name.equals(hospital.name) && id == hospital.id && allBeds == hospital.allBeds;
         }
         return false;

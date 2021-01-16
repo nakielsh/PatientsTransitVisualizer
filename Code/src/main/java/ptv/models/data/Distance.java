@@ -11,7 +11,7 @@ public class Distance {
         this.id = id;
         this.firstNode = firstNode;
         this.secondNode = secondNode;
-        this.dist = Math.round(dist* 100)/100;
+        this.dist = Math.round(dist * 100) / 100;
     }
 
     /*public void setJunction(Junction junction) {
@@ -22,16 +22,16 @@ public class Distance {
         return id;
     }
 
-    public Node getFirstNode(){
+    public Node getFirstNode() {
         return firstNode;
     }
 
-    public Node getSecondNode(){
+    public Node getSecondNode() {
         return secondNode;
     }
 
-    public Node getAnotherNode(Node node){
-        return firstNode.equals(node) ? secondNode: firstNode;
+    public Node getAnotherNode(Node node) {
+        return firstNode.equals(node) ? secondNode : firstNode;
     }
 
     public double getDist() {

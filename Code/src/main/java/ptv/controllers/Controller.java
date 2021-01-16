@@ -139,9 +139,9 @@ public class Controller {
 
     @FXML
     private void loadPatientFromCoordinates() {
-        double mouseX = Double.parseDouble(xCoord.getText());
-        double mouseY = Double.parseDouble(yCoord.getText());
         try {
+            double mouseX = Double.parseDouble(xCoord.getText());
+            double mouseY = Double.parseDouble(yCoord.getText());
             if (country == null) {
                 throw new Exception("Country file not loaded");
             }
@@ -189,17 +189,17 @@ public class Controller {
         }
     }
 
-    private int findPosibleID() {
-        List<Integer> ids = new ArrayList<>();
-        int possibleId = -1;
-        for (Patient patient : country.getPatientList()) {
-            ids.add(patient.getId());
-        }
-        while (ids.contains(possibleId)) {
-            possibleId--;
-        }
-        return possibleId;
-    }
+//    private int findPosibleID() {
+//        List<Integer> ids = new ArrayList<>();
+//        int possibleId = -1;
+//        for (Patient patient : country.getPatientList()) {
+//            ids.add(patient.getId());
+//        }
+//        while (ids.contains(possibleId)) {
+//            possibleId--;
+//        }
+//        return possibleId;
+//    }
 
 
     @FXML
