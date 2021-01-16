@@ -4,6 +4,7 @@ import javafx.geometry.Point2D;
 import ptv.models.borders.InBorders;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -105,10 +106,22 @@ public class Country {
         }
     }
 
-    //returns true if any patient was out of bounds
-    public void addPatients(List<Patient> patients) throws Exception {
+    public String addPatients(List<Patient> patients) {
+        InBorders inBorders = new InBorders(polygon);
+        String removedPatients = "Patients with these ids were removed due to out of bound coordinates:\n";
+        String notRemovedPatients = "No patient has been removed";
+        boolean wasRemoved = false;
+        List<Patient> toRemove = new ArrayList<>();
 
+        for(Patient patient : patients){
+            if(!inBorders.isInside(patient.getCoordinates())){
+                toRemove.add(patient);
+                removedPatients = removedPatients.concat((patient.getId()) + " | ");
+                wasRemoved = true;
+            }
+        }
+        patients.removeAll(toRemove);
         patientList.addAll(patients);
-
+        return !wasRemoved ? notRemovedPatients : removedPatients;
     }
 }

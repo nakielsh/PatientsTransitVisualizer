@@ -125,6 +125,13 @@ public class Controller {
         alert.showAndWait();
     }
 
+    public void printAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Information Dialog");
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
 
     public void addPatientsList(String filePath) throws Exception {
         if (country == null) {
@@ -133,7 +140,10 @@ public class Controller {
         PatientsFileReader patientsFileReader = new PatientsFileReader();
         List<Patient> patients = patientsFileReader.readFile(filePath);
 
-        country.addPatients(patients);
+        String alert = country.addPatients(patients);
+        if (!alert.equals("No patient has been removed")){
+            printAlert(alert);
+        }
     }
 
 
