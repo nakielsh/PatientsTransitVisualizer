@@ -62,6 +62,11 @@ public class Controller {
 
     @FXML
     public void loadMap() throws FileNotFoundException {
+        if(isSimulationRunning){
+            printAlert(new Exception("Simulation is running"));
+            return;
+        }
+
         FileChooser fileChooser = new FileChooser();
         String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();//+ "Code/src/main/resources/dataSets";
         fileChooser.setInitialDirectory(new File(currentPath));
@@ -106,7 +111,6 @@ public class Controller {
             }
         }
     }
-
 
     public void printAlert(Exception exception) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -204,15 +208,21 @@ public class Controller {
 
     @FXML
     private void startSimulation() {
+        if(country == null){
+            printAlert(new Exception("Map is not loaded"));
+            start_simulation.setSelected(false);
+            stop_simulation.setSelected(true);
+            return;
+        }
+        if(!start_simulation.isSelected()){
+            start_simulation.setSelected(true);
+            return;
+        }
+
         isSimulationRunning = true;
         Thread simulationThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                if (country == null) {
-                    //TODO
-                    // wyrzucenie alert'a
-                    return;
-                }
                 simulate();
             }
         });
@@ -245,6 +255,11 @@ public class Controller {
 
     @FXML
     private void stopSimulation() {
+        if(!stop_simulation.isSelected()){
+            stop_simulation.setSelected(true);
+            return;
+        }
+
         isSimulationRunning = false;
     }
 

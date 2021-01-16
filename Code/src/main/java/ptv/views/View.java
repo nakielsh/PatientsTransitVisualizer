@@ -222,7 +222,6 @@ public class View {
         double distY = mapYCenter - canvasCenter.getY();
         double transformX = this.extremeCoord.get("minX") - distX -2;
         double transformY = this.extremeCoord.get("minY") - distY - 2;
-        System.out.println(p0);
         this.setP0(new Point2D(transformX, transformY));
     }
 
