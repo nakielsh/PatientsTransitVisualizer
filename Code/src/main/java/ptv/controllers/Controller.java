@@ -1,5 +1,6 @@
 package ptv.controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.*;
@@ -234,14 +235,19 @@ public class Controller {
             List<Patient> patients = country.getPatientList();
             if (simulator.hasNextStep()) {
                 simulator.nextStep();
-                if (country.getCurrentHandledPatient() != null) {
-                    text.insertText(0, String.valueOf(country.getCurrentHandledPatient().getId()));
-                }
+//                if (country.getCurrentHandledPatient() != null) {
+//                    text.insertText(0, String.valueOf(country.getCurrentHandledPatient().getId()));
+//                }
             } else if (patients.size() != 0) {
                 simulator.setHandledPatient(patients.remove(0));
             }
 
-            canvas.redraw();
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    canvas.redraw();
+                }
+            });
 
             try {
                 Thread.sleep(getSimulationSpeed() + 1);
