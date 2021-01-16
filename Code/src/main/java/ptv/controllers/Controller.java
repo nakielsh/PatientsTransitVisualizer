@@ -45,6 +45,11 @@ public class Controller {
     private Slider simulation_speed;
     @FXML
     private TextArea text;
+    @FXML
+    private RadioButton drawDistances;
+
+    //TODO
+    // change names of variables with '_'
 
     private Simulator simulator;
     private Country country;
@@ -272,5 +277,10 @@ public class Controller {
     private int getSimulationSpeed() {
         double speed = simulation_speed.valueProperty().getValue();
         return (int) speed;
+    }
+
+    @FXML
+    private void setDrawDistances(){
+        view.setDrawDistancesValue(drawDistances.isSelected());
     }
 }

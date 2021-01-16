@@ -1,8 +1,12 @@
 package ptv.views;
 
 import javafx.geometry.Point2D;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Affine;
 import ptv.models.borders.InBorders;
 import ptv.models.data.*;
@@ -20,9 +24,11 @@ public class View {
     private double scaleAffine;
     private Map<String, Double> extremeCoord;
     private Point2D p0;
+    private boolean drawDistancesValue;
 
 
     public View(ResponsiveCanvas canvas) {
+        drawDistancesValue = true;
         this.canvas = canvas;
         this.affine = new Affine();
         this.isLoadedMap = false;
@@ -106,6 +112,17 @@ public class View {
             secondXCoord = currentDistance.getSecondNode().getCoordinates().getX();
             secondYCoord = currentDistance.getSecondNode().getCoordinates().getY();
             g.strokeLine(firstXCoord, firstYCoord, secondXCoord, secondYCoord);
+
+            if(drawDistancesValue){
+                double textX = (firstXCoord + secondXCoord)/2;
+                double textY = (firstYCoord + secondYCoord)/2;
+
+                g.setTextAlign(TextAlignment.CENTER);
+                g.setTextBaseline(VPos.CENTER);
+                g.setFont(Font.font("Basic", FontWeight.EXTRA_BOLD, 0.8));
+                g.setFill(Color.RED);
+                g.fillText(String.valueOf(currentDistance.getDist()), textX, textY);
+            }
         }
     }
 
@@ -285,5 +302,9 @@ public class View {
     public void setScaleAffine(double scaleAffine) {this.scaleAffine = scaleAffine;}
 
     public double getScaleAffine() {return this.scaleAffine;}
+
+    public void setDrawDistancesValue(boolean drawDistances){
+        drawDistancesValue = drawDistances;
+    }
 }
 

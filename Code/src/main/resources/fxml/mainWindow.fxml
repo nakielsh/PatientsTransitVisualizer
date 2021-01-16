@@ -59,13 +59,15 @@
                      </cursor></ToggleButton>
                </children>
             </VBox>
+            <RadioButton fx:id="drawDistances" mnemonicParsing="false" onAction="#setDrawDistances" selected="true" text="Draw distances">
+               <padding>
+                  <Insets bottom="15.0" top="15.0" />
+               </padding>
+            </RadioButton>
             <Label text="Simulation">
                <font>
                   <Font size="19.0" />
                </font>
-               <padding>
-                  <Insets top="40.0" />
-               </padding>
             </Label>
             <HBox spacing="5.0">
                <children>
