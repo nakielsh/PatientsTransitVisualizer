@@ -93,7 +93,7 @@
                   <Insets />
                </opaqueInsets>
             </HBox>
-            <TextArea fx:id="text" editable="false" prefHeight="200.0" prefWidth="200.0" text="1&#10;2&#10;3&#10;4&#10;5&#10;6&#10;7&#10;8&#10;9&#10;10&#10;11&#10;12" wrapText="true">
+            <TextArea fx:id="text" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true">
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
                </cursor></TextArea>

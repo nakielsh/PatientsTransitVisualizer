@@ -240,9 +240,9 @@ public class Controller {
             List<Patient> patients = country.getPatientList();
             if (simulator.hasNextStep()) {
                 simulator.nextStep();
-//                if (country.getCurrentHandledPatient() != null) {
-//                    text.insertText(0, String.valueOf(country.getCurrentHandledPatient().getId()));
-//                }
+                if (country.getCurrentHandledPatient() != null) {
+                    text.appendText(" - Patient (" + country.getCurrentHandledPatient().getId() + ") goes to hospital - " + country.getCurrentVisitedHospital().getName() + "\n");
+                }
             } else if (patients.size() != 0) {
                 simulator.setHandledPatient(patients.remove(0));
             }
