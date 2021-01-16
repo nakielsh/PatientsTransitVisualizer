@@ -27,10 +27,10 @@ public class ResponsiveCanvas extends Canvas {
         double height = getHeight();
         if (view != null && this.view.getIsLoadedMap()) {
             this.view.countAffine();
-            this.view.countTransformPoint();
+            //this.view.countTransformPoint();
             Affine affine = new Affine();
+            //affine.appendTranslation(this.view.getP0().getX(), this.view.getP0().getY());
             affine.appendScale(this.view.getScaleAffine(), this.view.getScaleAffine());
-            affine.appendTranslation(-this.view.getP0().getX(), -this.view.getP0().getY());
             this.view.setAffine(affine);
             view.paintMap();
         } else {

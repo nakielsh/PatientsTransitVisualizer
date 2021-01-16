@@ -44,10 +44,12 @@ public class View {
     public void paintMap() {
         canvas.setView(this);
         GraphicsContext g = this.canvas.getGraphicsContext2D();
+        this.countTransformPoint();
+        this.affine.appendTranslation(-p0.getX(), -p0.getY());
         g.setTransform(this.affine);
         g.clearRect(this.p0.getX(), this.p0.getY(), canvas.getWidth(), canvas.getHeight());
         g.setStroke(Color.LIGHTGRAY);
-        g.setLineWidth(0.1);
+        g.setLineWidth(0.05);
         for (int i = (int)this.p0.getX(); i < this.canvas.getHeight()+(int)this.p0.getY(); i++) {
             g.strokeLine(i, (int)this.p0.getY(), i, this.canvas.getWidth()+(int)this.p0.getX());
         }
@@ -70,13 +72,21 @@ public class View {
         g.setFill(Color.RED);
         g.setStroke(Color.RED);
         g.setLineWidth(0.1);
+        String value;
+        g.setFont(new Font("Arial", 0.5));
         while (iterator.hasNext()) {
             currentHospital = iterator.next();
             xCoord = currentHospital.getCoordinates().getX();
             yCoord = currentHospital.getCoordinates().getY();
-            g.strokeOval(xCoord - 0.4, yCoord - 0.4, 0.8, 0.8);
+            value = "H" + (currentHospital.getId());
+            Point2D labelPoint = currentHospital.getCoordinates();
             g.setFill(Color.WHITE);
-            g.fillOval(xCoord - 0.4, yCoord - 0.4, 0.8, 0.8);
+            g.fillRect(labelPoint.getX()- (1.0/6.0) * value.length()-0.1, labelPoint.getY()-0.9, (1.0/3.0) * value.length() + 0.2, 0.7);
+            g.setFill(Color.RED);
+            g.fillOval(xCoord-0.2, yCoord-0.2, 0.4, 0.4);
+            g.setLineWidth(0.05);
+            g.strokeRect(labelPoint.getX()- (1.0/6.0) * value.length()-0.1, labelPoint.getY()-0.9, (1.0/3.0) * value.length() + 0.2, 0.7);
+            g.fillText(value, labelPoint.getX(), labelPoint.getY()-0.55);
         }
 
     }
@@ -88,13 +98,21 @@ public class View {
         g.setFill(Color.GREEN);
         g.setStroke(Color.GREEN);
         g.setLineWidth(0.1);
+        g.setFont(new Font("Arial", 0.5));
+        String value;
         while (iterator.hasNext()) {
             currentFacility = iterator.next();
             xCoord = currentFacility.getCoordinates().getX();
             yCoord = currentFacility.getCoordinates().getY();
-            g.strokeOval(xCoord - 0.2, yCoord - 0.2, 0.4, 0.4);
+            value = "F" + (currentFacility.getId());
+            Point2D labelPoint = currentFacility.getCoordinates();
             g.setFill(Color.WHITE);
-            g.fillOval(xCoord - 0.2, yCoord - 0.2, 0.4, 0.4);
+            g.fillRect(labelPoint.getX()- (1.0/6.0) * value.length()-0.1, labelPoint.getY()-0.9, (1.0/3.0) * value.length() + 0.2, 0.7);
+            g.setFill(Color.GREEN);
+            g.fillOval(xCoord-0.2, yCoord-0.2, 0.4, 0.4);
+            g.setLineWidth(0.05);
+            g.strokeRect(labelPoint.getX()- (1.0/6.0) * value.length()-0.1, labelPoint.getY()-0.9, (1.0/3.0) * value.length() + 0.2, 0.7);
+            g.fillText(value, labelPoint.getX(), labelPoint.getY()-0.55);
         }
     }
 
@@ -102,9 +120,12 @@ public class View {
         Iterator<Distance> iterator = country.getDistancesList().iterator();
         Distance currentDistance;
         double firstXCoord, firstYCoord, secondXCoord, secondYCoord;
+        Point2D labelPoint;
+        String value;
         g.setFill(Color.BLACK);
         g.setStroke(Color.BLACK);
         g.setLineWidth(0.1);
+        g.setFont(new Font("Arial", 0.5));
         while (iterator.hasNext()) {
             currentDistance = iterator.next();
             firstXCoord = currentDistance.getFirstNode().getCoordinates().getX();
@@ -114,16 +135,18 @@ public class View {
             g.strokeLine(firstXCoord, firstYCoord, secondXCoord, secondYCoord);
 
             if(drawDistancesValue){
-                double textX = (firstXCoord + secondXCoord)/2;
-                double textY = (firstYCoord + secondYCoord)/2;
-
-                g.setTextAlign(TextAlignment.CENTER);
-                g.setTextBaseline(VPos.CENTER);
-                g.setFont(Font.font("Basic", FontWeight.EXTRA_BOLD, 0.8));
-                g.setFill(Color.RED);
-                g.fillText(String.valueOf(currentDistance.getDist()), textX, textY);
+                labelPoint = (findCentreOfSegment(currentDistance.getFirstNode().getCoordinates(), currentDistance.getSecondNode().getCoordinates()));
+                g.setFill(Color.BLACK);
+                value = String.valueOf((int)currentDistance.getDist());
+                g.fillOval(labelPoint.getX()- (1.0/6.0) * value.length(), labelPoint.getY()- 0.35, (1.0/3.0) * value.length() + 0.2, 0.7);
+                g.setFill(Color.WHITE);
+                g.fillText(String.valueOf((int)currentDistance.getDist()), labelPoint.getX()+0.1, labelPoint.getY());
             }
         }
+    }
+
+    private static Point2D findCentreOfSegment(Point2D p1, Point2D p2) {
+        return new Point2D((p1.getX() + p2.getX()) / 2, (p1.getY() + p2.getY())/2);
     }
 
     public void paintJunctions(GraphicsContext g) {
@@ -137,8 +160,8 @@ public class View {
             currentJunction = iterator.next();
             junctionXCoord = currentJunction.getCoordinates().getX();
             junctionYCoord = currentJunction.getCoordinates().getY();
-            g.strokeOval(junctionXCoord - 0.2, junctionYCoord - 0.2, 0.4, 0.4);
-            g.fillOval(junctionXCoord - 0.2, junctionYCoord - 0.2, 0.4, 0.4);
+            g.strokeOval(junctionXCoord - 0.1, junctionYCoord - 0.1, 0.2, 0.2);
+            g.fillOval(junctionXCoord - 0.1, junctionYCoord - 0.1, 0.2, 0.2);
 
         }
     }
@@ -165,9 +188,9 @@ public class View {
         xCoords[0] = hull.get(0).getX();
         yCoords[0] = hull.get(0).getY();
 
-        g.setFill(Color.LIGHTGRAY);
+        g.setFill(Color.LIGHTBLUE);
         g.setGlobalAlpha(0.3);
-        g.setStroke(Color.LIGHTGRAY);
+        g.setStroke(Color.GREEN);
         g.strokePolygon(xCoords, yCoords, nPoints);
         g.fillPolygon(xCoords, yCoords, nPoints);
         g.setGlobalAlpha(1);
@@ -223,23 +246,31 @@ public class View {
     }
 
     public void countAffine() {
-        double far = findDistance() + 2;
+        double far = findDistance() + 3;
+        double xDistance = this.extremeCoord.get("maxX") - this.extremeCoord.get("minX") + 4;
+        double yDistance = this.extremeCoord.get("maxY") - this.extremeCoord.get("minY") + 4;
         double height = this.canvas.getHeight();
         double width = this.canvas.getWidth();
         this.setScaleAffine(Math.min(height, width)/far);
     }
 
     public void countTransformPoint() {
-        double height = this.canvas.getHeight()/this.scaleAffine;
-        double width = this.canvas.getWidth()/this.scaleAffine;
-        Point2D canvasCenter = new Point2D(width/2, height/2);
-        double mapXCenter = (this.extremeCoord.get("maxX") - this.extremeCoord.get("minX"))/2 + this.extremeCoord.get("minX");
-        double mapYCenter = (this.extremeCoord.get("maxY") - this.extremeCoord.get("minY"))/2 + this.extremeCoord.get("minY");
-        double distX = mapXCenter - canvasCenter.getX();
-        double distY = mapYCenter - canvasCenter.getY();
-        double transformX = this.extremeCoord.get("minX") - distX -2;
-        double transformY = this.extremeCoord.get("minY") - distY - 2;
-        this.setP0(new Point2D(transformX, transformY));
+//        double height = this.canvas.getHeight()/this.scaleAffine;
+//        double width = this.canvas.getWidth()/this.scaleAffine;
+//        Point2D canvasCenter = new Point2D(width/2, height/2);
+//        System.out.println(canvasCenter);
+//        double mapXCenter = (this.extremeCoord.get("maxX").getX() - this.extremeCoord.get("minX").getX())/2
+//                + this.extremeCoord.get("minX").getX();
+//        double mapYCenter = (this.extremeCoord.get("maxY").getY() - this.extremeCoord.get("minY").getY())/2
+//                + this.extremeCoord.get("minY").getY();
+//        System.out.println(mapXCenter + ", "+ mapYCenter);
+//        double distX = canvasCenter.getX() - mapXCenter;
+//        double distY = canvasCenter.getY() - mapYCenter;
+//        double transformX = this.extremeCoord.get("minX").getX() + distX ;
+//        double transformY = this.extremeCoord.get("minY").getY() + distY ;
+//        this.setP0(new Point2D(transformX, transformY));
+        this.setP0(new Point2D(this.extremeCoord.get("minX") - 2, this.extremeCoord.get("minY") - 2));
+
     }
 
 
@@ -261,7 +292,7 @@ public class View {
                 maxX = currentPoint.getX();
             }
             if(currentPoint.getY() < minY) {
-                minY = currentPoint.getX();
+                minY = currentPoint.getY();
             }
             if(currentPoint.getY() > maxY) {
                 maxY = currentPoint.getY();
