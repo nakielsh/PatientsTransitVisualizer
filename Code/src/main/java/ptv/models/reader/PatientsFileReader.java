@@ -13,9 +13,6 @@ public class PatientsFileReader {
     private int lineNumber;
     private Map<Integer, Patient> loadedPatients;
 
-    private final int MAXID = 1000;
-    private final int MAXCOORD = (int) 1e9;
-
     public PatientsFileReader() {
         initialize();
     }
@@ -62,11 +59,12 @@ public class PatientsFileReader {
 
         initialize();
         return patientsList;
-
-
     }
 
     private void readLine(String[] line, List<Patient> patients) throws IllegalArgumentException {
+        int MAXID = 1000;
+        int MAXCOORD = (int) 1e9;
+
         if (line.length != 3) {
             throw new IllegalArgumentException("Line: " + lineNumber + ". Wrong number of sections. Expected 3 sections.");
         }
@@ -89,6 +87,7 @@ public class PatientsFileReader {
         if (id >= MAXID) {
             throw new IllegalArgumentException("Line: " + lineNumber + ". Facility's id should be smaller than " + MAXID);
         }
+
         if (x >= MAXCOORD && y >= MAXCOORD) {
             throw new IllegalArgumentException("Line: " + lineNumber + ". Facility's coordinates should be smaller than " + MAXCOORD);
         }

@@ -8,18 +8,18 @@ import javafx.scene.transform.Affine;
 import ptv.models.borders.InBorders;
 import ptv.models.data.*;
 
-import java.util.*;
-
-//need to append scale
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class View {
-    private ResponsiveCanvas canvas;
+    private final ResponsiveCanvas canvas;
     private Affine affine;
-    private InBorders polygon;
     private Country country;
     private boolean isLoadedMap;
     private double scaleAffine;
-    private Map<String, Double> extremeCoord;
+    private final Map<String, Double> extremeCoord;
     private Point2D p0;
     private boolean drawDistancesValue;
 
@@ -28,43 +28,42 @@ public class View {
         drawDistancesValue = true;
         this.canvas = canvas;
         canvas.setView(this);
-        this.affine = new Affine();
-        this.isLoadedMap = false;
-        this.scaleAffine = 1;
-        this.extremeCoord = new HashMap<>();
-        this.p0 = new Point2D(0, 0);
+        affine = new Affine();
+        isLoadedMap = false;
+        scaleAffine = 1;
+        extremeCoord = new HashMap<>();
+        p0 = new Point2D(0, 0);
     }
 
     public boolean getIsLoadedMap() {
-        return this.isLoadedMap;
+        return isLoadedMap;
     }
 
     public void paintMap() {
-        //canvas.setView(this);
         canvas.redraw();
     }
 
     public void paintObjectsOnMap() {
         canvas.setView(this);
-        GraphicsContext g = this.canvas.getGraphicsContext2D();
-        this.countTransformPoint();
-        this.affine.appendTranslation(-p0.getX(), -p0.getY());
-        g.setTransform(this.affine);
-        g.clearRect(this.p0.getX(), this.p0.getY(), canvas.getWidth(), canvas.getHeight());
+        GraphicsContext g = canvas.getGraphicsContext2D();
+        countTransformPoint();
+        affine.appendTranslation(-p0.getX(), -p0.getY());
+        g.setTransform(affine);
+        g.clearRect(p0.getX(), p0.getY(), canvas.getWidth(), canvas.getHeight());
         g.setStroke(Color.LIGHTGRAY);
         g.setLineWidth(0.05);
-        for (int i = (int) this.p0.getX(); i < this.canvas.getHeight() + (int) this.p0.getY(); i++) {
-            g.strokeLine(i, (int) this.p0.getY(), i, this.canvas.getWidth() + (int) this.p0.getX());
+        for (int i = (int) p0.getX(); i < canvas.getHeight() + (int) p0.getY(); i++) {
+            g.strokeLine(i, (int) p0.getY(), i, canvas.getWidth() + (int) p0.getX());
         }
-        for (int i = (int) this.p0.getY(); i < this.canvas.getWidth() + (int) this.p0.getX(); i++) {
-            g.strokeLine((int) this.p0.getX(), i, this.canvas.getHeight() + (int) this.p0.getY(), i);
+        for (int i = (int) p0.getY(); i < canvas.getWidth() + (int) p0.getX(); i++) {
+            g.strokeLine((int) p0.getX(), i, canvas.getHeight() + (int) p0.getY(), i);
         }
-        this.paintPolygon(g);
-        this.paintDistances(g);
-        this.paintJunctions(g);
-        this.paintHospitals(g);
-        this.paintFacilities(g);
-        this.paintPatient();
+        paintPolygon(g);
+        paintDistances(g);
+        paintJunctions(g);
+        paintHospitals(g);
+        paintFacilities(g);
+        paintPatient();
         paintSimulation(g);
     }
 
@@ -77,6 +76,7 @@ public class View {
         g.setLineWidth(0.1);
         String value;
         g.setFont(new Font("Arial", 0.5));
+
         while (iterator.hasNext()) {
             currentHospital = iterator.next();
             xCoord = currentHospital.getCoordinates().getX();
@@ -91,7 +91,6 @@ public class View {
             g.strokeRect(labelPoint.getX() - (1.0 / 6.0) * value.length() - 0.1, labelPoint.getY() - 0.9, (1.0 / 3.0) * value.length() + 0.2, 0.7);
             g.fillText(value, labelPoint.getX(), labelPoint.getY() - 0.55);
         }
-
     }
 
     public void paintFacilities(GraphicsContext g) {
@@ -103,6 +102,7 @@ public class View {
         g.setLineWidth(0.1);
         g.setFont(new Font("Arial", 0.5));
         String value;
+
         while (iterator.hasNext()) {
             currentFacility = iterator.next();
             xCoord = currentFacility.getCoordinates().getX();
@@ -129,6 +129,7 @@ public class View {
         g.setStroke(Color.BLACK);
         g.setLineWidth(0.1);
         g.setFont(new Font("Arial", 0.5));
+
         while (iterator.hasNext()) {
             currentDistance = iterator.next();
             firstXCoord = currentDistance.getFirstNode().getCoordinates().getX();
@@ -159,26 +160,24 @@ public class View {
         g.setFill(Color.LIGHTBLUE);
         g.setStroke(Color.BLUE);
         g.setLineWidth(0.1);
+
         while (iterator.hasNext()) {
             currentJunction = iterator.next();
             junctionXCoord = currentJunction.getCoordinates().getX();
             junctionYCoord = currentJunction.getCoordinates().getY();
             g.strokeOval(junctionXCoord - 0.1, junctionYCoord - 0.1, 0.2, 0.2);
             g.fillOval(junctionXCoord - 0.1, junctionYCoord - 0.1, 0.2, 0.2);
-
         }
     }
 
     public void paintPolygon(GraphicsContext g) {
         List<Point2D> allPoints;
-        allPoints = GrahamScan.createPointsList(this.country.getHospitalsList(),
-                this.country.getFacilitiesList());
+        allPoints = GrahamScan.createPointsList(country.getHospitalsList(), country.getFacilitiesList());
 
         GrahamScan grahamScan = new GrahamScan();
         grahamScan.setAllPoints(allPoints);
         grahamScan.countGrahamHull();
         List<Point2D> hull = grahamScan.getPolygon();
-
 
         int nPoints = hull.size();
         double[] xCoords = new double[nPoints];
@@ -197,17 +196,17 @@ public class View {
         g.strokePolygon(xCoords, yCoords, nPoints);
         g.fillPolygon(xCoords, yCoords, nPoints);
         g.setGlobalAlpha(1);
-
     }
 
     public void paintPatient() {
-        GraphicsContext g = this.canvas.getGraphicsContext2D();
+        GraphicsContext g = canvas.getGraphicsContext2D();
         Iterator<Patient> iterator = country.getPatientList().iterator();
         Patient currentPatient;
         double xCoord, yCoord;
         g.setFill(Color.RED);
         g.setStroke(Color.RED);
         g.setLineWidth(0.1);
+
         while (iterator.hasNext()) {
             currentPatient = iterator.next();
             xCoord = currentPatient.getCoordinates().getX();
@@ -248,36 +247,19 @@ public class View {
     }
 
     public void countAffine() {
-        double far = findDistance() + 3;
-        double xDistance = this.extremeCoord.get("maxX") - this.extremeCoord.get("minX") + 4;
-        double yDistance = this.extremeCoord.get("maxY") - this.extremeCoord.get("minY") + 4;
-        double height = this.canvas.getHeight();
-        double width = this.canvas.getWidth();
-        this.setScaleAffine(Math.min(width / xDistance, height / yDistance));
+        double xDistance = extremeCoord.get("maxX") - extremeCoord.get("minX") + 4;
+        double yDistance = extremeCoord.get("maxY") - extremeCoord.get("minY") + 4;
+        double height = canvas.getHeight();
+        double width = canvas.getWidth();
+        setScaleAffine(Math.min(width / xDistance, height / yDistance));
     }
 
     public void countTransformPoint() {
-//        double height = this.canvas.getHeight()/this.scaleAffine;
-//        double width = this.canvas.getWidth()/this.scaleAffine;
-//        Point2D canvasCenter = new Point2D(width/2, height/2);
-//        System.out.println(canvasCenter);
-//        double mapXCenter = (this.extremeCoord.get("maxX").getX() - this.extremeCoord.get("minX").getX())/2
-//                + this.extremeCoord.get("minX").getX();
-//        double mapYCenter = (this.extremeCoord.get("maxY").getY() - this.extremeCoord.get("minY").getY())/2
-//                + this.extremeCoord.get("minY").getY();
-//        System.out.println(mapXCenter + ", "+ mapYCenter);
-//        double distX = canvasCenter.getX() - mapXCenter;
-//        double distY = canvasCenter.getY() - mapYCenter;
-//        double transformX = this.extremeCoord.get("minX").getX() + distX ;
-//        double transformY = this.extremeCoord.get("minY").getY() + distY ;
-//        this.setP0(new Point2D(transformX, transformY));
-        this.setP0(new Point2D(this.extremeCoord.get("minX") - 2, this.extremeCoord.get("minY") - 2));
-
+        setP0(new Point2D(extremeCoord.get("minX") - 2, extremeCoord.get("minY") - 2));
     }
 
-
     private void countExtremePoints() {
-        List<Point2D> convexHull = this.country.getPolygon();
+        List<Point2D> convexHull = country.getPolygon();
         if (convexHull.isEmpty()) {
             throw new IllegalArgumentException("convexHull can't be empty");
         }
@@ -299,15 +281,10 @@ public class View {
                 maxY = currentPoint.getY();
             }
         }
-        this.extremeCoord.put("minX", minX);
-        this.extremeCoord.put("maxX", maxX);
-        this.extremeCoord.put("minY", minY);
-        this.extremeCoord.put("maxY", maxY);
-    }
-
-    private double findDistance() {
-        return Math.max(this.extremeCoord.get("maxX") - this.extremeCoord.get("minX"),
-                this.extremeCoord.get("maxY") - this.extremeCoord.get("minY"));
+        extremeCoord.put("minX", minX);
+        extremeCoord.put("maxX", maxX);
+        extremeCoord.put("minY", minY);
+        extremeCoord.put("maxY", maxY);
     }
 
     public void setCountry(Country country) {
@@ -316,7 +293,7 @@ public class View {
         grahamScan.setAllPoints(GrahamScan.createPointsList(country.getHospitalsList(), country.getFacilitiesList()));
         grahamScan.countGrahamHull();
         country.setPolygon(grahamScan.getPolygon());
-        this.countExtremePoints();
+        countExtremePoints();
     }
 
     public void setP0(Point2D p0) {

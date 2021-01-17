@@ -21,7 +21,6 @@ import ptv.views.View;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
@@ -69,7 +68,7 @@ public class Controller {
 
     @FXML
     public void loadMap() throws FileNotFoundException {
-        if(isSimulationRunning){
+        if (isSimulationRunning) {
             printAlert(new Exception("Simulation is running"));
             return;
         }
@@ -82,23 +81,22 @@ public class Controller {
         if (mapFile != null) {
             loadMapFromFile(mapFile.getAbsolutePath());
         }
-        text.clear();
     }
 
 
     public void loadMapFromFile(String filePath) throws FileNotFoundException {
         CountryFileReader countryFileReader = new CountryFileReader();
         try {
-            Country country = countryFileReader.readFile(filePath);
-            country.setJunctionsList(new JunctionFinder().findJunctions(country.getDistancesList()));
-            this.country = country;
+            Country newCountry = countryFileReader.readFile(filePath);
+            newCountry.setJunctionsList(new JunctionFinder().findJunctions(newCountry.getDistancesList()));
+            this.country = newCountry;
             this.view.setCountry(country);
             simulator.setCountry(country);
             view.setIsLoadedMap(true);
             view.paintMap();
+            text.clear();
         } catch (IllegalArgumentException exception) {
             printAlert(exception);
-            initialize();
         }
     }
 
@@ -143,7 +141,7 @@ public class Controller {
         List<Patient> patients = patientsFileReader.readFile(filePath);
 
         String alert = country.addPatients(patients);
-        if (!alert.equals("No patient has been removed")){
+        if (!alert.equals("No patient has been removed")) {
             printAlert(alert);
         }
     }
@@ -226,13 +224,13 @@ public class Controller {
 
     @FXML
     private void startSimulation() {
-        if(country == null){
+        if (country == null) {
             printAlert(new Exception("Map is not loaded"));
             start_simulation.setSelected(false);
             stop_simulation.setSelected(true);
             return;
         }
-        if(!start_simulation.isSelected()){
+        if (!start_simulation.isSelected()) {
             start_simulation.setSelected(true);
             return;
         }
@@ -262,8 +260,8 @@ public class Controller {
                         Platform.runLater(() -> text.appendText(" - Patient (" + currentHandledPatient.getId() + ") is accepted in hospital - " + currentVisitedHospital.getName() + "\n" +
                                 "-----------------------------\n"));
                     }
-                }catch(IllegalStateException e){
-                    if(e.getMessage().equals("There is not available beds in any hospital")){
+                } catch (IllegalStateException e) {
+                    if (e.getMessage().equals("There is not available beds in any hospital")) {
                         Platform.runLater(() -> text.appendText(" - Patient (" + currentHandledPatient.getId() + ") is waiting in queue in hospital - " + currentVisitedHospital.getName() + "\n" +
                                 "-----------------------------\n"));
                     }
@@ -273,9 +271,9 @@ public class Controller {
                 deletePatient = true;
             }
 
-            if(deletePatient) {
+            if (deletePatient) {
                 Platform.runLater(() -> {
-                    if(patients.size() > 0){
+                    if (patients.size() > 0) {
                         patients.remove(0);
                     }
                 });
@@ -294,7 +292,7 @@ public class Controller {
 
     @FXML
     private void stopSimulation() {
-        if(!stop_simulation.isSelected()){
+        if (!stop_simulation.isSelected()) {
             stop_simulation.setSelected(true);
             return;
         }
@@ -308,7 +306,7 @@ public class Controller {
     }
 
     @FXML
-    private void setDrawDistances(){
+    private void setDrawDistances() {
         view.setDrawDistancesValue(drawDistances.isSelected());
     }
 }
