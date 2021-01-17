@@ -82,6 +82,7 @@ public class Controller {
         if (mapFile != null) {
             loadMapFromFile(mapFile.getAbsolutePath());
         }
+        text.clear();
     }
 
 
@@ -258,11 +259,13 @@ public class Controller {
                     simulator.nextStep();
 
                     if (country.getCurrentHandledPatient() == null && country.getCurrentVisitedHospital() == null) {
-                        Platform.runLater(() -> text.appendText(" - Patient (" + currentHandledPatient.getId() + ") is accepted in hospital - " + currentVisitedHospital.getName() + "\n"));
+                        Platform.runLater(() -> text.appendText(" - Patient (" + currentHandledPatient.getId() + ") is accepted in hospital - " + currentVisitedHospital.getName() + "\n" +
+                                "-----------------------------\n"));
                     }
                 }catch(IllegalStateException e){
                     if(e.getMessage().equals("There is not available beds in any hospital")){
-                        Platform.runLater(() -> text.appendText(" - Patient (" + currentHandledPatient.getId() + ") is waiting in queue in hospital - " + currentVisitedHospital.getName() + "\n"));
+                        Platform.runLater(() -> text.appendText(" - Patient (" + currentHandledPatient.getId() + ") is waiting in queue in hospital - " + currentVisitedHospital.getName() + "\n" +
+                                "-----------------------------\n"));
                     }
                 }
             } else if (patients.size() != 0) {

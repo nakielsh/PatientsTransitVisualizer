@@ -89,14 +89,6 @@ public class Dijkstra {
         return nearestHospital;
     }
 
-    public Graph calculateShortestPathFromHospital(Graph graph, Hospital hospital){
-        return null;
-    }
-
-    public Graph calculateShortestPathFromPatient(Graph graph, Patient patient){
-        return null;
-    }
-
     private void calculateMinimumDistance(Hospital fromHospital, Hospital toHospital, Integer edgeWeigh){}
 
     private Hospital getLowestDistanceHospital(Set<Hospital> unsettledHospitals){

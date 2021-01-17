@@ -1,12 +1,9 @@
 package ptv.views;
 
 import javafx.geometry.Point2D;
-import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Affine;
 import ptv.models.borders.InBorders;
 import ptv.models.data.*;
@@ -42,7 +39,7 @@ public class View {
         return this.isLoadedMap;
     }
 
-    public void paintMap(){
+    public void paintMap() {
         //canvas.setView(this);
         canvas.redraw();
     }
@@ -56,11 +53,11 @@ public class View {
         g.clearRect(this.p0.getX(), this.p0.getY(), canvas.getWidth(), canvas.getHeight());
         g.setStroke(Color.LIGHTGRAY);
         g.setLineWidth(0.05);
-        for (int i = (int)this.p0.getX(); i < this.canvas.getHeight()+(int)this.p0.getY(); i++) {
-            g.strokeLine(i, (int)this.p0.getY(), i, this.canvas.getWidth()+(int)this.p0.getX());
+        for (int i = (int) this.p0.getX(); i < this.canvas.getHeight() + (int) this.p0.getY(); i++) {
+            g.strokeLine(i, (int) this.p0.getY(), i, this.canvas.getWidth() + (int) this.p0.getX());
         }
-        for (int i = (int)this.p0.getY(); i < this.canvas.getWidth()+(int)this.p0.getX(); i++) {
-            g.strokeLine((int)this.p0.getX(), i, this.canvas.getHeight()+(int)this.p0.getY(), i);
+        for (int i = (int) this.p0.getY(); i < this.canvas.getWidth() + (int) this.p0.getX(); i++) {
+            g.strokeLine((int) this.p0.getX(), i, this.canvas.getHeight() + (int) this.p0.getY(), i);
         }
         this.paintPolygon(g);
         this.paintDistances(g);
@@ -87,12 +84,12 @@ public class View {
             value = "H" + (currentHospital.getId());
             Point2D labelPoint = currentHospital.getCoordinates();
             g.setFill(Color.WHITE);
-            g.fillRect(labelPoint.getX()- (1.0/6.0) * value.length()-0.1, labelPoint.getY()-0.9, (1.0/3.0) * value.length() + 0.2, 0.7);
+            g.fillRect(labelPoint.getX() - (1.0 / 6.0) * value.length() - 0.1, labelPoint.getY() - 0.9, (1.0 / 3.0) * value.length() + 0.2, 0.7);
             g.setFill(Color.RED);
-            g.fillOval(xCoord-0.2, yCoord-0.2, 0.4, 0.4);
+            g.fillOval(xCoord - 0.2, yCoord - 0.2, 0.4, 0.4);
             g.setLineWidth(0.05);
-            g.strokeRect(labelPoint.getX()- (1.0/6.0) * value.length()-0.1, labelPoint.getY()-0.9, (1.0/3.0) * value.length() + 0.2, 0.7);
-            g.fillText(value, labelPoint.getX(), labelPoint.getY()-0.55);
+            g.strokeRect(labelPoint.getX() - (1.0 / 6.0) * value.length() - 0.1, labelPoint.getY() - 0.9, (1.0 / 3.0) * value.length() + 0.2, 0.7);
+            g.fillText(value, labelPoint.getX(), labelPoint.getY() - 0.55);
         }
 
     }
@@ -113,12 +110,12 @@ public class View {
             value = "F" + (currentFacility.getId());
             Point2D labelPoint = currentFacility.getCoordinates();
             g.setFill(Color.WHITE);
-            g.fillRect(labelPoint.getX()- (1.0/6.0) * value.length()-0.1, labelPoint.getY()-0.9, (1.0/3.0) * value.length() + 0.2, 0.7);
+            g.fillRect(labelPoint.getX() - (1.0 / 6.0) * value.length() - 0.1, labelPoint.getY() - 0.9, (1.0 / 3.0) * value.length() + 0.2, 0.7);
             g.setFill(Color.GREEN);
-            g.fillOval(xCoord-0.2, yCoord-0.2, 0.4, 0.4);
+            g.fillOval(xCoord - 0.2, yCoord - 0.2, 0.4, 0.4);
             g.setLineWidth(0.05);
-            g.strokeRect(labelPoint.getX()- (1.0/6.0) * value.length()-0.1, labelPoint.getY()-0.9, (1.0/3.0) * value.length() + 0.2, 0.7);
-            g.fillText(value, labelPoint.getX(), labelPoint.getY()-0.55);
+            g.strokeRect(labelPoint.getX() - (1.0 / 6.0) * value.length() - 0.1, labelPoint.getY() - 0.9, (1.0 / 3.0) * value.length() + 0.2, 0.7);
+            g.fillText(value, labelPoint.getX(), labelPoint.getY() - 0.55);
         }
     }
 
@@ -140,19 +137,19 @@ public class View {
             secondYCoord = currentDistance.getSecondNode().getCoordinates().getY();
             g.strokeLine(firstXCoord, firstYCoord, secondXCoord, secondYCoord);
 
-            if(drawDistancesValue){
+            if (drawDistancesValue) {
                 labelPoint = (findCentreOfSegment(currentDistance.getFirstNode().getCoordinates(), currentDistance.getSecondNode().getCoordinates()));
                 g.setFill(Color.BLACK);
-                value = String.valueOf((int)currentDistance.getDist());
-                g.fillOval(labelPoint.getX()- (1.0/6.0) * value.length(), labelPoint.getY()- 0.35, (1.0/3.0) * value.length() + 0.2, 0.7);
+                value = String.valueOf((int) currentDistance.getDist());
+                g.fillOval(labelPoint.getX() - (1.0 / 6.0) * value.length(), labelPoint.getY() - 0.35, (1.0 / 3.0) * value.length() + 0.2, 0.7);
                 g.setFill(Color.WHITE);
-                g.fillText(String.valueOf((int)currentDistance.getDist()), labelPoint.getX()+0.1, labelPoint.getY());
+                g.fillText(String.valueOf((int) currentDistance.getDist()), labelPoint.getX() + 0.1, labelPoint.getY());
             }
         }
     }
 
     private static Point2D findCentreOfSegment(Point2D p1, Point2D p2) {
-        return new Point2D((p1.getX() + p2.getX()) / 2, (p1.getY() + p2.getY())/2);
+        return new Point2D((p1.getX() + p2.getX()) / 2, (p1.getY() + p2.getY()) / 2);
     }
 
     public void paintJunctions(GraphicsContext g) {
@@ -173,7 +170,7 @@ public class View {
     }
 
     public void paintPolygon(GraphicsContext g) {
-        List<Point2D> allPoints = new ArrayList<>();
+        List<Point2D> allPoints;
         allPoints = GrahamScan.createPointsList(this.country.getHospitalsList(),
                 this.country.getFacilitiesList());
 
@@ -221,25 +218,24 @@ public class View {
         }
     }
 
-    private void paintSimulation(GraphicsContext g){
+    private void paintSimulation(GraphicsContext g) {
         Hospital currentVisitedHospital = country.getCurrentVisitedHospital();
         Patient currentHandledPatient = country.getCurrentHandledPatient();
 
-        if(currentVisitedHospital == null && currentHandledPatient != null) {
+        if (currentVisitedHospital == null && currentHandledPatient != null) {
             paintCurrentHandledPatient(g, currentHandledPatient.getCoordinates());
-        }
-        else if(currentVisitedHospital != null){
+        } else if (currentVisitedHospital != null) {
             paintCurrentVisitedHospital(g, currentVisitedHospital.getCoordinates());
         }
     }
 
-    private void paintCurrentVisitedHospital(GraphicsContext g, Point2D hospitalCoordinates){
+    private void paintCurrentVisitedHospital(GraphicsContext g, Point2D hospitalCoordinates) {
         g.setStroke(Color.GREEN);
         g.setLineWidth(0.1);
         g.strokeOval(hospitalCoordinates.getX() - 0.5, hospitalCoordinates.getY() - 0.5, 1, 1);
     }
 
-    private void paintCurrentHandledPatient(GraphicsContext g, Point2D patientCoordinates){
+    private void paintCurrentHandledPatient(GraphicsContext g, Point2D patientCoordinates) {
         double patientX = patientCoordinates.getX();
         double patientY = patientCoordinates.getY();
 
@@ -257,7 +253,7 @@ public class View {
         double yDistance = this.extremeCoord.get("maxY") - this.extremeCoord.get("minY") + 4;
         double height = this.canvas.getHeight();
         double width = this.canvas.getWidth();
-        this.setScaleAffine(Math.min(width/xDistance, height/yDistance));
+        this.setScaleAffine(Math.min(width / xDistance, height / yDistance));
     }
 
     public void countTransformPoint() {
@@ -280,27 +276,26 @@ public class View {
     }
 
 
-
     private void countExtremePoints() {
         List<Point2D> convexHull = this.country.getPolygon();
-        if(convexHull.isEmpty()) {
+        if (convexHull.isEmpty()) {
             throw new IllegalArgumentException("convexHull can't be empty");
         }
         double minX, maxX, minY, maxY;
         minX = maxX = convexHull.get(0).getX();
         minY = maxY = convexHull.get(0).getY();
-        for (int i=1; i<convexHull.size(); i++) {
+        for (int i = 1; i < convexHull.size(); i++) {
             Point2D currentPoint = convexHull.get(i);
-            if(currentPoint.getX() < minX) {
+            if (currentPoint.getX() < minX) {
                 minX = currentPoint.getX();
             }
-            if(currentPoint.getX() > maxX) {
+            if (currentPoint.getX() > maxX) {
                 maxX = currentPoint.getX();
             }
-            if(currentPoint.getY() < minY) {
+            if (currentPoint.getY() < minY) {
                 minY = currentPoint.getY();
             }
-            if(currentPoint.getY() > maxY) {
+            if (currentPoint.getY() > maxY) {
                 maxY = currentPoint.getY();
             }
         }
@@ -315,7 +310,7 @@ public class View {
                 this.extremeCoord.get("maxY") - this.extremeCoord.get("minY"));
     }
 
-    public void setCountry(Country country){
+    public void setCountry(Country country) {
         this.country = country;
         GrahamScan grahamScan = new GrahamScan();
         grahamScan.setAllPoints(GrahamScan.createPointsList(country.getHospitalsList(), country.getFacilitiesList()));
@@ -324,23 +319,31 @@ public class View {
         this.countExtremePoints();
     }
 
-    public void setP0(Point2D p0) {this.p0 = p0;}
+    public void setP0(Point2D p0) {
+        this.p0 = p0;
+    }
 
-    public Point2D getP0(){return this.p0;}
+    public void setIsLoadedMap(boolean loadedMap) {
+        isLoadedMap = loadedMap;
+    }
 
-    public Country getCountry(){return this.country;}
+    public Affine getAffine() {
+        return this.affine;
+    }
 
-    public void setIsLoadedMap(boolean loadedMap) {isLoadedMap = loadedMap;}
+    public void setAffine(Affine affine) {
+        this.affine = affine;
+    }
 
-    public Affine getAffine(){return this.affine;}
+    public void setScaleAffine(double scaleAffine) {
+        this.scaleAffine = scaleAffine;
+    }
 
-    public void setAffine(Affine affine){this.affine = affine;}
+    public double getScaleAffine() {
+        return this.scaleAffine;
+    }
 
-    public void setScaleAffine(double scaleAffine) {this.scaleAffine = scaleAffine;}
-
-    public double getScaleAffine() {return this.scaleAffine;}
-
-    public void setDrawDistancesValue(boolean drawDistances){
+    public void setDrawDistancesValue(boolean drawDistances) {
         drawDistancesValue = drawDistances;
     }
 }
