@@ -284,7 +284,7 @@ public class Controller {
     }
 
     private int getSimulationSpeed() {
-        double speed = simulationSpeedSlider.valueProperty().getValue() * -1 + simulationSpeedSlider.getMax();
+        double speed = simulationSpeedSlider.valueProperty().getValue() * -1 + simulationSpeedSlider.getMax() + simulationSpeedSlider.getMin();
         return (int) speed;
     }
 
