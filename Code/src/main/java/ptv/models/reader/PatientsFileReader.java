@@ -64,6 +64,7 @@ public class PatientsFileReader {
     private void readLine(String[] line, List<Patient> patients) throws IllegalArgumentException {
         int MAXID = 1000;
         int MAXCOORD = (int) 1e9;
+        int MINCOORD = (int) -1e9;
 
         if (line.length != 3) {
             throw new IllegalArgumentException("Line: " + lineNumber + ". Wrong number of sections. Expected 3 sections.");
@@ -90,6 +91,9 @@ public class PatientsFileReader {
 
         if (x >= MAXCOORD || y >= MAXCOORD) {
             throw new IllegalArgumentException("Line: " + lineNumber + ". Patient's coordinates should be smaller than " + MAXCOORD);
+        }
+        if (x <= MINCOORD || y <= MINCOORD) {
+            throw new IllegalArgumentException("Line: " + lineNumber + ". Patient's coordinates should be greater than " + MINCOORD);
         }
 
         if (canLoadPatient(id)) {

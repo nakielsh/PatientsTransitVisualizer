@@ -17,6 +17,7 @@ public class CountryFileReader {
 
     private final int MAXID = 1000;
     private final int MAXCOORD = (int) 1e9;
+    private final int MINCOORD = (int) -1e9;
 
     private int lineNumber;
     private int readingType;
@@ -118,6 +119,9 @@ public class CountryFileReader {
         if (x >= MAXCOORD || y >= MAXCOORD) {
             throw new IllegalArgumentException("Line: " + lineNumber + ". Hospital's coordinates should be smaller than " + MAXCOORD);
         }
+        if (x <= MINCOORD || y <= MINCOORD) {
+            throw new IllegalArgumentException("Line: " + lineNumber + ". Hospital's coordinates should be greater than " + MINCOORD);
+        }
 
         if (freeBeds > beds) {
             throw new IllegalArgumentException("Line: " + lineNumber + ". Number of available beds cannot be bigger than total number of all beds");
@@ -160,6 +164,9 @@ public class CountryFileReader {
         }
         if (x >= MAXCOORD && y >= MAXCOORD) {
             throw new IllegalArgumentException("Line: " + lineNumber + ". Facility's coordinates should be smaller than " + MAXCOORD);
+        }
+        if (x <= MINCOORD || y <= MINCOORD) {
+            throw new IllegalArgumentException("Line: " + lineNumber + ". Facility's coordinates should be greater than " + MINCOORD);
         }
 
         if (canLoadFacility(id, name)) {
