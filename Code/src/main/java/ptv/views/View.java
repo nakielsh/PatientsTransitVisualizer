@@ -54,11 +54,13 @@ public class View {
         g.setLineWidth(0.05);
         for (int i = (int) p0.getX(); i < canvas.getHeight() + (int) p0.getY(); i++) {
             g.strokeLine(i, (int) p0.getY(), i, canvas.getWidth() + (int) p0.getX());
+        }
         for (int i = (int)this.p0.getX(); i < this.canvas.getHeight()+(int)this.p0.getY(); i+=5) {
             g.strokeLine(i, (int)this.p0.getY(), i, this.canvas.getWidth()+(int)this.p0.getX());
         }
         for (int i = (int) p0.getY(); i < canvas.getWidth() + (int) p0.getX(); i++) {
             g.strokeLine((int) p0.getX(), i, canvas.getHeight() + (int) p0.getY(), i);
+        }
         for (int i = (int)this.p0.getY(); i < this.canvas.getWidth()+(int)this.p0.getX(); i+=5) {
             g.strokeLine((int)this.p0.getX(), i, this.canvas.getHeight()+(int)this.p0.getY(), i);
         }
@@ -333,7 +335,7 @@ public class View {
         this.affine = affine;
     }
 
-    public void setScaleAffine(double scaleAffine) {
+    public void setScaleAffine(double scaleAffine){
         this.scaleAffine = scaleAffine;
     }
 
