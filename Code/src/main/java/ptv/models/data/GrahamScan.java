@@ -73,6 +73,7 @@ public class GrahamScan {
         }
         if(this.allPoints.size() <= 3) {
             this.polygon = this.allPoints;
+            return ;
         }
         Point2D p0 = this.allPoints.remove(findP0(this.allPoints));
         this.allPoints.sort(getGrahamComparator(p0));

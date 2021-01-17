@@ -9,13 +9,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DijkstraTest {
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenSourceHospitalIsNull(){
+    public void shouldThrowIllegalArgumentExceptionWhenSourceHospitalIsNull() {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> new Dijkstra().findNearestHospitalFromHospital(null));
         assertEquals("Source hospital cannot be null", e.getMessage());
     }
 
     @Test
-    public void shouldReturnNearestHospitalsWhenMethodIsCalledFewTimes(){
+    public void shouldReturnNearestHospitalsWhenMethodIsCalledFewTimes() {
         Dijkstra dijkstra = new Dijkstra();
         Hospital hospital1 = new Hospital(1, "H1", new Point2D(10, 10), 5, 5);
         Junction junction1 = new Junction(-1, new Point2D(10, 10));
@@ -56,7 +56,7 @@ public class DijkstraTest {
     }
 
     @Test
-    public void shouldReturnNullWhenGraphHasOnlyJunctions(){
+    public void shouldReturnNullWhenGraphHasOnlyJunctions() {
         Hospital hospital = new Hospital(1, "Hospital", new Point2D(10, 10), 5, 0);
         Junction junction1 = new Junction(-1, new Point2D(10, 10));
         Junction junction2 = new Junction(-2, new Point2D(10, 10));
@@ -84,7 +84,7 @@ public class DijkstraTest {
     }
 
     @Test
-    public void shouldReturnNullWhenGraphHasOnlySourceHospital(){
+    public void shouldReturnNullWhenGraphHasOnlySourceHospital() {
         Hospital h1 = new Hospital(1, "H1", new Point2D(10, 10), 5, 0);
 
         Hospital actualNearestHospital = new Dijkstra().findNearestHospitalFromHospital(h1);
@@ -93,11 +93,10 @@ public class DijkstraTest {
     }
 
 
-
     //Method findNearestHospitalFromPatient() tests
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenPatientIsNull(){
+    public void shouldThrowIllegalArgumentExceptionWhenPatientIsNull() {
         Country country = new Country();
 
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> new Dijkstra().findNearestHospitalFromPatient(null, country));
@@ -119,7 +118,7 @@ public class DijkstraTest {
     }
 
     @Test
-    public void shouldCorrectlyCalculateNearestHospitalWhenCountryHasFewHospitals(){
+    public void shouldCorrectlyCalculateNearestHospitalWhenCountryHasFewHospitals() {
         Country country = new Country();
         Patient patient = new Patient(0, new Point2D(100, 100));
         Hospital expectedNearestHospital = new Hospital(0, "Expected", new Point2D(115, 104.97), 100, 100);
@@ -136,7 +135,7 @@ public class DijkstraTest {
     }
 
     @Test
-    public void shouldCorrectlyCalculateNearestHospitalWhenHospitalAndPatientHaveSameCoordinates(){
+    public void shouldCorrectlyCalculateNearestHospitalWhenHospitalAndPatientHaveSameCoordinates() {
         Country country = new Country();
         Patient patient = new Patient(0, new Point2D(100, 100));
         Hospital expectedNearestHospital = new Hospital(0, "Expected", new Point2D(100, 100), 100, 100);
@@ -153,7 +152,7 @@ public class DijkstraTest {
     }
 
     @Test
-    public void shouldCorrectlyCalculateNearestHospitalWhenHospitalsAreInSameDistance(){
+    public void shouldCorrectlyCalculateNearestHospitalWhenHospitalsAreInSameDistance() {
         Country country = new Country();
         Patient patient = new Patient(0, new Point2D(100, 100));
         Hospital expectedNearestHospital = new Hospital(0, "Expected", new Point2D(115, 104.97), 100, 100);
@@ -170,7 +169,7 @@ public class DijkstraTest {
     }
 
     @Test
-    public void shouldReturnNullWhenCountryDoesNotHaveAnyHospital(){
+    public void shouldReturnNullWhenCountryDoesNotHaveAnyHospital() {
         Country country = new Country();
         Patient patient = new Patient(0, new Point2D(100, 100));
 

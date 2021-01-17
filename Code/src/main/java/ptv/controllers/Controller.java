@@ -9,6 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.stage.FileChooser;
 import ptv.models.data.Country;
+import ptv.models.data.Hospital;
 import ptv.models.data.JunctionFinder;
 import ptv.models.data.Patient;
 import ptv.models.reader.CountryFileReader;
@@ -20,7 +21,6 @@ import ptv.views.View;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
@@ -68,7 +68,7 @@ public class Controller {
 
     @FXML
     public void loadMap() throws FileNotFoundException {
-        if(isSimulationRunning){
+        if (isSimulationRunning) {
             printAlert(new Exception("Simulation is running"));
             return;
         }
@@ -87,16 +87,16 @@ public class Controller {
     public void loadMapFromFile(String filePath) throws FileNotFoundException {
         CountryFileReader countryFileReader = new CountryFileReader();
         try {
-            Country country = countryFileReader.readFile(filePath);
-            country.setJunctionsList(new JunctionFinder().findJunctions(country.getDistancesList()));
-            this.country = country;
+            Country newCountry = countryFileReader.readFile(filePath);
+            newCountry.setJunctionsList(new JunctionFinder().findJunctions(newCountry.getDistancesList()));
+            this.country = newCountry;
             this.view.setCountry(country);
             simulator.setCountry(country);
             view.setIsLoadedMap(true);
             view.paintMap();
+            text.clear();
         } catch (IllegalArgumentException exception) {
             printAlert(exception);
-            initialize();
         }
     }
 
@@ -141,7 +141,7 @@ public class Controller {
         List<Patient> patients = patientsFileReader.readFile(filePath);
 
         String alert = country.addPatients(patients);
-        if (!alert.equals("No patient has been removed")){
+        if (!alert.equals("No patient has been removed")) {
             printAlert(alert);
         }
     }
@@ -224,13 +224,13 @@ public class Controller {
 
     @FXML
     private void startSimulation() {
-        if(country == null){
+        if (country == null) {
             printAlert(new Exception("Map is not loaded"));
             start_simulation.setSelected(false);
             stop_simulation.setSelected(true);
             return;
         }
-        if(!start_simulation.isSelected()){
+        if (!start_simulation.isSelected()) {
             start_simulation.setSelected(true);
             return;
         }
@@ -248,27 +248,43 @@ public class Controller {
     private void simulate() {
         while (isSimulationRunning) {
             List<Patient> patients = country.getPatientList();
+            boolean deletePatient = false;
             if (simulator.hasNextStep()) {
-                simulator.nextStep();
-                if (country.getCurrentHandledPatient() != null) {
-                    text.appendText(" - Patient (" + country.getCurrentHandledPatient().getId() + ") goes to hospital - " + country.getCurrentVisitedHospital().getName() + "\n");
+                Patient currentHandledPatient = country.getCurrentHandledPatient();
+                Hospital currentVisitedHospital = country.getCurrentVisitedHospital();
+
+                try {
+                    simulator.nextStep();
+
+                    if (country.getCurrentHandledPatient() == null && country.getCurrentVisitedHospital() == null) {
+                        Platform.runLater(() -> text.appendText(" - Patient (" + currentHandledPatient.getId() + ") is accepted in hospital - " + currentVisitedHospital.getName() + "\n" +
+                                "-----------------------------\n"));
+                    }
+                } catch (IllegalStateException e) {
+                    if (e.getMessage().equals("There is not available beds in any hospital")) {
+                        Platform.runLater(() -> text.appendText(" - Patient (" + currentHandledPatient.getId() + ") is waiting in queue in hospital - " + currentVisitedHospital.getName() + "\n" +
+                                "-----------------------------\n"));
+                    }
                 }
             } else if (patients.size() != 0) {
-                simulator.setHandledPatient(patients.remove(0));
+                simulator.setHandledPatient(patients.get(0));
+                deletePatient = true;
             }
 
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    canvas.redraw();
-                }
-            });
+            if (deletePatient) {
+                Platform.runLater(() -> {
+                    if (patients.size() > 0) {
+                        patients.remove(0);
+                    }
+                });
+            }
+            Platform.runLater(() -> canvas.redraw());
 
             try {
-                Thread.sleep(getSimulationSpeed() + 1);
+                Thread.sleep(getSimulationSpeed());//+ 1);
             } catch (InterruptedException e) {
                 stopSimulation();
-                canvas.redraw();
+                Platform.runLater(() -> canvas.redraw());
                 return;
             }
         }
@@ -276,7 +292,7 @@ public class Controller {
 
     @FXML
     private void stopSimulation() {
-        if(!stop_simulation.isSelected()){
+        if (!stop_simulation.isSelected()) {
             stop_simulation.setSelected(true);
             return;
         }
@@ -290,7 +306,7 @@ public class Controller {
     }
 
     @FXML
-    private void setDrawDistances(){
+    private void setDrawDistances() {
         view.setDrawDistancesValue(drawDistances.isSelected());
     }
 }

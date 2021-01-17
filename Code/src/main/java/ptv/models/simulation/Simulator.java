@@ -12,33 +12,27 @@ public class Simulator {
     private Dijkstra dijkstra;
     private InBorders inBorders;
 
-    private void firstStep(Patient handledPatient) throws IllegalStateException{
+    private void firstStep(Patient handledPatient) throws IllegalStateException {
         checkClassState();
-
-        if(!inBorders.isInside(handledPatient.getCoordinates())){
-            country.setCurrentHandledPatient(null);
-            return;
-        }
 
         Hospital hospital = dijkstra.findNearestHospitalFromPatient(handledPatient, country);
         country.setCurrentVisitedHospital(hospital);
 
-        if(hospital == null){
+        if (hospital == null) {
             country.setCurrentHandledPatient(null);
             throw new IllegalStateException("Country does not contain any hospital");
         }
     }
 
-    public void nextStep() throws IllegalStateException{
+    public void nextStep() throws IllegalStateException {
         checkClassState();
         Patient handledPatient = country.getCurrentHandledPatient();
         Hospital hospital = country.getCurrentVisitedHospital();
 
-        if(hospital == null){
+        if (hospital == null) {
             firstStep(handledPatient);
             return;
-        }
-        else if(hospital.getAvailableBeds() > 0){
+        } else if (hospital.getAvailableBeds() > 0) {
             hospital.useBed();
             country.setCurrentVisitedHospital(null);
             country.setCurrentHandledPatient(null);
@@ -48,27 +42,23 @@ public class Simulator {
         hospital = dijkstra.findNearestHospitalFromHospital(hospital);
         country.setCurrentVisitedHospital(hospital);
 
-        if(hospital == null){
+        if (hospital == null) {
             country.setCurrentHandledPatient(null);
+            throw new IllegalStateException("There is not available beds in any hospital");
         }
-        /*else if(hospital.getAvailableBeds() > 0){
-            hospital.useBed();
-            handledPatient = null;
-        }*/
     }
 
-    public boolean hasNextStep(){
-        if(country == null){
+    public boolean hasNextStep() {
+        if (country == null) {
             return false;
         }
         return country.getCurrentHandledPatient() != null;
     }
 
-    private void checkClassState(){
-        if(country == null){
+    private void checkClassState() {
+        if (country == null) {
             throw new IllegalStateException("Country is not set");
-        }
-        else if(country.getCurrentHandledPatient() == null){
+        } else if (country.getCurrentHandledPatient() == null) {
             throw new IllegalStateException("Patient is not set");
         }
     }
@@ -78,8 +68,8 @@ public class Simulator {
         inBorders = new InBorders(country.getPolygon());
     }
 
-    public void setHandledPatient(Patient patient){
-        if(country == null){
+    public void setHandledPatient(Patient patient) {
+        if (country == null) {
             throw new IllegalStateException("Country is not set");
         }
 

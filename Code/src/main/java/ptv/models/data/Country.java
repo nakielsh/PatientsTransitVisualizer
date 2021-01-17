@@ -4,21 +4,20 @@ import javafx.geometry.Point2D;
 import ptv.models.borders.InBorders;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Country {
-    private List<Facility> facilitiesList;
-    private List<Hospital> hospitalsList;
-    private List<Distance> distancesList;
+    private final List<Facility> facilitiesList;
+    private final List<Hospital> hospitalsList;
+    private final List<Distance> distancesList;
     private List<Junction> junctionsList;
-    private List<Patient> patientList;
+    private final List<Patient> patientList;
     private Hospital currentVisitedHospital;
     private Patient currentHandledPatient;
     private List<Point2D> polygon;
 
-    public Country(){
+    public Country() {
         facilitiesList = new ArrayList<>();
         hospitalsList = new ArrayList<>();
         distancesList = new ArrayList<>();
@@ -29,35 +28,23 @@ public class Country {
         return facilitiesList;
     }
 
-    public void setFacilitiesList(List<Facility> facilitiesList) {
-        this.facilitiesList = facilitiesList;
-    }
-
     public List<Hospital> getHospitalsList() {
         return hospitalsList;
     }
 
-    public void setHospitalsList(List<Hospital> hospitalsList) {
-        this.hospitalsList = hospitalsList;
-    }
-
-    public List<Distance> getDistancesList(){
+    public List<Distance> getDistancesList() {
         return distancesList;
     }
 
-    public void setDistancesList(List<Distance> distancesList){
-        this.distancesList = distancesList;
-    }
-
-    public List<Junction> getJunctionsList(){
+    public List<Junction> getJunctionsList() {
         return junctionsList;
     }
 
-    public List<Patient> getPatientList(){
+    public List<Patient> getPatientList() {
         return patientList;
     }
 
-    public void setJunctionsList(List<Junction> junctionsList){
+    public void setJunctionsList(List<Junction> junctionsList) {
         this.junctionsList = junctionsList;
     }
 
@@ -69,11 +56,11 @@ public class Country {
         this.currentVisitedHospital = currentVisitedHospital;
     }
 
-    public Patient getCurrentHandledPatient(){
+    public Patient getCurrentHandledPatient() {
         return currentHandledPatient;
     }
 
-    public void setCurrentHandledPatient(Patient patient){
+    public void setCurrentHandledPatient(Patient patient) {
         currentHandledPatient = patient;
     }
 
@@ -85,23 +72,23 @@ public class Country {
         this.polygon = polygon;
     }
 
-    public void addHospital(Hospital hospital){
+    public void addHospital(Hospital hospital) {
         hospitalsList.add(hospital);
     }
 
-    public void addFacility(Facility facility){
+    public void addFacility(Facility facility) {
         facilitiesList.add(facility);
     }
 
-    public void addDistance(Distance distance){
+    public void addDistance(Distance distance) {
         distancesList.add(distance);
     }
 
     public void addPatient(Patient patient) throws Exception {
         InBorders inBorders = new InBorders(polygon);
-        if(!inBorders.isInside(patient.getCoordinates())){
+        if (!inBorders.isInside(patient.getCoordinates())) {
             throw new Exception("Patient out of bound");
-        }else {
+        } else {
             patientList.add(patient);
         }
     }
@@ -113,8 +100,8 @@ public class Country {
         boolean wasRemoved = false;
         List<Patient> toRemove = new ArrayList<>();
 
-        for(Patient patient : patients){
-            if(!inBorders.isInside(patient.getCoordinates())){
+        for (Patient patient : patients) {
+            if (!inBorders.isInside(patient.getCoordinates())) {
                 toRemove.add(patient);
                 removedPatients = removedPatients.concat((patient.getId()) + " | ");
                 wasRemoved = true;

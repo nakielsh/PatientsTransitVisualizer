@@ -1,29 +1,25 @@
 package ptv.views;
 
 import javafx.geometry.Point2D;
-import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Affine;
-import ptv.models.borders.InBorders;
 import ptv.models.data.*;
 
-import java.util.*;
-
-//need to append scale
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class View {
-    private ResponsiveCanvas canvas;
+    private final ResponsiveCanvas canvas;
     private Affine affine;
-    private InBorders polygon;
     private Country country;
     private boolean isLoadedMap;
     private double scaleAffine;
-    private Map<String, Double> extremeCoord;
+    private final Map<String, Double> extremeCoord;
     private Point2D p0;
     private boolean drawDistancesValue;
 
@@ -32,43 +28,46 @@ public class View {
         drawDistancesValue = true;
         this.canvas = canvas;
         canvas.setView(this);
-        this.affine = new Affine();
-        this.isLoadedMap = false;
-        this.scaleAffine = 1;
-        this.extremeCoord = new HashMap<>();
-        this.p0 = new Point2D(0, 0);
+        affine = new Affine();
+        isLoadedMap = false;
+        scaleAffine = 1;
+        extremeCoord = new HashMap<>();
+        p0 = new Point2D(0, 0);
     }
 
     public boolean getIsLoadedMap() {
-        return this.isLoadedMap;
+        return isLoadedMap;
     }
 
-    public void paintMap(){
-        //canvas.setView(this);
+    public void paintMap() {
         canvas.redraw();
     }
 
     public void paintObjectsOnMap() {
         canvas.setView(this);
-        GraphicsContext g = this.canvas.getGraphicsContext2D();
-        this.countTransformPoint();
-        this.affine.appendTranslation(-p0.getX(), -p0.getY());
-        g.setTransform(this.affine);
-        g.clearRect(this.p0.getX(), this.p0.getY(), canvas.getWidth(), canvas.getHeight());
+        GraphicsContext g = canvas.getGraphicsContext2D();
+        countTransformPoint();
+        affine.appendTranslation(-p0.getX(), -p0.getY());
+        g.setTransform(affine);
+        g.clearRect(p0.getX(), p0.getY(), canvas.getWidth(), canvas.getHeight());
         g.setStroke(Color.LIGHTGRAY);
         g.setLineWidth(0.05);
+        for (int i = (int) p0.getX(); i < canvas.getHeight() + (int) p0.getY(); i++) {
+            g.strokeLine(i, (int) p0.getY(), i, canvas.getWidth() + (int) p0.getX());
         for (int i = (int)this.p0.getX(); i < this.canvas.getHeight()+(int)this.p0.getY(); i+=5) {
             g.strokeLine(i, (int)this.p0.getY(), i, this.canvas.getWidth()+(int)this.p0.getX());
         }
+        for (int i = (int) p0.getY(); i < canvas.getWidth() + (int) p0.getX(); i++) {
+            g.strokeLine((int) p0.getX(), i, canvas.getHeight() + (int) p0.getY(), i);
         for (int i = (int)this.p0.getY(); i < this.canvas.getWidth()+(int)this.p0.getX(); i+=5) {
             g.strokeLine((int)this.p0.getX(), i, this.canvas.getHeight()+(int)this.p0.getY(), i);
         }
-        this.paintPolygon(g);
-        this.paintDistances(g);
-        this.paintJunctions(g);
-        this.paintHospitals(g);
-        this.paintFacilities(g);
-        this.paintPatient();
+        paintPolygon(g);
+        paintDistances(g);
+        paintJunctions(g);
+        paintHospitals(g);
+        paintFacilities(g);
+        paintPatient();
         paintSimulation(g);
     }
 
@@ -160,7 +159,7 @@ public class View {
     }
 
     private static Point2D findCentreOfSegment(Point2D p1, Point2D p2) {
-        return new Point2D((p1.getX() + p2.getX()) / 2, (p1.getY() + p2.getY())/2);
+        return new Point2D((p1.getX() + p2.getX()) / 2, (p1.getY() + p2.getY()) / 2);
     }
 
     public void paintJunctions(GraphicsContext g) {
@@ -183,9 +182,8 @@ public class View {
     }
 
     public void paintPolygon(GraphicsContext g) {
-        List<Point2D> allPoints = new ArrayList<>();
-        allPoints = GrahamScan.createPointsList(this.country.getHospitalsList(),
-                this.country.getFacilitiesList());
+        List<Point2D> allPoints;
+        allPoints = GrahamScan.createPointsList(country.getHospitalsList(), country.getFacilitiesList());
 
         GrahamScan grahamScan = new GrahamScan();
         grahamScan.setAllPoints(allPoints);
@@ -214,7 +212,7 @@ public class View {
     }
 
     public void paintPatient() {
-        GraphicsContext g = this.canvas.getGraphicsContext2D();
+        GraphicsContext g = canvas.getGraphicsContext2D();
         Iterator<Patient> iterator = country.getPatientList().iterator();
         Patient currentPatient;
         double xCoord, yCoord, lengthOfLabel;
@@ -236,14 +234,13 @@ public class View {
         }
     }
 
-    private void paintSimulation(GraphicsContext g){
+    private void paintSimulation(GraphicsContext g) {
         Hospital currentVisitedHospital = country.getCurrentVisitedHospital();
         Patient currentHandledPatient = country.getCurrentHandledPatient();
 
-        if(currentVisitedHospital == null && currentHandledPatient != null) {
+        if (currentVisitedHospital == null && currentHandledPatient != null) {
             paintCurrentHandledPatient(g, currentHandledPatient.getCoordinates());
-        }
-        else if(currentVisitedHospital != null){
+        } else if (currentVisitedHospital != null) {
             paintCurrentVisitedHospital(g, currentVisitedHospital.getCoordinates());
         }
     }
@@ -257,7 +254,7 @@ public class View {
         g.strokeOval(xCoord-pointSize/scaleAffine/2, yCoord-pointSize/scaleAffine/2, pointSize/scaleAffine, pointSize/scaleAffine);
     }
 
-    private void paintCurrentHandledPatient(GraphicsContext g, Point2D patientCoordinates){
+    private void paintCurrentHandledPatient(GraphicsContext g, Point2D patientCoordinates) {
         double patientX = patientCoordinates.getX();
         double patientY = patientCoordinates.getY();
 
@@ -282,68 +279,69 @@ public class View {
 
     }
 
-
-
     private void countExtremePoints() {
-        List<Point2D> convexHull = this.country.getPolygon();
-        if(convexHull.isEmpty()) {
+        List<Point2D> convexHull = country.getPolygon();
+        if (convexHull.isEmpty()) {
             throw new IllegalArgumentException("convexHull can't be empty");
         }
         double minX, maxX, minY, maxY;
         minX = maxX = convexHull.get(0).getX();
         minY = maxY = convexHull.get(0).getY();
-        for (int i=1; i<convexHull.size(); i++) {
+        for (int i = 1; i < convexHull.size(); i++) {
             Point2D currentPoint = convexHull.get(i);
-            if(currentPoint.getX() < minX) {
+            if (currentPoint.getX() < minX) {
                 minX = currentPoint.getX();
             }
-            if(currentPoint.getX() > maxX) {
+            if (currentPoint.getX() > maxX) {
                 maxX = currentPoint.getX();
             }
-            if(currentPoint.getY() < minY) {
+            if (currentPoint.getY() < minY) {
                 minY = currentPoint.getY();
             }
-            if(currentPoint.getY() > maxY) {
+            if (currentPoint.getY() > maxY) {
                 maxY = currentPoint.getY();
             }
         }
-        this.extremeCoord.put("minX", minX);
-        this.extremeCoord.put("maxX", maxX);
-        this.extremeCoord.put("minY", minY);
-        this.extremeCoord.put("maxY", maxY);
+        extremeCoord.put("minX", minX);
+        extremeCoord.put("maxX", maxX);
+        extremeCoord.put("minY", minY);
+        extremeCoord.put("maxY", maxY);
     }
 
-    private double findDistance() {
-        return Math.max(this.extremeCoord.get("maxX") - this.extremeCoord.get("minX"),
-                this.extremeCoord.get("maxY") - this.extremeCoord.get("minY"));
-    }
-
-    public void setCountry(Country country){
+    public void setCountry(Country country) {
         this.country = country;
         GrahamScan grahamScan = new GrahamScan();
         grahamScan.setAllPoints(GrahamScan.createPointsList(country.getHospitalsList(), country.getFacilitiesList()));
         grahamScan.countGrahamHull();
         country.setPolygon(grahamScan.getPolygon());
-        this.countExtremePoints();
+        countExtremePoints();
     }
 
-    public void setP0(Point2D p0) {this.p0 = p0;}
+    public void setP0(Point2D p0) {
+        this.p0 = p0;
+    }
 
-    public Point2D getP0(){return this.p0;}
+    public void setIsLoadedMap(boolean loadedMap) {
+        isLoadedMap = loadedMap;
+    }
 
-    public Country getCountry(){return this.country;}
+    public Affine getAffine() {
+        return this.affine;
+    }
 
-    public void setIsLoadedMap(boolean loadedMap) {isLoadedMap = loadedMap;}
+    public void setAffine(Affine affine) {
+        this.affine = affine;
+    }
 
-    public Affine getAffine(){return this.affine;}
+    public void setScaleAffine(double scaleAffine) {
+        this.scaleAffine = scaleAffine;
+    }
 
-    public void setAffine(Affine affine){this.affine = affine;}
+    public double getScaleAffine() {
+        return this.scaleAffine;
+    }
 
-    public void setScaleAffine(double scaleAffine) {this.scaleAffine = scaleAffine;}
-
-    public double getScaleAffine() {return this.scaleAffine;}
-
-    public void setDrawDistancesValue(boolean drawDistances){
+    public void setDrawDistancesValue(boolean drawDistances) {
         drawDistancesValue = drawDistances;
     }
 }
