@@ -32,7 +32,7 @@ public class ResponsiveCanvas extends Canvas {
             //affine.appendTranslation(this.view.getP0().getX(), this.view.getP0().getY());
             affine.appendScale(this.view.getScaleAffine(), this.view.getScaleAffine());
             this.view.setAffine(affine);
-            view.paintMap();
+            view.paintObjectsOnMap();
         } else {
             GraphicsContext gc = getGraphicsContext2D();
             gc.clearRect(0, 0, width, height);

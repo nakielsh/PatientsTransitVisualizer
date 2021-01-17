@@ -30,6 +30,7 @@ public class View {
     public View(ResponsiveCanvas canvas) {
         drawDistancesValue = true;
         this.canvas = canvas;
+        canvas.setView(this);
         this.affine = new Affine();
         this.isLoadedMap = false;
         this.scaleAffine = 1;
@@ -41,7 +42,12 @@ public class View {
         return this.isLoadedMap;
     }
 
-    public void paintMap() {
+    public void paintMap(){
+        //canvas.setView(this);
+        canvas.redraw();
+    }
+
+    public void paintObjectsOnMap() {
         canvas.setView(this);
         GraphicsContext g = this.canvas.getGraphicsContext2D();
         this.countTransformPoint();
