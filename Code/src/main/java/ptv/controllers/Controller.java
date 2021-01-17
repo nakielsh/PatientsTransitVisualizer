@@ -8,7 +8,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.stage.FileChooser;
-
 import ptv.models.data.Country;
 import ptv.models.data.Hospital;
 import ptv.models.data.JunctionFinder;
@@ -50,7 +49,7 @@ public class Controller {
     @FXML
     private RadioButton drawDistances;
 
-    private Simulator simulator;
+    private final Simulator simulator;
     private Country country;
     private boolean isSimulationRunning;
     private int id = -1;
@@ -257,13 +256,25 @@ public class Controller {
                 simulator.nextStep();
 
                 if (country.getCurrentHandledPatient() == null && country.getCurrentVisitedHospital() == null) {
-                    Platform.runLater(() -> text.appendText(" - Patient (" + currentHandledPatient.getId() +
-                            ") is accepted in hospital - " + currentVisitedHospital.getName() + "\n" + "-----------------------------\n"));
+                    Platform.runLater(() -> {
+                                text.appendText(" - Patient ");
+                                text.appendText("(" + currentHandledPatient.getId() + ")");
+                                text.appendText(" is accepted in hospital ");
+                                text.appendText("(" + currentVisitedHospital.getId() + ")");
+                                text.appendText("- " + currentVisitedHospital.getName() + "\n" + "-----------------------------\n");
+                            }
+                    );
                 }
             } catch (IllegalStateException e) {
                 if (e.getMessage().equals("There is not available beds in any hospital")) {
-                    Platform.runLater(() -> text.appendText(" - Patient (" + currentHandledPatient.getId() +
-                            ") is waiting in queue in hospital - " + currentVisitedHospital.getName() + "\n" + "-----------------------------\n"));
+                    Platform.runLater(() -> {
+                        text.appendText(" - Patient ");
+                        text.appendText("(" + currentHandledPatient.getId() + ")");
+                        text.appendText(" is waiting in queue in hospital ");
+                        text.appendText("(" + currentVisitedHospital.getId() + ")");
+                        text.appendText(" - " + currentVisitedHospital.getName() + "\n" + "-----------------------------\n");
+
+                    });
                 }
             }
         } else if (patients.size() != 0) {
