@@ -130,9 +130,7 @@ public class View {
         double firstXCoord, firstYCoord, secondXCoord, secondYCoord;
         Point2D labelPoint;
         String value;
-//        g.setFill(Color.BLACK);
         g.setStroke(Color.BLACK);
-//        g.setLineWidth(0.1);
         while (iterator.hasNext()) {
             currentDistance = iterator.next();
             firstXCoord = currentDistance.getFirstNode().getCoordinates().getX();
@@ -148,7 +146,6 @@ public class View {
                 value = String.valueOf((int)currentDistance.getDist());
                 double topBottomMargin = 20;
                 double lengthOfLabel = (8.0* value.length() + 7.0);
-                double pointSize = 7;
                 g.setFont(new Font("Arial", 15.0/scaleAffine));
                 g.setFill(Color.BLACK);
                 g.fillOval(xCoord - lengthOfLabel/scaleAffine/2, yCoord - topBottomMargin*0.5/scaleAffine, lengthOfLabel/scaleAffine, topBottomMargin/scaleAffine );
@@ -175,8 +172,6 @@ public class View {
             xCoord = currentJunction.getCoordinates().getX();
             yCoord = currentJunction.getCoordinates().getY();
             int pointSize = 7;
-//            g.strokeOval(junctionXCoord - 0.1, junctionYCoord - 0.1, 0.2, 0.2);
-//            g.fillOval(junctionXCoord - 0.1, junctionYCoord - 0.1, 0.2, 0.2);
             g.fillOval(xCoord-pointSize/scaleAffine/2, yCoord-pointSize/scaleAffine/2, pointSize/scaleAffine, pointSize/scaleAffine);
 
 
@@ -241,7 +236,7 @@ public class View {
         Patient currentHandledPatient = country.getCurrentHandledPatient();
 
         if (currentVisitedHospital == null && currentHandledPatient != null) {
-            paintCurrentHandledPatient(g, currentHandledPatient.getCoordinates());
+            paintCurrentHandledPatient(g, currentHandledPatient.getCoordinates(), currentHandledPatient.getId());
         } else if (currentVisitedHospital != null) {
             paintCurrentVisitedHospital(g, currentVisitedHospital.getCoordinates());
         }
@@ -256,16 +251,21 @@ public class View {
         g.strokeOval(xCoord-pointSize/scaleAffine/2, yCoord-pointSize/scaleAffine/2, pointSize/scaleAffine, pointSize/scaleAffine);
     }
 
-    private void paintCurrentHandledPatient(GraphicsContext g, Point2D patientCoordinates) {
-        double patientX = patientCoordinates.getX();
-        double patientY = patientCoordinates.getY();
-
-        g.setStroke(Color.GREEN);
-        g.setFill(Color.BLACK);
-        g.setLineWidth(0.1);
-
-        g.fillOval(patientX - 0.2, patientY - 0.2, 0.4, 0.4);
-        g.strokeOval(patientX - 0.2, patientY - 0.2, 0.4, 0.4);
+    private void paintCurrentHandledPatient(GraphicsContext g, Point2D patientCoordinates, int id) {
+        double xCoord = patientCoordinates.getX();
+        double yCoord = patientCoordinates.getY();
+        double topBottomMargin = 20;
+        double pointSize = 7;
+        String value = "P" + id;
+        double lengthOfLabel = (12.0* value.length() + 5.0);
+        g.setStroke(Color.RED);
+        g.setLineWidth(5/scaleAffine);
+        g.strokeOval(xCoord-pointSize/scaleAffine/2, yCoord-pointSize/scaleAffine/2, pointSize/scaleAffine, pointSize/scaleAffine);
+        g.setFill(Color.BLUE);
+        g.fillOval(xCoord-pointSize/scaleAffine/2, yCoord-pointSize/scaleAffine/2, pointSize/scaleAffine, pointSize/scaleAffine);
+        g.fillRect(xCoord - lengthOfLabel/scaleAffine/2, yCoord - topBottomMargin*1.2/scaleAffine, lengthOfLabel/scaleAffine, topBottomMargin/scaleAffine );
+        g.setFill(Color.WHITE);
+        g.fillText(value, xCoord, yCoord-topBottomMargin*0.75/scaleAffine);
     }
 
     public void countAffine() {
