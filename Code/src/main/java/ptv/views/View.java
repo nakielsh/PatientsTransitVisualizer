@@ -236,7 +236,7 @@ public class View {
     private void paintCurrentVisitedHospital(GraphicsContext g, Point2D hospitalCoordinates){
         g.setStroke(Color.GREEN);
         g.setLineWidth(0.1);
-        g.strokeOval(hospitalCoordinates.getX() - 0.5, hospitalCoordinates.getY() - 0.5, 1, 1);
+        g.strokeOval(hospitalCoordinates.getX() - 0.25, hospitalCoordinates.getY() - 0.25, 0.5, 0.5);
     }
 
     private void paintCurrentHandledPatient(GraphicsContext g, Point2D patientCoordinates){
