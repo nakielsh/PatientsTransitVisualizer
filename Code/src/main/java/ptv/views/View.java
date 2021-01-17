@@ -251,7 +251,7 @@ public class View {
         double yDistance = this.extremeCoord.get("maxY") - this.extremeCoord.get("minY") + 4;
         double height = this.canvas.getHeight();
         double width = this.canvas.getWidth();
-        this.setScaleAffine(Math.min(height, width)/far);
+        this.setScaleAffine(Math.min(width/xDistance, height/yDistance));
     }
 
     public void countTransformPoint() {
