@@ -26,4 +26,20 @@ class InBordersTest {
         assertTrue(inBorders.isInside(patientIn));
         assertFalse(inBorders.isInside(patientOut));
     }
+
+    @Test
+    public void shouldPatientBeInTheSamePositionAsPointWhenPolygonHasOnePoint(){
+        List<Point2D> given = new ArrayList<>();
+        given.add(new Point2D(4,4));
+
+        Point2D patientIn = new Point2D(4,4);
+        Point2D patientOut = new Point2D(4,5);
+
+        InBorders inBorders = new InBorders(given);
+
+        assertTrue(inBorders.isInside(patientIn));
+        assertFalse(inBorders.isInside(patientOut));
+
+
+    }
 }

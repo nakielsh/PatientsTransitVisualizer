@@ -63,7 +63,7 @@ public class InBorders {
         }
         int n = borderPoints.size();
         if (n == 1) {
-            return borderPoints.get(0) == p;
+            return borderPoints.get(0).getX() == p.getX() && borderPoints.get(0).getY() == p.getY();
         }
         if (n == 2) {
             return onSegment(borderPoints.get(0), p, borderPoints.get(1));
