@@ -10,7 +10,7 @@ class GrahamScanTest {
 
 
     @Test
-    public void shouldReturnHull() {
+    public void shouldReturnHullForListOfPoints() {
         List<Point2D> given = new ArrayList<>();
         given.add(new Point2D(4,2));
         given.add(new Point2D(2,3));
@@ -77,17 +77,20 @@ class GrahamScanTest {
         List<Point2D> given = new ArrayList<>();
         GrahamScan grahamScan = new GrahamScan();
         grahamScan.setAllPoints(given);
-        Assertions.assertThrows(IllegalArgumentException.class, grahamScan::countGrahamHull);
+        String msg = "There must be at least 1 point";
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, grahamScan::countGrahamHull);
+        Assertions.assertEquals(msg, exception.getMessage());
     }
 
     @Test
-    public void shouldReturnExceptionForTooShortList() {
+    public void shouldNotChangeResultFor2PointList() {
         List<Point2D> given = new ArrayList<>();
         given.add(new Point2D(4,2));
         given.add(new Point2D(2,3));
         GrahamScan grahamScan = new GrahamScan();
         grahamScan.setAllPoints(given);
-        Assertions.assertThrows(IllegalArgumentException.class, grahamScan::countGrahamHull);
+        grahamScan.countGrahamHull();
+        Assertions.assertEquals(given, grahamScan.getPolygon());
     }
 
 
