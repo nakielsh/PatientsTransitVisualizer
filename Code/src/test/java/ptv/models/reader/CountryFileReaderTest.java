@@ -233,4 +233,13 @@ public class CountryFileReaderTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryFileReader.readFile(filePath));
         assertEquals(msg, exception.getMessage());
     }
+
+    @Test
+    public void shouldThrowIllegalArgumentExceptionWhenFileContainsTooBigCoordinates() {
+        String filePath = path + "tooBigCoordinates.txt";
+        String msg = "Line: 3. Hospital's coordinates should be smaller than 1000000000";
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryFileReader.readFile(filePath));
+        assertEquals(msg, exception.getMessage());
+    }
 }

@@ -9,7 +9,7 @@ import javafx.scene.transform.Affine;
 
 public class ResponsiveCanvas extends Canvas {
 
-    View view;
+    private View view;
 
     public ResponsiveCanvas() {
         widthProperty().addListener(evt -> redraw());
