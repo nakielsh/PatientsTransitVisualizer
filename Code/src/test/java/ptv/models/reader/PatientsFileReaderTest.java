@@ -40,7 +40,7 @@ public class PatientsFileReaderTest {
 
     @Test
     public void shouldReadFileProperlyWhenGivenCorrectFile() throws FileNotFoundException {
-        List<Patient> patientList = patientsFileReader.readFile(path + "correctDataCountry.txt");
+        List<Patient> patientList = patientsFileReader.readFile(path + "correctData.txt");
 
         Patient patient1 = patientList.get(0);
         Patient patient2 = patientList.get(1);

@@ -5,7 +5,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Affine;
-import ptv.models.borders.InBorders;
 import ptv.models.data.*;
 
 import java.util.HashMap;
