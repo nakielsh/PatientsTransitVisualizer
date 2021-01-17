@@ -68,12 +68,12 @@ public class GrahamScan {
     }
 
     public void countGrahamHull() {
-        if(this.allPoints.size() < 1) {
+        if (this.allPoints.size() < 1) {
             throw new IllegalArgumentException("There must be at least 1 point");
         }
-        if(this.allPoints.size() <= 3) {
+        if (this.allPoints.size() <= 3) {
             this.polygon = this.allPoints;
-            return ;
+            return;
         }
         Point2D p0 = this.allPoints.remove(findP0(this.allPoints));
         this.allPoints.sort(getGrahamComparator(p0));
@@ -87,12 +87,12 @@ public class GrahamScan {
         this.polygon.add(0, p0);
     }
 
-    public static List<Point2D> createPointsList( List<Hospital> hospitals, List<Facility> facilities) {
+    public static List<Point2D> createPointsList(List<Hospital> hospitals, List<Facility> facilities) {
         List<Point2D> objectsPoints = new ArrayList<>();
-        if(hospitals.isEmpty() || facilities.isEmpty()) {
+        if (hospitals.isEmpty() || facilities.isEmpty()) {
             throw new IllegalArgumentException("List can't be empty");
         }
-        for(Hospital hospital : hospitals) {
+        for (Hospital hospital : hospitals) {
             objectsPoints.add(hospital.getCoordinates());
         }
         for (Facility facility : facilities) {
@@ -101,27 +101,12 @@ public class GrahamScan {
         return objectsPoints;
     }
 
-    public void setAllPoints(List<Point2D> points) {this.allPoints = points;}
+    public void setAllPoints(List<Point2D> points) {
+        this.allPoints = points;
+    }
 
-    public List<Point2D> getPolygon() {return this.polygon;}
-
-//    public List<Point2D> returnJarvisMarchHull(List<Point2D> points) {
-//        if (points.size() < 3) {
-//            throw new IllegalArgumentException("There must be at least 3 points to count hull");
-//        }
-//        List<Point2D> hull = new ArrayList<>();
-//        int minusINF = -1000;
-//        Point2D p1 = points.get(findP0(points));
-//        Point2D p0 = new Point2D(minusINF, p1.getY());
-//        Point2D n;
-//        int i = 1;
-//        do {
-//            Point2D currentPoint = p0;
-//            points.sort(getGrahamComparator(currentPoint));
-//            n = points.get(points.size() - 1);
-//        } while (n == p1);
-//
-//
-//    }
+    public List<Point2D> getPolygon() {
+        return this.polygon;
+    }
 
 }
