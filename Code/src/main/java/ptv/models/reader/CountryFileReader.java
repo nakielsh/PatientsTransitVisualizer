@@ -115,7 +115,7 @@ public class CountryFileReader {
         if (id >= MAXID) {
             throw new IllegalArgumentException("Line: " + lineNumber + ". Hospital's id should be smaller than " + MAXID);
         }
-        if (x >= MAXCOORD && y >= MAXCOORD) {
+        if (x >= MAXCOORD || y >= MAXCOORD) {
             throw new IllegalArgumentException("Line: " + lineNumber + ". Hospital's coordinates should be smaller than " + MAXCOORD);
         }
 
