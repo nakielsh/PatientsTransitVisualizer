@@ -19,6 +19,19 @@ public class InBorders {
                 q.getY() >= Math.min(p.getY(), r.getY());
     }
 
+    private static boolean isInStraight(Point2D p, Point2D q, Point2D r) {
+        double a = (p.getX() - r.getX()) != 0 ? (p.getY() - r.getY()) / (p.getX() - r.getX()) : Double.MAX_VALUE;
+
+        if (a == Double.MAX_VALUE) {
+            return q.getX() == p.getX() &&
+                    q.getY() >= Math.min(p.getX(), r.getX()) &&
+                    q.getY() <= Math.max(p.getY(), r.getY());
+        }
+
+        double b = p.getY() - a * p.getX();
+        return q.getY() == (a * q.getX() + b);
+    }
+
     private static int orientation(Point2D p, Point2D q, Point2D r) {
         double val = (q.getY() - p.getY()) * (r.getX() - q.getX()) - (q.getX() - p.getX()) * (r.getY() - q.getY());
         if (val == 0) {
@@ -66,7 +79,7 @@ public class InBorders {
             return borderPoints.get(0).getX() == p.getX() && borderPoints.get(0).getY() == p.getY();
         }
         if (n == 2) {
-            return onSegment(borderPoints.get(0), p, borderPoints.get(1));
+            return isInStraight(borderPoints.get(0), p, borderPoints.get(1));
         }
 
         Point2D extreme = new Point2D(INF, p.getY());
