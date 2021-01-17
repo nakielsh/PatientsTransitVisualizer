@@ -6,14 +6,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Affine;
-import javafx.scene.transform.Translate;
 
 public class ResponsiveCanvas extends Canvas {
 
     View view;
 
     public ResponsiveCanvas() {
-        // Redraw canvas when size changes.
         widthProperty().addListener(evt -> redraw());
         heightProperty().addListener(evt -> redraw());
     }
