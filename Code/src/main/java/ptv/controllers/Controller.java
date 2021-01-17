@@ -162,7 +162,6 @@ public class Controller {
 
     }
 
-
     @FXML
     private void onMousePressed(MouseEvent mouseEvent) {
         if (toggleAddButton.isSelected()) {
@@ -219,6 +218,7 @@ public class Controller {
 
         isSimulationRunning = true;
         Thread simulationThread = new Thread(this::simulate);
+        simulationThread.setDaemon(true);
         simulationThread.start();
     }
 
