@@ -50,6 +50,7 @@ public class Simulator {
 
         if(hospital == null){
             country.setCurrentHandledPatient(null);
+            throw new IllegalStateException("There is not available beds in any hospital");
         }
         /*else if(hospital.getAvailableBeds() > 0){
             hospital.useBed();

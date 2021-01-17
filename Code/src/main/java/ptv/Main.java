@@ -17,6 +17,8 @@ public class Main extends Application {
         Pane window = FXMLLoader.load(getClass().getResource("/fxml/mainWindow.fxml"));
         //Pane window = FXMLLoader.load(getClass().getResource("/fxml/mainWindowStack.fxml"));
         Scene scene = new Scene(window);
+        stage.setMinHeight(window.getPrefHeight());
+        stage.setMinWidth(window.getPrefWidth());
         stage.setScene(scene);
         stage.setTitle("Patients Transit Visualizer");
         stage.show();

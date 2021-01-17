@@ -9,6 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.stage.FileChooser;
 import ptv.models.data.Country;
+import ptv.models.data.Hospital;
 import ptv.models.data.JunctionFinder;
 import ptv.models.data.Patient;
 import ptv.models.reader.CountryFileReader;
@@ -248,27 +249,41 @@ public class Controller {
     private void simulate() {
         while (isSimulationRunning) {
             List<Patient> patients = country.getPatientList();
+            boolean deletePatient = false;
             if (simulator.hasNextStep()) {
-                simulator.nextStep();
-                if (country.getCurrentHandledPatient() != null) {
-                    text.appendText(" - Patient (" + country.getCurrentHandledPatient().getId() + ") goes to hospital - " + country.getCurrentVisitedHospital().getName() + "\n");
+                Patient currentHandledPatient = country.getCurrentHandledPatient();
+                Hospital currentVisitedHospital = country.getCurrentVisitedHospital();
+
+                try {
+                    simulator.nextStep();
+
+                    if (country.getCurrentHandledPatient() == null && country.getCurrentVisitedHospital() == null) {
+                        Platform.runLater(() -> text.appendText(" - Patient (" + currentHandledPatient.getId() + ") is accepted in hospital - " + currentVisitedHospital.getName() + "\n"));
+                    }
+                }catch(IllegalStateException e){
+                    if(e.getMessage().equals("There is not available beds in any hospital")){
+                        Platform.runLater(() -> text.appendText(" - Patient (" + currentHandledPatient.getId() + ") is waiting in queue in hospital - " + currentVisitedHospital.getName() + "\n"));
+                    }
                 }
             } else if (patients.size() != 0) {
-                simulator.setHandledPatient(patients.remove(0));
+                simulator.setHandledPatient(patients.get(0));
+                deletePatient = true;
             }
 
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    canvas.redraw();
-                }
-            });
+            if(deletePatient) {
+                Platform.runLater(() -> {
+                    if(patients.size() > 0){
+                        patients.remove(0);
+                    }
+                });
+            }
+            Platform.runLater(() -> canvas.redraw());
 
             try {
-                Thread.sleep(getSimulationSpeed() + 1);
+                Thread.sleep(getSimulationSpeed());//+ 1);
             } catch (InterruptedException e) {
                 stopSimulation();
-                canvas.redraw();
+                Platform.runLater(() -> canvas.redraw());
                 return;
             }
         }
