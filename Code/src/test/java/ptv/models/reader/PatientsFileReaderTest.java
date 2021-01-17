@@ -18,10 +18,12 @@ public class PatientsFileReaderTest {
     private final String path = new File("").getAbsolutePath() + "/src/test/java/ptv/models/reader/patientsDataSets/";
 
     @BeforeEach
-    public void setUp(){ patientsFileReader = new PatientsFileReader();}
+    public void setUp() {
+        patientsFileReader = new PatientsFileReader();
+    }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFilePathIsNull(){
+    public void shouldThrowIllegalArgumentExceptionWhenFilePathIsNull() {
         String expectedMessage = "FilePath cannot be null or empty String";
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> patientsFileReader.readFile(null));
@@ -29,7 +31,7 @@ public class PatientsFileReaderTest {
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFilePathIsEmptyString(){
+    public void shouldThrowIllegalArgumentExceptionWhenFilePathIsEmptyString() {
         String expectedMessage = "FilePath cannot be null or empty String";
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> patientsFileReader.readFile(""));
@@ -45,13 +47,13 @@ public class PatientsFileReaderTest {
         Patient patient3 = patientList.get(2);
 
         assertEquals(1, patient1.getId());
-        assertEquals(new Point2D(20,20), patient1.getCoordinates());
+        assertEquals(new Point2D(20, 20), patient1.getCoordinates());
 
         assertEquals(2, patient2.getId());
-        assertEquals(new Point2D(99,105), patient2.getCoordinates());
+        assertEquals(new Point2D(99, 105), patient2.getCoordinates());
 
         assertEquals(3, patient3.getId());
-        assertEquals(new Point2D(23,40), patient3.getCoordinates());
+        assertEquals(new Point2D(23, 40), patient3.getCoordinates());
     }
 
     @Test
@@ -63,13 +65,13 @@ public class PatientsFileReaderTest {
         Patient patient3 = patientList.get(2);
 
         assertEquals(1, patient1.getId());
-        assertEquals(new Point2D(20.1,20.4), patient1.getCoordinates());
+        assertEquals(new Point2D(20.1, 20.4), patient1.getCoordinates());
 
         assertEquals(2, patient2.getId());
-        assertEquals(new Point2D(99.2,105.0), patient2.getCoordinates());
+        assertEquals(new Point2D(99.2, 105.0), patient2.getCoordinates());
 
         assertEquals(3, patient3.getId());
-        assertEquals(new Point2D(23.4,40.2), patient3.getCoordinates());
+        assertEquals(new Point2D(23.4, 40.2), patient3.getCoordinates());
     }
 
     @Test
@@ -81,17 +83,17 @@ public class PatientsFileReaderTest {
         Patient patient3 = patientList.get(2);
 
         assertEquals(1, patient1.getId());
-        assertEquals(new Point2D(-20,20), patient1.getCoordinates());
+        assertEquals(new Point2D(-20, 20), patient1.getCoordinates());
 
         assertEquals(2, patient2.getId());
-        assertEquals(new Point2D(99,-105), patient2.getCoordinates());
+        assertEquals(new Point2D(99, -105), patient2.getCoordinates());
 
         assertEquals(3, patient3.getId());
-        assertEquals(new Point2D(-23,-40), patient3.getCoordinates());
+        assertEquals(new Point2D(-23, -40), patient3.getCoordinates());
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFileContainsOnlyHeader(){
+    public void shouldThrowIllegalArgumentExceptionWhenFileContainsOnlyHeader() {
         String filePath = path + "headerOnly.txt";
         String expectedMessage = "File does not contain any patients.";
 
@@ -100,7 +102,7 @@ public class PatientsFileReaderTest {
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFileDoesNotContainHeader(){
+    public void shouldThrowIllegalArgumentExceptionWhenFileDoesNotContainHeader() {
         String filePath = path + "noHeader.txt";
         String expectedMessage = "Expected first line starting with '#' in file " + filePath;
 
@@ -109,7 +111,7 @@ public class PatientsFileReaderTest {
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFileContainsTooManySections(){
+    public void shouldThrowIllegalArgumentExceptionWhenFileContainsTooManySections() {
         String filePath = path + "tooManySections.txt";
         String expectedMessage = "Line: 2. Wrong number of sections. Expected 3 sections.";
 
@@ -118,7 +120,7 @@ public class PatientsFileReaderTest {
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFileContainsTooManyHeaders(){
+    public void shouldThrowIllegalArgumentExceptionWhenFileContainsTooManyHeaders() {
         String filePath = path + "tooManyHeaders.txt";
         String expectedMessage = "More than one header starting with '#' in file " + filePath + ". Expected one header.";
 
@@ -127,7 +129,7 @@ public class PatientsFileReaderTest {
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFileContainsTheSameId(){
+    public void shouldThrowIllegalArgumentExceptionWhenFileContainsTheSameId() {
         String filePath = path + "sameID.txt";
         String expectedMessage = "Line: 3. Patient's id should be unique.";
 
@@ -136,11 +138,29 @@ public class PatientsFileReaderTest {
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFileContainsNegativeId(){
+    public void shouldThrowIllegalArgumentExceptionWhenFileContainsNegativeId() {
         String filePath = path + "negativeID.txt";
         String expectedMessage = "Line: 2. Wrong data format. Should be:\n " +
                 "id - not negative integer,\n " +
                 "x and y - float number.";
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> patientsFileReader.readFile(filePath));
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
+    public void shouldThrowIllegalArgumentExceptionWhenFileContainsTooBigId() {
+        String filePath = path + "tooBigId.txt";
+        String expectedMessage = "Line: 4. Patient's id should be smaller than 1000";
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> patientsFileReader.readFile(filePath));
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
+    public void shouldThrowIllegalArgumentExceptionWhenFileContainsTooBigCoordinates() {
+        String filePath = path + "tooBigCoordinates.txt";
+        String expectedMessage = "Line: 3. Patient's coordinates should be smaller than 1000000000";
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> patientsFileReader.readFile(filePath));
         assertEquals(expectedMessage, exception.getMessage());

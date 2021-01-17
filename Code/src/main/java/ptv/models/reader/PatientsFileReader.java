@@ -85,11 +85,11 @@ public class PatientsFileReader {
         }
 
         if (id >= MAXID) {
-            throw new IllegalArgumentException("Line: " + lineNumber + ". Facility's id should be smaller than " + MAXID);
+            throw new IllegalArgumentException("Line: " + lineNumber + ". Patient's id should be smaller than " + MAXID);
         }
 
-        if (x >= MAXCOORD && y >= MAXCOORD) {
-            throw new IllegalArgumentException("Line: " + lineNumber + ". Facility's coordinates should be smaller than " + MAXCOORD);
+        if (x >= MAXCOORD || y >= MAXCOORD) {
+            throw new IllegalArgumentException("Line: " + lineNumber + ". Patient's coordinates should be smaller than " + MAXCOORD);
         }
 
         if (canLoadPatient(id)) {
