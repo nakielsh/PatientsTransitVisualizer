@@ -52,12 +52,18 @@ public class InBorders {
     }
 
     public boolean isInside(Point2D p) {
-        int n = borderPoints.size();
-        if (n < 1) {
-            return false;
+        if (p == null) {
+            throw new IllegalArgumentException("Point cannot be null");
         }
+        if (this.borderPoints == null) {
+            throw new IllegalArgumentException("Polygon with border points cannot be null");
+        }
+        if (this.borderPoints.isEmpty()) {
+            throw new IllegalArgumentException("Polygon with border points cannot be empty");
+        }
+        int n = borderPoints.size();
         if (n == 1) {
-            return p == borderPoints.get(0);
+            return borderPoints.get(0) == p;
         }
         if (n == 2) {
             return onSegment(borderPoints.get(0), p, borderPoints.get(1));

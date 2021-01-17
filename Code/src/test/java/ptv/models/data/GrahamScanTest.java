@@ -60,6 +60,19 @@ class GrahamScanTest {
     }
 
     @Test
+    public void shouldNotChangeResultFor3PointList(){
+        List<Point2D> given = new ArrayList<>();
+        given.add(new Point2D(4,2));
+        given.add(new Point2D(2,3));
+        given.add(new Point2D(5,5));
+
+        GrahamScan grahamScan = new GrahamScan();
+        grahamScan.setAllPoints(given);
+        grahamScan.countGrahamHull();
+        Assertions.assertEquals(given, grahamScan.getPolygon());
+    }
+
+    @Test
     public void shouldReturnExceptionForEmptyList() {
         List<Point2D> given = new ArrayList<>();
         GrahamScan grahamScan = new GrahamScan();
