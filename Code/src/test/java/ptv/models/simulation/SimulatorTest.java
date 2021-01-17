@@ -15,12 +15,12 @@ public class SimulatorTest {
     private Simulator simulator;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         simulator = new Simulator();
     }
 
     @Test
-    public void shouldThrowIllegalStateExceptionWhenCountryIsNotSet(){
+    public void shouldThrowIllegalStateExceptionWhenCountryIsNotSet() {
         Patient patient = new Patient(0, new Point2D(0, 0));
 
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> simulator.setHandledPatient(patient));
@@ -28,7 +28,7 @@ public class SimulatorTest {
     }
 
     @Test
-    public void shouldThrowIllegalStateExceptionWhenPatientIsNotSet(){
+    public void shouldThrowIllegalStateExceptionWhenPatientIsNotSet() {
         Country country = new Country();
         simulator.setCountry(country);
 
@@ -37,7 +37,7 @@ public class SimulatorTest {
     }
 
     @Test
-    public void shouldThrowIllegalStateExceptionWhenCountryIsEmpty(){
+    public void shouldThrowIllegalStateExceptionWhenCountryIsEmpty() {
         Country country = new Country();
         Patient patient = new Patient(0, new Point2D(0, 0));
 
@@ -49,7 +49,7 @@ public class SimulatorTest {
     }
 
     @Test
-    public void shouldMakeFirstStepAutomaticallyWhenNextStepIsCalled(){
+    public void shouldMakeFirstStepAutomaticallyWhenNextStepIsCalled() {
         Country country = new Country();
         Patient patient = new Patient(1, new Point2D(10, 10));
         Hospital h1 = new Hospital(1, "H1", new Point2D(0, 0), 10, 0);
@@ -72,7 +72,7 @@ public class SimulatorTest {
     }
 
     @Test
-    public void shouldVisitEveryHospitalWhenEveryHospitalInCountryDoesNotHaveAvailableBeds(){
+    public void shouldThrowIllegalStateExceptionWhenEveryHospitalInCountryDoesNotHaveAvailableBeds() {
         Country country = new Country();
         Patient patient = new Patient(1, new Point2D(10, 10));
         Hospital h1 = new Hospital(1, "H1", new Point2D(0, 0), 10, 0);
@@ -97,10 +97,11 @@ public class SimulatorTest {
         Hospital actualVisitedHospital2 = country.getCurrentVisitedHospital();
 
         boolean actualHasNextStep3 = simulator.hasNextStep();
-        simulator.nextStep();
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> simulator.nextStep());
         Hospital actualVisitedHospital3 = country.getCurrentVisitedHospital();
         boolean actualHasNextStep4 = simulator.hasNextStep();
 
+        assertEquals("There is not available beds in any hospital", exception.getMessage());
         assertNull(country.getCurrentVisitedHospital());
         assertTrue(actualHasNextStep1);
         assertTrue(actualHasNextStep2);
@@ -112,7 +113,7 @@ public class SimulatorTest {
     }
 
     @Test
-    public void shouldSimulateCorrectlyWhenMethodsAreCalledCorrectly(){
+    public void shouldSimulateCorrectlyWhenMethodsAreCalledCorrectly() {
         Country country = new Country();
         Patient patient1 = new Patient(1, new Point2D(-10.5, -10));
         Patient patient2 = new Patient(2, new Point2D(15, 26.5));

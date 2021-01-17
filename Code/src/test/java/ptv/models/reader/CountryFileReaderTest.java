@@ -2,6 +2,7 @@ package ptv.models.reader;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import ptv.models.data.Country;
 import ptv.models.data.Distance;
 import ptv.models.data.Facility;
@@ -20,18 +21,18 @@ public class CountryFileReaderTest {
     private String path = new File("").getAbsolutePath() + "/src/test/java/ptv/models/reader/countryDataSets/";
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         countryFileReader = new CountryFileReader();
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFilePathIsNull(){
+    public void shouldThrowIllegalArgumentExceptionWhenFilePathIsNull() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryFileReader.readFile(null));
         assertEquals("FilePath cannot be null or empty String", exception.getMessage());
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFilePathIsEmptyString(){
+    public void shouldThrowIllegalArgumentExceptionWhenFilePathIsEmptyString() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryFileReader.readFile(""));
         assertEquals("FilePath cannot be null or empty String", exception.getMessage());
     }
@@ -49,11 +50,11 @@ public class CountryFileReaderTest {
         Facility facility = facilities.get(0);
         Distance distance = distances.get(0);
 
-        assertEquals(1 , hospital1.getId());
-        assertEquals(2 , hospital2.getId());
-        assertEquals(1 , hospital1.getAdjacentNodes().size());
-        assertEquals(1 , hospital2.getAdjacentNodes().size());
-        assertEquals(1 , facility.getId());
+        assertEquals(1, hospital1.getId());
+        assertEquals(2, hospital2.getId());
+        assertEquals(1, hospital1.getAdjacentNodes().size());
+        assertEquals(1, hospital2.getAdjacentNodes().size());
+        assertEquals(1, facility.getId());
         assertEquals("Szpital Wojewódzki nr 997", hospital1.getName());
         assertEquals("Krakowski Szpital Kliniczny", hospital2.getName());
         assertEquals("Pomnik Wikipedii", facility.getName());
@@ -63,7 +64,7 @@ public class CountryFileReaderTest {
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFileContainsHeadersOnly(){
+    public void shouldThrowIllegalArgumentExceptionWhenFileContainsHeadersOnly() {
         String filePath = path + "headersOnly.txt";
         String msg = "File does not contain any hospital";
 
@@ -84,11 +85,11 @@ public class CountryFileReaderTest {
         Hospital hospital2 = hospitals.get(1);
         Distance distance = distances.get(0);
 
-        assertEquals(1 , hospital1.getId());
-        assertEquals(2 , hospital2.getId());
-        assertEquals(1 , hospital1.getAdjacentNodes().size());
-        assertEquals(1 , hospital2.getAdjacentNodes().size());
-        assertEquals(0 , facilities.size());
+        assertEquals(1, hospital1.getId());
+        assertEquals(2, hospital2.getId());
+        assertEquals(1, hospital1.getAdjacentNodes().size());
+        assertEquals(1, hospital2.getAdjacentNodes().size());
+        assertEquals(0, facilities.size());
         assertEquals("Szpital Wojewódzki nr 997", hospital1.getName());
         assertEquals("Krakowski Szpital Kliniczny", hospital2.getName());
         assertEquals(1, distance.getId());
@@ -108,11 +109,11 @@ public class CountryFileReaderTest {
         Hospital hospital2 = hospitals.get(1);
         Facility facility = facilities.get(0);
 
-        assertEquals(1 , hospital1.getId());
-        assertEquals(2 , hospital2.getId());
-        assertEquals(0 , hospital1.getAdjacentNodes().size());
-        assertEquals(0 , hospital2.getAdjacentNodes().size());
-        assertEquals(1 , facility.getId());
+        assertEquals(1, hospital1.getId());
+        assertEquals(2, hospital2.getId());
+        assertEquals(0, hospital1.getAdjacentNodes().size());
+        assertEquals(0, hospital2.getAdjacentNodes().size());
+        assertEquals(1, facility.getId());
         assertEquals("Szpital Wojewódzki nr 997", hospital1.getName());
         assertEquals("Krakowski Szpital Kliniczny", hospital2.getName());
         assertEquals("Pomnik Wikipedii", facility.getName());
@@ -120,7 +121,7 @@ public class CountryFileReaderTest {
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFileDoesNotContainEnoughHeaders(){
+    public void shouldThrowIllegalArgumentExceptionWhenFileDoesNotContainEnoughHeaders() {
         String filePath = path + "notEnoughSharps.txt";
         String msg = "Line: 9. Wrong number of sections. Expected 6 sections";
 
@@ -129,7 +130,7 @@ public class CountryFileReaderTest {
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFileDoesContainWrongNumberOfSections(){
+    public void shouldThrowIllegalArgumentExceptionWhenFileDoesContainWrongNumberOfSections() {
         String filePath = path + "wrongNumberOfSections.txt";
         String msg = "Line: 2. Wrong number of sections. Expected 6 sections";
 
@@ -138,7 +139,7 @@ public class CountryFileReaderTest {
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFileContainTooManyHeaders(){
+    public void shouldThrowIllegalArgumentExceptionWhenFileContainTooManyHeaders() {
         String filePath = path + "tooMuchSharps.txt";
         String msg = "Too much lines starting with '#' in file " + filePath + ". Expected 3 lines";
 
@@ -147,7 +148,7 @@ public class CountryFileReaderTest {
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFileContainFewSameHospitalsIds(){
+    public void shouldThrowIllegalArgumentExceptionWhenFileContainFewSameHospitalsIds() {
         String filePath = path + "sameId.txt";
         String msg = "Line: 3. Hospital's id and name should be unique";
 
@@ -156,7 +157,7 @@ public class CountryFileReaderTest {
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFileContainFewSameFacilitiesNames(){
+    public void shouldThrowIllegalArgumentExceptionWhenFileContainFewSameFacilitiesNames() {
         String filePath = path + "sameNames.txt";
         String msg = "Line: 10. Facility's id and name should be unique";
 
@@ -165,7 +166,7 @@ public class CountryFileReaderTest {
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFileContainWrongHospitalIdInDistance(){
+    public void shouldThrowIllegalArgumentExceptionWhenFileContainWrongHospitalIdInDistance() {
         String filePath = path + "wrongHospitalIdInDistance.txt";
         String msg = "Line: 15. Distance's id should be unique. Hospital's id should be real";
 
@@ -174,18 +175,18 @@ public class CountryFileReaderTest {
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFileContainNegativeId(){
+    public void shouldThrowIllegalArgumentExceptionWhenFileContainNegativeId() {
         String filePath = path + "negativeId.txt";
         String msg = "Line: 3. Wrong data format. Should be:\n" +
-            "id, number of beds, number of free beds - not negative integer,\n" +
-            "x and y - float number";
+                "id, number of beds, number of free beds - not negative integer,\n" +
+                "x and y - float number";
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryFileReader.readFile(filePath));
         assertEquals(msg, exception.getMessage());
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFileContainNegativeNumberOfBeds(){
+    public void shouldThrowIllegalArgumentExceptionWhenFileContainNegativeNumberOfBeds() {
         String filePath = path + "negativeNumberOfBeds.txt";
         String msg = "Line: 4. Wrong data format. Should be:\n" +
                 "id, number of beds, number of free beds - not negative integer,\n" +
@@ -196,18 +197,18 @@ public class CountryFileReaderTest {
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFileContainFloatNumberInIntegerSectionId(){
+    public void shouldThrowIllegalArgumentExceptionWhenFileContainFloatNumberInIntegerSectionId() {
         String filePath = path + "doubleInIntegerSection.txt";
         String msg = "Line: 5. Wrong data format. Should be:\n" +
-            "id, number of beds, number of free beds - not negative integer,\n" +
-            "x and y - float number";
+                "id, number of beds, number of free beds - not negative integer,\n" +
+                "x and y - float number";
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> countryFileReader.readFile(filePath));
         assertEquals(msg, exception.getMessage());
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFileContainIdEquals1000(){
+    public void shouldThrowIllegalArgumentExceptionWhenFileContainIdEquals1000() {
         String filePath = path + "idEquals1000.txt";
         String msg = "Line: 3. Hospital's id should be smaller than 1000";
 
@@ -216,7 +217,7 @@ public class CountryFileReaderTest {
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFileContainRoadToTheSameHospital(){
+    public void shouldThrowIllegalArgumentExceptionWhenFileContainRoadToTheSameHospital() {
         String filePath = path + "roadToSameHospital.txt";
         String msg = "Line: 14. Road cannot lead to the same hospital.";
 
@@ -225,7 +226,7 @@ public class CountryFileReaderTest {
     }
 
     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenFileContainHospitalWithNumberOfAvailableBedsBiggerThanTotalNumberOfAllBeds(){
+    public void shouldThrowIllegalArgumentExceptionWhenFileContainHospitalWithNumberOfAvailableBedsBiggerThanTotalNumberOfAllBeds() {
         String filePath = path + "freeBedsBiggerThanAll.txt";
         String msg = "Line: 3. Number of available beds cannot be bigger than total number of all beds";
 

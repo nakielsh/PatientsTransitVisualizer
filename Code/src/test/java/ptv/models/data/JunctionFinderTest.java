@@ -10,20 +10,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class JunctionFinderTest {
 
-     @Test
-    public void shouldThrowIllegalArgumentExceptionWhenDistanceListIsNull(){
+    @Test
+    public void shouldThrowIllegalArgumentExceptionWhenDistanceListIsNull() {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> new JunctionFinder().findJunctions(null));
         assertEquals("Distance list cannot be null", e.getMessage());
     }
 
     @Test
-    public void shouldDoNothingWhenDistanceListIsEmpty(){
+    public void shouldDoNothingWhenDistanceListIsEmpty() {
         List<Distance> emptyList = new ArrayList<>();
         new JunctionFinder().findJunctions(emptyList);
     }
 
     @Test
-    public void shouldCalculateJunctionWhenTwoDistancesAreCrossed(){
+    public void shouldCalculateJunctionWhenTwoDistancesAreCrossed() {
         Node n11 = new Node(0, new Point2D(50, 50));
         Node n12 = new Node(1, new Point2D(150, 150));
         Node n21 = new Node(2, new Point2D(150, 50));
@@ -49,7 +49,7 @@ public class JunctionFinderTest {
     }
 
     @Test
-    public void shouldDoNothingWhenTwoDistancesAreNotCrossed(){
+    public void shouldDoNothingWhenTwoDistancesAreNotCrossed() {
         Node n11 = new Node(0, new Point2D(50, 150));
         Node n12 = new Node(1, new Point2D(150, 150));
         Node n21 = new Node(2, new Point2D(150, 50));
@@ -70,7 +70,7 @@ public class JunctionFinderTest {
     }
 
     @Test
-    public void shouldCalculateJunctionsWhenOneDistanceIsCrossedWithAnotherTwo(){
+    public void shouldCalculateJunctionsWhenOneDistanceIsCrossedWithAnotherTwo() {
         Node n11 = new Node(0, new Point2D(100, 100));
         Node n12 = new Node(1, new Point2D(160, 100));
         Node n21 = new Node(2, new Point2D(100, 150));
@@ -101,7 +101,7 @@ public class JunctionFinderTest {
     }
 
     @Test
-    public void shouldDoNothingWhenThreeDistancesAreNotCrossedWitchEachOther(){
+    public void shouldDoNothingWhenThreeDistancesAreNotCrossedWitchEachOther() {
         Node n1 = new Node(1, new Point2D(60, 0));
         Node n2 = new Node(2, new Point2D(0, 60));
         Node n3 = new Node(3, new Point2D(60, 60));
@@ -121,7 +121,7 @@ public class JunctionFinderTest {
     }
 
     @Test
-    public void shouldDoNothingWhenTwoDistancesAreParallelAndOverlapping(){
+    public void shouldDoNothingWhenTwoDistancesAreParallelAndOverlapping() {
         Node n11 = new Node(1, new Point2D(60, 60));
         Node n12 = new Node(2, new Point2D(0, 60));
         Node n21 = new Node(3, new Point2D(120, 60));
@@ -142,7 +142,7 @@ public class JunctionFinderTest {
     }
 
     @Test
-    public void shouldCalculateJunctionCorrectlyWhenCoordinatesAreNegative(){
+    public void shouldCalculateJunctionCorrectlyWhenCoordinatesAreNegative() {
         Node n11 = new Node(0, new Point2D(-50, -100));
         Node n12 = new Node(1, new Point2D(-150, -100));
         Node n21 = new Node(2, new Point2D(-100, -50));
@@ -168,7 +168,7 @@ public class JunctionFinderTest {
     }
 
     @Test
-    public void shouldCalculateJunctionCorrectlyWhenThreeDistancesAreCrossedInSamePlace(){
+    public void shouldCalculateJunctionCorrectlyWhenThreeDistancesAreCrossedInSamePlace() {
         Node n11 = new Node(0, new Point2D(0, 0));
         Node n12 = new Node(1, new Point2D(100, 100));
         Node n21 = new Node(2, new Point2D(0, 50));
@@ -195,7 +195,7 @@ public class JunctionFinderTest {
     }
 
     @Test
-    public void shouldCalculateJunctionCorrectlyWhenThreeDistancesAreCrossedInSamePlaceAndOneOfThemIsVertical(){
+    public void shouldCalculateJunctionCorrectlyWhenThreeDistancesAreCrossedInSamePlaceAndOneOfThemIsVertical() {
         Node n11 = new Node(0, new Point2D(0, 0));
         Node n12 = new Node(1, new Point2D(100, 100));
         Node n21 = new Node(2, new Point2D(0, 50));
