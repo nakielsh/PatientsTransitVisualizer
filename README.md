@@ -2,6 +2,9 @@
 
 An app illustrating patients being transferred to hospitals.
 
+## Technologies used
+Java, JavaFX, Maven, JUnit 5
+
 ## Initialization of a map
 To create a map with hospitals - first load the .txt file that has an information about hospitals, objects and paths in it. 
 The file should look like this:
