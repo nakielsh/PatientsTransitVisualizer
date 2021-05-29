@@ -58,4 +58,7 @@ Select simulation speed and press Start button. First the transported patiens ar
 
 <img width="912" alt="Screenshot 2021-05-29 at 19 50 02" src="https://user-images.githubusercontent.com/60079684/120080003-10e62b00-c0b7-11eb-8704-b04fedd7ebe6.png">
 
-
+## Authors
+* [Martyna Jakubowska](https://github.com/mjakubowska)
+* [Artur Prasuła](https://github.com/lilartisto)
+* [Hubert Nakielski](https://github.com/nakielsh)
