@@ -1,6 +1,6 @@
 # Patients Transit Visualizer
 
-An app illustrating patients being transferred to hospitals. \
+An app illustrating patients being transferred to hospitals.
 
 ## Initialization of a map
 To create a map with hospitals - first load the .txt file that has an information about hospitals, objects and paths in it. 
